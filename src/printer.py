@@ -1,5 +1,10 @@
+#!/usr/bin/env python
+
 import os.path
 import sys
+
+sys.path.extend(['./src/','../src/'])
+
 import lex
 from tokenizer import tokenizer
 
@@ -20,7 +25,7 @@ def Print():
 
 if __name__ == "__main__":
     tokens = tokenizer.tokens
-    table = { k:[0,set()] for k in tokens}   
+    table = { k:[0,set()] for k in tokens}
     lexer = lex.lex(module=tokenizer())
     filename = sys.argv[1]
     if os.path.exists(filename):
@@ -34,5 +39,5 @@ if __name__ == "__main__":
             table[tokk.type][1].add(tokk.value)
         file.close()
     else:
-        print("File Does Not Exists ...")    
+        print("File Does Not Exist")
     Print()
