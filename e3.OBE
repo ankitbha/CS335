@@ -1,10 +1,10 @@
 module Code;
-var a, b : boolean;
+var a, b : BOOLEAN;
 
 procedure print( bool: boolean );
 begin
 	if bool then
-		writeln("true");
+		writeln("tr\"ue");
 	else
 		writeln("false");
 	end;
