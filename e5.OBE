@@ -1,0 +1,9 @@
+MODULE Code;
+	VAR a : ARRAY 10 OF INTEGER;
+	VAR b : INTEGER;
+BEGIN
+	WHILE b <= 10 DO
+		WRITELN(a*b);
+		b:= b+ 1;
+	END
+END Code.

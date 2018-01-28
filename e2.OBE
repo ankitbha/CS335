@@ -1,0 +1,17 @@
+module Code;
+var a, b, c: integer;
+
+procedure swap();
+begin 
+	c := b;
+	b := a;
+	a := c;
+end swap;
+
+begin
+	a := 2;
+	b := 7;
+	swap();
+	writeln( a );
+	writeln( b );
+end Code.

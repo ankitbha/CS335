@@ -1,0 +1,21 @@
+module Code;
+var a, b : boolean;
+
+procedure print( bool: boolean );
+begin
+	if bool then
+		writeln("true");
+	else
+		writeln("false");
+	end;
+end printBool;
+
+begin
+	a := true;
+	b := false;
+	
+	print ( a );
+	print ( b );
+	print ( a or b );
+	
+end Code.

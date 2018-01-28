@@ -63,32 +63,59 @@ reserved = {
 	'WRITELN' : 'WRITELN'
 }
 
-# some rules
-t_ignore = ' \t'
+# Operators
+t_PLUS = r'\+'
+t_MINUS = r'-'
+t_MULTIPLY = r'\*'
+t_DIVIDE = r'/'
+t_MODULUS = r'%'
+t_DOT = r'\.'
+
+# Relation
 t_ASSIGN = r':='
+t_EQUAL = r'='
+t_NEQUAL = r'!='
+t_LT = r'<'
+t_GT = r'>'
 t_LTEQ = r'<='
 t_GTEQ = r'>='
 
-#t_VAL_INTEGER = r'[0-9]+'
-#t_VAL_REAL = r'[0-9]+\.[0-9]+'
-t_VAL_INTEGER = r'[0-9][0-9A-F]*H|[0-9]+'
-t_VAL_REAL = r'[0-9]+\.[0-9]+(E|D)[+]?[0-9]+|[0-9]+\.[0-9]+(E|D)[-]?[0-9]+|[0-9]+\.[0-9]+'
 
-#t_VAL_BOOLEAN = r'TRUE|FALSE'
-t_DOT_DOT = r'\.\.'
+
+#t_ignore = ' \t'
+# BOOLEAN
+t_OR = r'\|'
+t_AND = r'&'
+t_IN = r'IN'
+t_IS = r'IS'
+
+# Delimiters
+t_COMMA = r','
+t_SCOLON = r';'
+t_LSB = r'\['
+t_RSB = r'\]'
+t_LRB = r'\('
+t_RRB = r'\)'
+t_LCB = r'{'
+t_RCB = r'}'
+
+
+t_VAL_INTEGER = r'[0-9]+'
+t_VAL_REAL = r'[0-9]+\.[0-9]+'
+t_VAL_BOOLEAN = r'TRUE|FALSE'
+#t_DOT_DOT = r'\.\.'
 t_VAL_STRING = r'\".*?\"'
 
-literals = "+-*/~&.,;|([{}]):><#=^"
+#literals = "+-*/~&.,;|([{}]):><#=^"
 #t_VAL_CHAR = r'(L)?\'(.|\n)\''
    
-tokens = ['ASSIGN', 'LTEQ', 'GTEQ', 'IDENT', 'VAL_INTEGER', 'VAL_REAL',
- 'VAL_STRING', 'VAL_BOOLEAN', 'VAL_CHAR', 'DOT_DOT' ] + list(reserved.values())
+tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MUULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'AND' , 'EQUAL' , 'IN' , 'IS' , 'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VAL_INTEGER', 'VAL_REAL', 'VAL_STRING', 'VAL_BOOLEAN', 'VAL_CHAR', 'DOT_DOT' ] + list(reserved.values())
 
 def t_IDENT(t):
 	r'[a-zA-Z]([a-zA-Z0-9])*'
 	t.type = reserved.get(t.value,'IDENT')
-	if t.value == 'TRUE' or t.value == 'FALSE':
-		t.type = 'VAL_BOOLEAN'
+	#if t.value == 'TRUE' or t.value == 'FALSE':
+		#t.type = 'VAL_BOOLEAN'
 	return t
 
 #t_ignore_comment = r'(\(\*(.|\n)*?\*\))'
