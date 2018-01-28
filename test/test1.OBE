@@ -7,18 +7,17 @@ begin
 
 	c := a + b;
 	writeln(c);
-	
+
 	c := a - b;
 	writeln(c);
-	
+
 	c := a * b;
 	writeln(c);
-	
+
 	c := a / b;
 	writeln(c);
-	
+
 	c := a % b;
 	writeln(c);
-	
-end Code.
 
+end Code.

@@ -22,7 +22,7 @@ reserved = {
 	'FREAD' : 'FREAD',
 	'IF' : 'IF',
 	'IN' : 'IN',
-	'INTEGER' : 'INTEGER',	
+	'INTEGER' : 'INTEGER',
 	'IS' : 'IS',
 	'LEN' : 'LEN',
 	'LOOP' : 'LOOP',
@@ -33,10 +33,10 @@ reserved = {
 	'NOT' : 'NOT',
 	'ODD' : 'ODD',
 	'OF' : 'OF',
-	'ORD' : 'ORD',	
+	'ORD' : 'ORD',
 	'POINTER' : 'POINTER',
 	'PROCEDURE' : 'PROCEDURE',
-	'READ' : 'READ',	
+	'READ' : 'READ',
 	'REAL' : 'REAL',
 	'RECORD' : 'RECORD',
 	'REPEAT' : 'REPEAT',
@@ -61,7 +61,7 @@ class tokenizer(object):
         t_DIVIDE = r'/'
         t_MODULUS = r'%'
         t_DOT = r'\.'
-        
+
         # Relation
         t_ASSIGN = r':='
         t_EQUAL = r'='
@@ -90,7 +90,7 @@ class tokenizer(object):
         t_VINTEGER = r'[0-9]+'
         t_VREAL = r'[0-9]+\.[0-9]+'
         t_VBOOLEAN = r'TRUE|FALSE'
-        t_VSTRING = r'\".*?\"'
+        t_VSTRING = r'\"([^\\]|(\\.))*?\"'
         t_VCHAR = r'(L)?\'(.|\n)\''
         tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'AND' , 'EQUAL' ,  'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VINTEGER', 'VREAL', 'VSTRING', 'VBOOLEAN', 'VCHAR', 'DOT_DOT' , 'COLON' ] + list(reserved.values())
         def t_IDENT(self, t):
@@ -102,17 +102,15 @@ class tokenizer(object):
                 r'(\(\*(.|\n)*?\*\))'
                 t.lexer.lineno += t.value.count('\n')
                 pass
-        
+
         def t_newline(self, t):
                 r'\n+'
                 t.lexer.lineno += len(t.value)
 
+        def t_newline2(self, t):
+                r'(\r\n)+'
+                t.lexer.lineno += len(t.value) / 2
+
         def t_error(self, t):
-                last_cr = t.lexer.lexdata.rfind('\n',0,t.lexpos)
-                if (last_cr < 0) :
-                        last_cr = -1		
-                else :
-                        last_cr = last_cr 
-                columnNo = (t.lexpos - last_cr)
-                print ("Illegal character",t.value[0],"at line : ",t.lexer.lineno,"column",columnNo,": Skipping")
+                print ("Illegal character",t.value[0],"at line : ",t.lexer.lineno,": Skipping")
                 t.lexer.skip(1)

@@ -4,7 +4,7 @@ var a, b : BOOLEAN;
 procedure print( bool: boolean );
 begin
 	if bool then
-		writeln("tr\"ue");
+		writeln("tr");
 	else
 		writeln("false");
 	end;
@@ -13,9 +13,9 @@ end printBool;
 begin
 	a := true;
 	b := false;
-	
+
 	print ( a );
 	print ( b );
 	print ( a or b );
-	
+
 end Code.
