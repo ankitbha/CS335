@@ -1,6 +1,6 @@
 (*program to print table of 15 *)
 MODULE Code;
-var a, b : integer;
+VAR a, b : integer;
 BEGIN
 	a := 15;
 	b := 1;

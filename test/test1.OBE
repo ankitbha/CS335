@@ -1,23 +1,23 @@
-module Code;
-var a, b, c, d, e : integer;
+MODULE Code;
+VAR a, b, c, d, e : INTEGER;
 
-begin
+BEGIN
 	a := 21;
-   	b := 10;
+  b := 10;
 
 	c := a + b;
-	writeln(c);
+	WRITELN(c);
 
 	c := a - b;
-	writeln(c);
+	WRITELN(c);
 
 	c := a * b;
-	writeln(c);
+	WRITELN(c);
 
 	c := a / b;
-	writeln(c);
+	WRITELN(c);
 
 	c := a % b;
-	writeln(c);
+	WRITELN(c);
 
-end Code.
+END Code.

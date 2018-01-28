@@ -1,21 +1,21 @@
-module Code;
-var a, b : BOOLEAN;
+MODULE Code;
+VAR a, b : BOOLEAN;
 
-procedure print( bool: boolean );
-begin
-	if bool then
-		writeln("tr");
-	else
-		writeln("false");
-	end;
-end printBool;
+PROCEDURE print( bool: boolean );
+BEGIN
+	IF bool THEN
+		WRITELN("tr");
+	ELSE
+		WRITELN("false");
+	END;
+END printBool;
 
-begin
-	a := true;
-	b := false;
+BEGIN
+	a := TRUE;
+	b := FALSE;
 
-	print ( a );
-	print ( b );
-	print ( a or b );
+	PRINT ( a );
+	PRINT ( b );
+	PRINT ( a or b );
 
-end Code.
+END Code.

@@ -1,17 +1,17 @@
-module Code;
-var a, b, c: integer;
+MODULE Code;
+VAR a, b, c: INTEGER;
 
-procedure swap();
-begin 
+PROCEDURE swap();
+BEGIN
 	c := b;
 	b := a;
 	a := c;
-end swap;
+END swap;
 
-begin
+BEGIN
 	a := 2;
 	b := 7;
 	swap();
-	writeln( a );
-	writeln( b );
-end Code.
+	WRITELN( a );
+	WRITELN( b );
+END Code.
