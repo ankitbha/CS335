@@ -1,0 +1,20 @@
+MODULE code;
+VAR i : INTEGER;
+VAR a : ARRAY 10 OF INTEGER;
+
+BEGIN
+
+a[0] := 1;
+a[1] := 2;
+a[2] := 3;
+i := 0;
+
+IF (i<=3) THEN
+	a[i] := a[i]+1;
+IF (i>=2) THEN
+	a[i] := a[i]-1;
+ELSE
+	a[i] := 1;
+END;
+
+END code.

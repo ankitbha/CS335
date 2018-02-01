@@ -1,0 +1,16 @@
+MODULE code;
+VAR i : INTEGER;
+
+BEGIN
+
+i := 6;
+
+WHILE (i<=8 & i>=6 & i!=7) DO
+	IF (i>=0) THEN
+		WRITELN("yes");
+	ELSE 
+		WRITELN("no");
+	END;
+END;
+
+END code.
