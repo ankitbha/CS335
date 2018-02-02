@@ -1,0 +1,22 @@
+MODULE struct_func;
+TYPE T = RECORD a, c , f : CHAR;
+                b, d : INTEGER;
+                e : REAL;
+                name : ARRAY 10 OF CHAR 
+         END;
+VAR k : T;
+
+PROCEDURE f( x : T );
+BEGIN
+	x.a := 'a';
+        x.b := 47114711;
+        x.c = 'c';
+        x.d = 1234;
+        x.e = 3.141592897932;
+        x.f = '*';
+        x.name = "abc";
+END f;
+
+BEGIN
+        f(k)l	
+END struct_func.
