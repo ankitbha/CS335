@@ -1,8 +1,8 @@
-MODULE struct_func;
+MODULE structfunc;
 TYPE T = RECORD a, c , f : CHAR;
                 b, d : INTEGER;
                 e : REAL;
-                name : ARRAY 10 OF CHAR 
+                name : ARRAY 10 OF CHAR
          END;
 VAR k : T;
 
@@ -18,5 +18,5 @@ BEGIN
 END f;
 
 BEGIN
-        f(k)l	
-END struct_func.
+        f(k)l
+END structfunc.
