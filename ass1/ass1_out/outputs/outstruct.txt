@@ -1,0 +1,43 @@
+               Token            Occurrances                Lexemes
+______________________________________________________________________
+()
+             KEY_END                       3                    END
+          KEY_MODULE                       1                 MODULE
+               EQUAL                       6                      =
+              SCOLON                      15                      ;
+              KEY_OF                       1                     OF
+               IDENT                      33                      a
+                                                                  c
+                                                                  b
+                                                                  e
+                                                                  d
+                                                                  f
+                                                                  k
+                                                                  l
+                                                                  T
+                                                                  x
+                                                         structfunc
+                                                               name
+             VSTRING                       1                  "abc"
+            VINTEGER                       3                   1234
+                                                                 10
+                                                           47114711
+           KEY_BEGIN                       2                  BEGIN
+            KEY_CHAR                       2                   CHAR
+               COLON                       6                      :
+                 RRB                       2                      )
+            KEY_TYPE                       1                   TYPE
+                 DOT                       8                      .
+               COMMA                       3                      ,
+              ASSIGN                       2                     :=
+            KEY_REAL                       1                   REAL
+         KEY_INTEGER                       1                INTEGER
+                 LRB                       2                      (
+             KEY_VAR                       1                    VAR
+          KEY_RECORD                       1                 RECORD
+               VREAL                       1         3.141592897932
+           KEY_ARRAY                       1                  ARRAY
+               VCHAR                       3                    'a'
+                                                                '*'
+                                                                'c'
+       KEY_PROCEDURE                       1              PROCEDURE

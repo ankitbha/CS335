@@ -1,0 +1,20 @@
+               Token            Occurrances                Lexemes
+______________________________________________________________________
+()
+             KEY_END                       2                    END
+          KEY_MODULE                       1                 MODULE
+              SCOLON                       6                      ;
+               IDENT                       7                      i
+                                                                foo
+                                                               swap
+                                                               func
+            VINTEGER                       1                      1
+           KEY_BEGIN                       2                  BEGIN
+               COLON                       1                      :
+                 RRB                       2                      )
+                 DOT                       1                      .
+              ASSIGN                       1                     :=
+         KEY_INTEGER                       1                INTEGER
+                 LRB                       2                      (
+             KEY_VAR                       1                    VAR
+       KEY_PROCEDURE                       1              PROCEDURE

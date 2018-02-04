@@ -1,0 +1,30 @@
+               Token            Occurrances                Lexemes
+______________________________________________________________________
+()
+             KEY_END                       4                    END
+          KEY_MODULE                       1                 MODULE
+           KEY_WRITE                       1                  WRITE
+              SCOLON                      15                      ;
+               IDENT                      22                      i
+                                                                res
+                                                                  k
+                                                                  j
+                                                               loop
+             VSTRING                       1                 "res="
+            VINTEGER                      11                      1
+                                                                  0
+                                                                 10
+              KEY_DO                       3                     DO
+           KEY_BEGIN                       1                  BEGIN
+               COLON                       1                      :
+                 RRB                       5                      )
+                  LT                       3                      <
+                PLUS                       4                      +
+                 DOT                       1                      .
+               COMMA                       3                      ,
+              ASSIGN                       8                     :=
+         KEY_INTEGER                       1                INTEGER
+           KEY_WHILE                       3                  WHILE
+         KEY_WRITELN                       1                WRITELN
+                 LRB                       5                      (
+             KEY_VAR                       1                    VAR

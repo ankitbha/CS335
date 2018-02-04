@@ -18,6 +18,6 @@ BEGIN
     i := i+1;
     END;
 
-    WRITE("res = ");
+    WRITE("res=");
     WRITELN(res);
 END loop.

@@ -2,6 +2,8 @@ MODULE code;
 VAR i : INTEGER;
 VAR a : ARRAY 10 OF INTEGER;
 
+(* this is a comment wont be in output *)
+
 BEGIN
 
 a[0] := 1;

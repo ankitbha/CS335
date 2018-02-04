@@ -1,0 +1,33 @@
+               Token            Occurrances                Lexemes
+______________________________________________________________________
+()
+             KEY_END                       2                    END
+          KEY_MODULE                       1                 MODULE
+            KEY_ELSE                       1                   ELSE
+                GTEQ                       1                     >=
+              SCOLON                      11                      ;
+              KEY_OF                       1                     OF
+               IDENT                      20                      i
+                                                                  a
+                                                               code
+              KEY_IF                       2                     IF
+            VINTEGER                      13                      1
+                                                                 10
+                                                                  3
+                                                                  2
+                                                                  0
+               MINUS                       1                      -
+                 LSB                       8                      [
+           KEY_BEGIN                       1                  BEGIN
+               COLON                       2                      :
+                 RRB                       2                      )
+                PLUS                       1                      +
+                 DOT                       1                      .
+              ASSIGN                       7                     :=
+            KEY_THEN                       2                   THEN
+         KEY_INTEGER                       2                INTEGER
+                 LRB                       2                      (
+                LTEQ                       1                     <=
+             KEY_VAR                       2                    VAR
+                 RSB                       8                      ]
+           KEY_ARRAY                       1                  ARRAY

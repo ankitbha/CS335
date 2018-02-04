@@ -1,0 +1,16 @@
+MODULE code;
+VAR i, `$#@name, 36a : INTEGER;
+
+BEGIN
+
+i := 6;
+WHILE (i<=8 & i 6.67 & i!=7) DO
+	IF (i>=0) THEN
+		WRITELN("yes");
+	ELSE
+		WRITELN("no");
+	END
+	i := i+1
+END			
+
+END code.

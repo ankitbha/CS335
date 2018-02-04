@@ -1,0 +1,19 @@
+MODULE code;
+	VAR wflg : INTEGER;
+	VAR tflg : INTEGER; 
+	VAR dflg : INTEGER;
+	VAR c : CHAR;
+
+BEGIN
+
+	wflg := 0;
+	tflg := 0;
+	dflg := 0;
+
+	CASE c OF
+		  'w', 'W': wflg := 1; BREAK
+		| 't', 'T': tflg := 1; BREAK
+		| 'd': dflg := 1; BREAK
+	END
+
+END code.

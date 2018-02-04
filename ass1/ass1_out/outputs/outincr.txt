@@ -1,0 +1,43 @@
+('Illegal character', '`', 'at line : ', 2, ': Skipping')
+('Illegal character', '$', 'at line : ', 2, ': Skipping')
+('Illegal character', '#', 'at line : ', 2, ': Skipping')
+('Illegal character', '@', 'at line : ', 2, ': Skipping')
+               Token            Occurrances                Lexemes
+______________________________________________________________________
+()
+             KEY_END                       3                    END
+          KEY_MODULE                       1                 MODULE
+            KEY_ELSE                       1                   ELSE
+                GTEQ                       1                     >=
+              SCOLON                       5                      ;
+               IDENT                      12                      i
+                                                                  a
+                                                               code
+                                                               name
+             VSTRING                       2                   "no"
+                                                              "yes"
+              KEY_IF                       1                     IF
+            VINTEGER                       6                     36
+                                                                  1
+                                                                  0
+                                                                  7
+                                                                  6
+                                                                  8
+              KEY_DO                       1                     DO
+           KEY_BEGIN                       1                  BEGIN
+               COLON                       1                      :
+                 RRB                       4                      )
+                PLUS                       1                      +
+                 DOT                       1                      .
+               COMMA                       2                      ,
+              ASSIGN                       2                     :=
+              NEQUAL                       1                     !=
+            KEY_THEN                       1                   THEN
+         KEY_INTEGER                       1                INTEGER
+           KEY_WHILE                       1                  WHILE
+         KEY_WRITELN                       2                WRITELN
+                 AND                       2                      &
+                 LRB                       4                      (
+                LTEQ                       1                     <=
+             KEY_VAR                       1                    VAR
+               VREAL                       1                   6.67

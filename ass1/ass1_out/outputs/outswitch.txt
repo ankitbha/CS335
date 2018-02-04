@@ -1,0 +1,30 @@
+               Token            Occurrances                Lexemes
+______________________________________________________________________
+()
+             KEY_END                       2                    END
+          KEY_MODULE                       1                 MODULE
+              SCOLON                      11                      ;
+              KEY_OF                       1                     OF
+               IDENT                      16                      c
+                                                               code
+                                                               tflg
+                                                               wflg
+                                                              BREAK
+                                                               dflg
+            VINTEGER                       6                      1
+                                                                  0
+           KEY_BEGIN                       1                  BEGIN
+            KEY_CHAR                       1                   CHAR
+               COLON                       7                      :
+                 DOT                       1                      .
+               COMMA                       2                      ,
+              ASSIGN                       6                     :=
+         KEY_INTEGER                       3                INTEGER
+            KEY_CASE                       1                   CASE
+             KEY_VAR                       4                    VAR
+               VCHAR                       5                    'w'
+                                                                'T'
+                                                                'd'
+                                                                'W'
+                                                                't'
+                  OR                       2                      |
