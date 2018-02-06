@@ -1,17 +1,15 @@
 import sys
 
-def inputIR():
-    pass
-
 def getReg(varName, numLine):
     
-    regExist=False
+    #regExist=False
     emptyReg=None
     for i in regDes.keys():
     	if (regDes[i]==varName):    		
-    		regExist = True
+    		#regExist = True
     		return i;
-    	if(emptyReg==None and !regExist):
+    	#if(emptyReg==None and !regExist):
+    	if(emptyReg==None):
     		if (regDes[i] == None):
     			emptyReg=i;
     
