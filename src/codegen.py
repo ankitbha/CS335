@@ -103,15 +103,22 @@ def main():
         else:
             instruction2 = num_instr
         basicblocks[instruction1] = incode[instruction1-1:instruction2]  
-
+    print("#########################################################")
+    #print(basicblocks)
 
 # populating the next use table thing ----------------------- ankit
 
     
     for l, block in basicblocks.items():
-        for b in block[::-1]:
+        print(block)
+        #block = line.split(', ')
+        #print(block)
+        for b in block:
+            b = b.split(', ')
+            print(b[1],"\n")
             # nextUseTable[b[0]] = {var:symTable[var] for var in variables}
             if b[1] in mathop:
+            	#print("b1 = ",b[1])
                 # symTable[b[2]].status = stat.DEAD
              #    if b[3] in variables:
              #        symTable[b[3]].status = stat.LIVE
