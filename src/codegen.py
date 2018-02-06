@@ -28,6 +28,7 @@ def main():
 
     incode = open(filename).read().splitlines()
     print(incode)
+    nextuseTable = [None for i in range(len(incode))]
 
     leaders = [1,]
     variables = []
@@ -60,6 +61,54 @@ def main():
     leaders.sort()
     print(leaders)
 
+# generating blocks here -------------------------- ankit 
+
+    basicblocks = {}
+    num_instr = len(incode)
+    for i in range(len(leaders)):
+        instruction1 = leaders[i]
+        if i+1<len(leaders):
+            instruction2 = leaders[i+1]-1
+        else:
+            instruction2 = num_instr
+        basicblocks[instruction1] = incode[instruction1-1:instruction2]  
+
+
+# populating the next use table thingy ----------------------- ankit
+
+    
+    for l, block in basicblocks.items():
+        for b in block[::-1]:
+            # nextUseTable[b[0]] = {var:symTable[var] for var in variables}
+            if b[1] in mathop:
+                # symTable[b[2]].status = stat.DEAD
+             #    if b[3] in variables:
+             #        symTable[b[3]].status = stat.LIVE
+             #    if b[4] in variables:
+             #        symTable[b[4]].status = stat.LIVE
+
+# After the implementation of symbol table, we may havev to change the code in this section.
+
+                continue
+
+            elif b[1] == '=':
+                continue
+                # symTable[b[2]].status = stat.DEAD
+                #    if b[3] in variables: 
+            
+                #        symTable[b[3]].status = stat.LIVE
+            elif b[1] == 'ifgoto':
+                continue
+                # if b[3] in variables:
+                #     symTable[b[3]].status = stat.LIVE
+                # if b[4] in variables:
+                #     symTable[b[4]].status = stat.LIVE 
+
+
+
+
+
+
 #   for instr in instrlist:
 #   templist = instr.split(', ')
 #   if templist[1] not in ['label', 'call', 'function']:
@@ -80,7 +129,7 @@ if __name__ == "__main__":
     mathop = ['+', '-', '*', '/', '%']
     boolop = ['&', '|', '!']
     reserved = keyword + relation + mathop + boolop
-
+    
     main()
 
 
