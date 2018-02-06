@@ -3,8 +3,43 @@ import sys
 def inputIR():
     pass
 
-def getReg():
-    pass
+def getReg(varName, numLine):
+    
+    regExist=False
+    emptyReg=None
+    for i in regDes.keys():
+    	if (regDes[i]==varName):    		
+    		regExist = True
+    		return i;
+    	if(emptyReg==None and !regExist):
+    		if (regDes[i] == None):
+    			emptyReg=i;
+    
+    if (emptyReg!=None):
+    	return emptyReg;
+
+    forNextUse=nextUseTable[numLine]
+	"""
+    forNextUse should be a dictionary, so nextUseTable must also be a
+	dictionary with keys as line numbers and value as another dictionary
+	with key being variable names and values being nextUselineNo
+	"""	
+    tempFarthest=None
+    for var in forNextUse.keys():
+        if (tempFarthest==None):
+        	tempFarthest=var
+        elif (forNextUse[var]>forNextUse[tempFarthest]):
+        	tempFarthest=var
+        else:
+        	continue
+    for spillReg in regDes.keys():
+    	if regDes[spillReg]==tempFarthest:
+    		break;
+
+    """ write something like
+		assembly = assembly + "movl " + regspill + ", " + var + "\n"
+    """
+    return spillReg
 
 def setLoc():
     pass
@@ -74,7 +109,7 @@ def main():
         basicblocks[instruction1] = incode[instruction1-1:instruction2]  
 
 
-# populating the next use table thingy ----------------------- ankit
+# populating the next use table thing ----------------------- ankit
 
     
     for l, block in basicblocks.items():
@@ -130,6 +165,10 @@ if __name__ == "__main__":
     boolop = ['&', '|', '!']
     reserved = keyword + relation + mathop + boolop
     
+    regTuple = ()
+    regDes = {}
+    regDes = regDes.fromkeys(list(regTuple))
+
     main()
 
 
