@@ -17,12 +17,10 @@ def getReg(varName, numLine):
     	return emptyReg;
 
     forNextUse=nextUseTable[numLine]
-	"""
-    forNextUse should be a dictionary, so nextUseTable must also be a
-	dictionary with keys as line numbers and value as another dictionary
-	with key being variable names and values being nextUselineNo
-	"""	
     tempFarthest=None
+	#forNextUse should be a dictionary, so nextUseTable must also be a
+	#dictionary with keys as line numbers and value as another dictionary
+	#with key being variable names and values being nextUselineNo
     for var in forNextUse.keys():
         if (tempFarthest==None):
         	tempFarthest=var
@@ -34,9 +32,9 @@ def getReg(varName, numLine):
     	if regDes[spillReg]==tempFarthest:
     		break;
 
-    """ write something like
-		assembly = assembly + "movl " + regspill + ", " + var + "\n"
-    """
+	#write something like
+	#	assembly = assembly + "movl " + regspill + ", " + var + "\n"
+
     return spillReg
 
 def setLoc():
