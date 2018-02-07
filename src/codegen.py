@@ -1,119 +1,5 @@
 import sys
 
-class SymTab:
-    def __init__(self):
-        self.symtab = dict()
-
-    def lookup(self, lexeme):
-        if lexeme in self.symtab:
-            return copy.deepcopy(self.symtab[str(lexeme)])
-        return None
-
-    def lookupComplete(self, lexeme):
-        scope = ScopeList[currentScope]
-        while scope is not None:
-            entry = scope["table"].lookup(lexeme)
-            if entry != None:
-                return copy.deepcopy(entry)
-            scope = ScopeList[scope["parent"]]
-        return None
-
-    def insertID(self, lineno, name, id_type, types=None, specifiers=[], num=1, value=None, stars=0, order=[], parameters=[], defined=False, access="public", scope=""):
-        currtable = ScopeList[currentScope]["table"]
-        #print("[Symbol Table]", currtable.symtab)
-        if currtable.lookup(str(name)):         # No need to check again
-            #print("[Symbol Table] Entry already exists")
-            pass
-        else:
-            currtable.symtab[str(name)] = {
-                "name"      : str(name),
-                "id_type"   : str(id_type),
-                "type"      : list([] if types is None else types),        # List of data_types
-                "specifier" : list([] if specifiers is None else specifiers),    # List of type specifiers
-                "num"       : int(num),            # Number of such id
-                "value"     : list(value) if type(value) is list else value,           # Mostly required for const type variable
-                "star"      : int(stars),
-                "order"     : list(order if order else []),          # order of array in case of array
-                "parameters": copy.deepcopy(parameters if parameters else []),   # Used for functions only
-                "is_defined": bool(defined),
-                "access"    : str(access),   # Default 'public'
-                "myscope"   : str(scope if scope != ""  else str(currentScope)),
-                "inc"       : False,
-                "dec"       : False,
-                "tac_name"  : str(name) + "_" + str(scope if scope != ""  else str(currentScope)) ,
-                "offset"    : 0
-        #        "size"      : size
-            }
-            warning = ''
-            if id_type not in ["namespace", "class", "struct", "union", "object", "temporary"]:
-                check_datatype(lineno, currtable.symtab[str(name)]["type"], name, id_type)
-                check_specifier(lineno, currtable.symtab[str(name)]["specifier"], name)
-                if types is None:
-                    warning = "(warning: Type is None)"
-                #print("[Symbol Table] ", warning, " Inserting new identifier: ", name, " type: ", types, "specifier: ", specifiers)
-            #ScopeList[-1]["table"].numVar += 1
-
-    def insertTemp(self, name, id_type, scope_name, types):
-        if simple_type_specifier[' '.join(types)]["equiv_type"] in ["bool"]:
-            types = ["int"]
-        currtable = ScopeList[scope_name]["table"]
-        if currtable.lookup(str(name)):         # No need to check again
-            #print("[Symbol Table] Entry already exists")
-            pass
-        else:
-            size = 4
-            if ScopeList[currentScope]["scope_type"] not in ["global", "namespace_scope", "class_scope"]:
-                #ScopeList[scope_name]["offset"] += size
-                #offset = ScopeList[scope_name]["offset"]
-                ScopeList[currentScope]["offset"] += size
-                offset = ScopeList[currentScope]["offset"]
-            else:
-                offset = 0
-
-            if (types is None) or (len(types) == 0):
-                print("Something is Wrong!!")
-            currtable.symtab[str(name)] = {
-                "name"      : str(name),
-                "id_type"   : str(id_type),
-                "type"      : list([] if types is None else types),        # List of data_types
-                "specifier" : [],    # List of type specifiers
-                "num"       : 1,            # Number of such id
-                "value"     : None,           # Mostly required for const type variable
-                "star"      : 0,
-                "order"     : [],          # order of array in case of array
-                "parameters": [],   # Used for functions only
-                "is_defined": False,
-                "access"    : "public",
-                "myscope"   : scope_name,
-                "inc"       : False,
-                "dec"       : False,
-                "tac_name"  : str(name),
-                "offset"    : 0,
-                "size"      : size,
-                "offset"    : offset
-            }
-
-    @staticmethod
-    def addIDAttr(name, attribute, value):
-        currtable = ScopeList[currentScope]["table"]
-        if attribute in currtable.symtab[str(name)].keys():
-            if currtable.symtab[str(name)][str(attribute)] is not None:
-                currtable.symtab[str(name)][str(attribute)] += list(value)
-            else:
-                currtable.symtab[str(name)][str(attribute)] = list(value) if value is list else value
-        else:
-            currtable.symtab[str(name)].update({attribute : value})
-        if attribute not in AttrList:
-            AttrList.append(attribute)
-        #print("[Symbol Table] Adding attribute of identifier: ", name, " attribute: ", attribute, "value: ", value)
-
-    @staticmethod
-    def updateIDAttr(name, attribute, value):
-        currtable = ScopeList[currentScope]["table"]
-        currtable.symtab[str(name)].update({attribute : value})
-        #print("[Symbol Table] Updating attribute of identifier: ", name, " attribute: ", attribute, "value: ", value)
-
-
 def getReg(varName, numLine):
     
     #regExist=False
@@ -163,6 +49,29 @@ def isInt(s):
         return True
     except ValueError:
         return False
+
+class CodeGen:
+	keyword = ['ifgoto', 'goto', 'return', 'call', 'print', 'label', 'function', 'exit', 'return']
+    relation = ['<=', '>=', '==', '>', '<', '!=', '=']
+    mathop = ['+', '-', '*', '/', '%']
+    boolop = ['&', '|', '!']
+    reserved = keyword + relation + mathop + boolop
+    
+    vreg = {"$v0":None, "$v1":None}
+    areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
+    zreg = {"$zero":None}
+    treg = {"$t0":None, "$t1":None, "$t2":None, "$t3":None, "$t4":None, "$t5":None, "$t6":None, "$t7":None, "$t8":None, "$t9":None}
+    sreg = {"$s0":None, "$s1":None, "$s2":None, "$s3":None, "$s4":None, "$s5":None, "$s6":None, "$s7":None}
+    preg = { "$gp" : None, "$sp" : None, "$fp" : None, "ra" : None }
+    kreg = { "$k0" : None, "$k1" : None }
+
+    regTuple = ()
+    regDes = {}
+    regDes = regDes.fromkeys(list(regTuple))
+
+
+
+
 
 def main():
     if len(sys.argv) == 2:
@@ -295,51 +204,12 @@ nextUseTable[b[0]] = {var:symTable[var] for var in varlist}
 	
 
 
-    vreg = {"$v0":None, "$v1":None}
-    areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
-    zreg = {"$zero":None}
-    treg = {"$t0":None, "$t1":None, "$t2":None, "$t3":None, "$t4":None, "$t5":None, "$t6":None, "$t7":None, "$t8":None, "$t9":None}
-    sreg = {"$s0":None, "$s1":None, "$s2":None, "$s3":None, "$s4":None, "$s5":None, "$s6":None, "$s7":None}
-    preg = { "$gp" : None, "$sp" : None, "$fp" : None, "ra" : None }
-    kreg = { "$k0" : None, "$k1" : None }
-
-        # (temporaries) Caller saved if needed. Subroutines can use w/out saving (Not preserved across procedure calls)
-        self.temp_regs = dict()
-        for i in range(10):  self.temp_regs.update({ '$t' + str(i) : [] })
-
-        # (saved values) - Callee saved (Preserved across procedure calls)
-        self.saved_regs = dict()
-        for i in range(8):  self.temp_regs.update({ '$s' + str(i) : [] })
-
-        self.pointer_regs = { "$gp" : None, "$sp" : None, "$fp" : None, "ra" : None }
-
-        self.general_regs = {**self.temp_regs, **self.saved_regs}
-
-        # Floating point registers
-        #self.float_regs = dict()
-        #for i in range(1,24):  self.float_regs.update({ '$f' + str(i) : [] })
-
-        # Used-Unused Regs
-        #self.unused_gen_regs = list(self.general_regs.keys())
-        #self.used_gen_regs = []
-
-        #self.unused_float_regs = list(self.float_regs.keys())
-		#self.used_float_regs = []
 
 
 
 
 if __name__ == "__main__":
-    keyword = ['ifgoto', 'goto', 'return', 'call', 'print', 'label', 'function', 'exit', 'return']
-    relation = ['<=', '>=', '==', '>', '<', '!=', '=']
-    mathop = ['+', '-', '*', '/', '%']
-    boolop = ['&', '|', '!']
-    reserved = keyword + relation + mathop + boolop
     
-    regTuple = ()
-    regDes = {}
-    regDes = regDes.fromkeys(list(regTuple))
-
     main()
 
 
