@@ -1,4 +1,5 @@
 import sys
+import symtable
 class CodeGen:
     
     def reg_init():
@@ -149,6 +150,8 @@ class CodeGen:
 	    leaders = [1,]
 	    variables = []
 	    
+# populate variables list
+
 	    for line in incode:
 	        l = line.split(', ')
 	        for var in l:
@@ -158,6 +161,24 @@ class CodeGen:
 	                #add in addressdisp ans symbl table
 	    variables = list(set(variables))
 	    print(variables)
+
+# populate symbol table
+		symList = []
+		symTable = {}
+		for v in variables:
+			symTable[v] = SymClass(v,'int')
+			symList.append(symTable[v])
+			print(symList)
+
+# set the variables in IR to point to symTable dictionary's entries
+		for line in incode:
+			l = line.split(', ')
+	        for var in l:
+	            if(var not in reserved and not isInt(var)):
+	                var = symTable[var]
+	    print(incode)
+
+# set up leaders and basic blocks	    
 	    for line in incode:
 	        l = line.split(', ')
 	        if 'ifgoto' in l:
