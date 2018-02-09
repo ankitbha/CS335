@@ -1,9 +1,9 @@
 import sys
 import symtable
 class CodeGen:
-    
+
     def reg_init():
-    	vreg = {"$v0":None, "$v1":None}
+		vreg = {"$v0":None, "$v1":None}
 		areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
 		zreg = {"$zero":None}
 		treg = {"$t0":None, "$t1":None, "$t2":None, "$t3":None, "$t4":None, "$t5":None, "$t6":None, "$t7":None, "$t8":None, "$t9":None}
@@ -32,12 +32,12 @@ class CodeGen:
 	def getReg(varName, numLine, varType):
 	    if varType in ["float", "double"]:
 	    	for i in reg_float.keys():
-		    	if (reg_float[i]==varName):    		
+		    	if (reg_float[i]==varName):
 		    		#regExist = True
 		    		return i
 		    	#if(emptyReg==None and !regExist):
 
-		    
+
 		    if unused_reg_float:
 		    	reg = unused_reg_float[0]
 		    	unused_reg_float.remove(reg)
@@ -46,7 +46,7 @@ class CodeGen:
 		    	return reg
 		    	# in this place we will need to change the symboltable for varName
 
-			else:    
+			else:
 			    forNextUse=nextUseTable[numLine]
 			    tempFarthest=None
 				#forNextUse should be a dictionary, so nextUseTable must also be a
@@ -73,12 +73,12 @@ class CodeGen:
 		    #regExist=False
 		    #emptyReg=None
 		    for i in reg_norm.keys():
-		    	if (reg_norm[i]==varName):    		
+		    	if (reg_norm[i]==varName):
 		    		#regExist = True
 		    		return i
 		    	#if(emptyReg==None and !regExist):
 
-		    
+
 		    if unused_reg_norm:
 		    	reg = unused_reg_norm[0]
 		    	unused_reg_norm.remove(reg)
@@ -87,7 +87,7 @@ class CodeGen:
 		    	return reg
 		    	# in this place we will need to change the symboltable for varName
 
-			else:    
+			else:
 			    forNextUse=nextUseTable[numLine]
 			    tempFarthest=None
 				#forNextUse should be a dictionary, so nextUseTable must also be a
@@ -117,7 +117,7 @@ class CodeGen:
 	    pass
 
 	def isInt(s):
-	    try: 
+	    try:
 	        int(s)
 	        return True
 	    except ValueError:
@@ -130,7 +130,7 @@ class CodeGen:
 	boolop = ['&', '|', '!']
 	reserved = keyword + relation + mathop + boolop
 
-	
+
 
 
 
@@ -149,7 +149,7 @@ class CodeGen:
 
 	    leaders = [1,]
 	    variables = []
-	    
+
 # populate variables list
 
 	    for line in incode:
@@ -178,27 +178,27 @@ class CodeGen:
 	                var = symTable[var]
 	    print(incode)
 
-# set up leaders and basic blocks	    
+# set up leaders and basic blocks
 	    for line in incode:
 	        l = line.split(', ')
 	        if 'ifgoto' in l:
 	            leaders.append(int(l[-1]))
 	            leaders.append(int(l[0])+1)
-	        
+
 	        elif 'goto' in l:
 	            leaders.append(int(l[-1]))
 	            leaders.append(int(l[0])+1)
-	        
+
 	        elif 'function' in l:
 	            leaders.append(int(l[0]))
-	        
+
 	        elif 'label' in l:
 	            leaders.append(int(l[0]))
 	    leaders = list(set(leaders))
 	    leaders.sort()
 	    print(leaders)
 
-	# generating blocks here -------------------------- ankit 
+	# generating blocks here -------------------------- ankit
 
 	    basicblocks = {}
 	    num_instr = len(incode)
@@ -208,13 +208,13 @@ class CodeGen:
 	            instruction2 = leaders[i+1]-1
 	        else:
 	            instruction2 = num_instr
-	        basicblocks[instruction1] = incode[instruction1-1:instruction2]  
+	        basicblocks[instruction1] = incode[instruction1-1:instruction2]
 	    print("#########################################################")
 	    #print(basicblocks)
 
 	# populating the next use table thing ----------------------- ankit
 
-	    
+
 	    for l, block in basicblocks.items():
 	        print(block)
 	        #block = line.split(', ')
@@ -235,15 +235,15 @@ class CodeGen:
 
 	            elif b[1] == '=':
 	                symTable[b[2]].status = stat.DEAD
-	                    if b[3] in variables: 
+	                    if b[3] in variables:
 	                        symTable[b[3]].status = stat.LIVE
-	            
+
 	            elif b[1] == 'ifgoto':
 	                continue
 	                # if b[3] in variables:
 	                #     symTable[b[3]].status = stat.LIVE
 	                # if b[4] in variables:
-	                #     symTable[b[4]].status = stat.LIVE 
+	                #     symTable[b[4]].status = stat.LIVE
 
 
 
@@ -253,7 +253,7 @@ class CodeGen:
 	            # INSTRUCTION NUMBER NEEDED
 	            if optr == '=':
 	                symTable[b[2]].status = stat.DEAD
-	                if b[3] in varlist: 
+	                if b[3] in varlist:
 	                    symTable[b[3]].status = stat.LIVE
 
 	            elif optr in arithOp:
@@ -276,7 +276,7 @@ class CodeGen:
 	#   for instr in instrlist:
 	#   templist = instr.split(', ')
 	#   if templist[1] not in ['label', 'call', 'function']:
-	#       varlist = varlist + templist 
+	#       varlist = varlist + templist
 	# varlist = list(set(varlist))
 	# varlist = [x for x in varlist if not isnumber(x)]
 	# for word in tackeywords:
@@ -284,7 +284,7 @@ class CodeGen:
 	#       varlist.remove(word)
 	# addressDescriptor = addressDescriptor.fromkeys(varlist, "mem")
 	# symbolTable = addressDescriptor.fromkeys(varlist, ["live", None])
-		
+
 
 
 
@@ -292,11 +292,11 @@ class CodeGen:
 
 
 	if __name__ == "__main__":
-	    
+
 	    main()
 
 
-	    
+
 
 	# if len(sys.argv) == 2:
 	#   filename = str(sys.argv[1])
@@ -318,7 +318,7 @@ class CodeGen:
 	# for instr in instrlist:
 	#   templist = instr.split(', ')
 	#   if templist[1] not in ['label', 'call', 'function']:
-	#       varlist = varlist + templist 
+	#       varlist = varlist + templist
 	# varlist = list(set(varlist))
 	# varlist = [x for x in varlist if not isnumber(x)]
 	# for word in tackeywords:
