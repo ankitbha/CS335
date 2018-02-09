@@ -184,6 +184,11 @@ def main():
                 var = symTable[var]
     print(incode)
 
+#addressDescriptors
+    addrDesc = {}
+    for s in symList:
+        addrDesc[s]='MEM'
+
 # set up leaders and basic blocks
     for line in incode:
         l = line.split(', ')
@@ -204,7 +209,7 @@ def main():
     leaders.sort()
     print(leaders)
 
-# generating blocks here -------------------------- ankit
+# generating blocks here
 
     basicblocks = {}
     num_instr = len(incode)
@@ -218,25 +223,24 @@ def main():
     print("#########################################################")
     #print(basicblocks)
 
-"""
+""""
     # populating the next use table thing ----------------------- ankit
 
-
-        for l, block in basicblocks.items():
-            print(block)
-            #block = line.split(', ')
-            #print(block)
-            for b in block[::-1]:
-                b = b.split(', ')
-                print(b[1],"\n")
-                # nextUseTable[b[0]] = {var:symTable[var] for var in variables}
-                if b[1] in mathop:
-                    #print("b1 = ",b[1])
-                    symTable[b[2]].status = stat.DEAD
-                    if b[3] in variables:
-                        symTable[b[3]].status = stat.LIVE
-                    if b[4] in variables:
-                        symTable[b[4]].status = stat.LIVE
+    for l, block in basicblocks.items():
+        print(block)
+        #block = line.split(', ')
+        #print(block)
+        for b in block[::-1]:
+            b = b.split(', ')
+            print(b[1],"\n")
+            # nextUseTable[b[0]] = {var:symTable[var] for var in variables}
+            if b[1] in mathop:
+                #print("b1 = ",b[1])
+                symTable[b[2]].status = stat.DEAD
+                if b[3] in variables:
+                    symTable[b[3]].status = stat.LIVE
+                if b[4] in variables:
+                    symTable[b[4]].status = stat.LIVE
 
     # After the implementation of symbol table, we may havev to change the code in this section.
 
@@ -278,53 +282,9 @@ def main():
                 # TODO
                 # print missing
     # add other if else statements also
-
-
-    #   for instr in instrlist:
-    #   templist = instr.split(', ')
-    #   if templist[1] not in ['label', 'call', 'function']:
-    #       varlist = varlist + templist
-    # varlist = list(set(varlist))
-    # varlist = [x for x in varlist if not isnumber(x)]
-    # for word in tackeywords:
-    #   if word in varlist:
-    #       varlist.remove(word)
-    # addressDescriptor = addressDescriptor.fromkeys(varlist, "mem")
-    # symbolTable = addressDescriptor.fromkeys(varlist, ["live", None])
 """
+
 
 
 if __name__ == "__main__":
     main()
-
-
-
-
-    # if len(sys.argv) == 2:
-    #   filename = str(sys.argv[1])
-    # else:
-    #   print("usage: python codegen.py irfile")
-    #   exit()
-
-    # irfile = open(filename, 'r')
-    # ircode = irfile.read()
-    # ircode = ircode.strip('\n')
-
-    # # Consruct the instruction list
-    # instrlist = []
-    # instrlist = ircode.split('\n')
-
-    # nextuseTable = [None for i in range(len(instrlist))]
-
-    # # Construct the variable list and the address discriptor table
-    # for instr in instrlist:
-    #   templist = instr.split(', ')
-    #   if templist[1] not in ['label', 'call', 'function']:
-    #       varlist = varlist + templist
-    # varlist = list(set(varlist))
-    # varlist = [x for x in varlist if not isnumber(x)]
-    # for word in tackeywords:
-    #   if word in varlist:
-    #       varlist.remove(word)
-    # addressDescriptor = addressDescriptor.fromkeys(varlist, "mem")
-    # symbolTable = addressDescriptor.fromkeys(varlist, ["live", None])
