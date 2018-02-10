@@ -115,12 +115,6 @@ def getReg(varName, numLine, varType):
             # in this place we will need to change the symboltable for varName and the variable originally in spillreg
             return spillReg
 
-def setLoc():
-    pass
-
-def getLoc():
-    pass
-
 def isInt(s):
     try:
         int(s)
@@ -154,8 +148,7 @@ def main():
         for var in line:
             if(var not in reserved and not isInt(var)):
                 variables.append(var)
-                #add var to variable list
-                #add in addressdisp ans symbl table
+
     variables = list(set(variables))
     print(variables)
 
@@ -177,7 +170,7 @@ def main():
                 line[ind] = symTable[var]
     print(incode)
 
-#addressDescriptors
+#address descriptors
     addrDesc = {}
     for s in symList:
         addrDesc[s]='MEM'
