@@ -1,10 +1,13 @@
 import sys
+import math
 #import symtable
 
 class SymClass(object):
     def __init__(self, lexeme, typ):
         self.lexeme = lexeme
         self. typ = typ
+
+class
 
 #class CodeGen:
 def reg_init():
@@ -215,69 +218,16 @@ def main():
     print(basicblocks)
 
 # populate the nextUseTable
-    nextuseTable = [None for i in range(len(incode))]
-
-
-"""
-    # populating the next use table thing ----------------------- ankit
-
+    nextUseTable = {}
+    print(nextUseTable)
     for l, block in basicblocks.items():
-        print(block)
-        #block = line.split(', ')
-        #print(block)
-        for b in block[::-1]:
-            b = b.split(', ')
-            print(b[1],"\n")
-            # nextUseTable[b[0]] = {var:symTable[var] for var in variables}
-            if b[1] in mathop:
-                #print("b1 = ",b[1])
-                symTable[b[2]].status = stat.DEAD
-                if b[3] in variables:
-                    symTable[b[3]].status = stat.LIVE
-                if b[4] in variables:
-                    symTable[b[4]].status = stat.LIVE
-
-    # After the implementation of symbol table, we may havev to change the code in this section.
-
-                elif b[1] == '=':
-                    symTable[b[2]].status = stat.DEAD
-                    if b[3] in variables:
-                        symTable[b[3]].status = stat.LIVE
-
-                elif b[1] == 'ifgoto':
-                    continue
-                    # if b[3] in variables:
-                    #     symTable[b[3]].status = stat.LIVE
-                    # if b[4] in variables:
-                    #     symTable[b[4]].status = stat.LIVE
-
-
-
-    nextUseTable[b[0]] = {var:symTable[var] for var in varlist}
-                optr = b[1]
-
-                # INSTRUCTION NUMBER NEEDED
-                if optr == '=':
-                    symTable[b[2]].status = stat.DEAD
-                    if b[3] in varlist:
-                        symTable[b[3]].status = stat.LIVE
-
-                elif optr in arithOp:
-                    symTable[b[2]].status = stat.DEAD
-                    if b[3] in varlist:
-                        symTable[b[3]].status = stat.LIVE
-                    if b[4] in varlist:
-                        symTable[b[4]].status = stat.LIVE
-
-                elif optr == 'ifgoto':
-                    if b[3] in varlist:
-                        symTable[b[3]].status = stat.LIVE
-                    if b[4] in varlist:
-                        symTable[b[4]].status = stat.LIVE
-                # TODO
-                # print missing
-    # add other if else statements also
-"""
+        tempTab = {}
+        for sym in symList:
+            tempTab[s] = (0,math.inf)
+        for ins in block[::-1]:
+            for sym in symlist:
+                nextUseTable[int(ins[0])][sym] = copy.deepcopy(tempTab[sym])
+                
 
 #print sections
 
