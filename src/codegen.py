@@ -1,13 +1,12 @@
 import sys
 import math
+import copy
 #import symtable
 
 class SymClass(object):
     def __init__(self, lexeme, typ):
         self.lexeme = lexeme
         self. typ = typ
-
-class
 
 #class CodeGen:
 def reg_init():
@@ -225,12 +224,33 @@ def main():
         for sym in symList:
             tempTab[s] = (0,math.inf)
         for ins in block[::-1]:
-            for sym in symlist:
+            #nextUseTable[int(ins[0])] = {}
+            for sym in symList:
                 nextUseTable[int(ins[0])][sym] = copy.deepcopy(tempTab[sym])
-                
+                print(nextUseTable)
+
+            if ins[1] in mathop:
+                tempTab[ins[2]] = (0,math.inf)
+                if ins[3] in symList:
+                    tempTab[ins[3]] = (1,int(ins[0]))
+                if ins[4] in symList:
+                    tempTab[ins[4]] = (1,int(ins[0]))
+            elif ins[1] == '=':
+                tempTab[ins[2]] = (0,math.inf)
+                if ins[3] in symList:
+                    tempTab[ins[3]] = (1,int(ins[0]))
+            elif ins[1] == 'ifgoto':
+                if ins[3] in symList:
+                    tempTab[ins[3]] = (1,int(ins[0]))
+                if ins[4] in symList:
+                    tempTab[ins[4]] = (1,int(ins[0]))
+            elif ins[1] == 'print':
+                if ins[2] in symList:
+                    tempTab[ins[2]] = (1,int(ins[0]))
+            #addMore
+    print(nextUseTable)
 
 #print sections
-
 
 
 if __name__ == "__main__":
