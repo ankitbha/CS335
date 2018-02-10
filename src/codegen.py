@@ -133,12 +133,6 @@ mathop = ['+', '-', '*', '/', '%']
 boolop = ['&', '|', '!']
 reserved = keyword + relation + mathop + boolop
 
-
-
-
-
-
-
 def main():
     if len(sys.argv) == 2:
         filename = str(sys.argv[1])
@@ -146,18 +140,16 @@ def main():
         print("Too many or too few arguements")
         exit()
 
-    incode = open(filename).read().splitlines()
-    print(incode)
-    nextuseTable = [None for i in range(len(incode))]
-
-    leaders = [1,]
-    variables = []
+    incodestr = open(filename).read().splitlines()
+    incode = []
+    for line in incodestr:
+        incode.append(line.strip().split(', '))
 
 # populate variables list
-
+    variables = []
     for line in incode:
-        l = line.split(', ')
-        for var in l:
+        #l = line.split(', ')
+        for var in line:
             if(var not in reserved and not isInt(var)):
                 variables.append(var)
                 #add var to variable list
@@ -176,12 +168,11 @@ def main():
         print("------------------------------------------")
 
 # set the variables in IR to point to symTable dictionary's entries
-#not working FIX THIS
+
     for line in incode:
-        l = line.split(', ')
-        for var in l:
+        for ind, var in enumerate(line):
             if(var not in reserved and not isInt(var)):
-                var = symTable[var]
+                line[ind] = symTable[var]
     print(incode)
 
 #addressDescriptors
@@ -190,21 +181,22 @@ def main():
         addrDesc[s]='MEM'
 
 # set up leaders and basic blocks
+    leaders = [1,]
     for line in incode:
-        l = line.split(', ')
-        if 'ifgoto' in l:
-            leaders.append(int(l[-1]))
-            leaders.append(int(l[0])+1)
+        #l = line.split(', ')
+        if 'ifgoto' in line:
+            leaders.append(int(line[-1]))
+            leaders.append(int(line[0])+1)
 
-        elif 'goto' in l:
-            leaders.append(int(l[-1]))
-            leaders.append(int(l[0])+1)
+        elif 'goto' in line:
+            leaders.append(int(line[-1]))
+            leaders.append(int(line[0])+1)
 
-        elif 'function' in l:
-            leaders.append(int(l[0]))
+        elif 'function' in line:
+            leaders.append(int(line[0]))
 
-        elif 'label' in l:
-            leaders.append(int(l[0]))
+        elif 'label' in line:
+            leaders.append(int(line[0]))
     leaders = list(set(leaders))
     leaders.sort()
     print(leaders)
@@ -220,10 +212,13 @@ def main():
         else:
             instruction2 = num_instr
         basicblocks[instruction1] = incode[instruction1-1:instruction2]
-    print("#########################################################")
-    #print(basicblocks)
+    print(basicblocks)
 
-""""
+# populate the nextUseTable
+    nextuseTable = [None for i in range(len(incode))]
+
+
+"""
     # populating the next use table thing ----------------------- ankit
 
     for l, block in basicblocks.items():
@@ -283,6 +278,8 @@ def main():
                 # print missing
     # add other if else statements also
 """
+
+#print sections
 
 
 
