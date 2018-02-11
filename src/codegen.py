@@ -215,12 +215,12 @@ def main():
     for l, block in basicblocks.items():
         tempTab = {}
         for sym in symList:
-            tempTab[s] = (0,math.inf)
+            tempTab[sym] = (0,math.inf)
         for ins in block[::-1]:
-            #nextUseTable[int(ins[0])] = {}
+            nextUseTable[int(ins[0])] = {}
             for sym in symList:
                 nextUseTable[int(ins[0])][sym] = copy.deepcopy(tempTab[sym])
-                print(nextUseTable)
+                # print(nextUseTable)
 
             if ins[1] in mathop:
                 tempTab[ins[2]] = (0,math.inf)
