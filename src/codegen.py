@@ -37,6 +37,7 @@ def check_reg(self, varName):
 # basically check the register holding the given variable "var" and return it as string form. It will need symbol table implementation.
 def getReg(varObj, numLine):
 	global acode
+	print("called getreg")
 	if varObj.typ in ["float", "double"]:
 		for i in reg_float.keys():
 			if (reg_float[i]==varObj):
@@ -136,6 +137,10 @@ def RepresentsInt(s):
 acode="# Generated Code \n"
 def translate(line):
 	global acode
+	global labels
+	print("*************************************")
+	print(labels)
+	print("*************************************")
 	#print(acode)
 	#acode = acode + "# Generated Code \n"
 	lineno = int(line[0])
@@ -373,7 +378,7 @@ def translate(line):
 	elif op == "goto":
 	# 	# Add code to write all the variables to the memory
 	 	l = line[2]
-	 	acode = acode + "j " + label[int(l)]
+	 	acode = acode + "j " + label[int(l)] +"\n"
 	
 	elif op == "ifgoto":
 		#4, ifgoto, <=, a, 50, 2
@@ -381,14 +386,110 @@ def translate(line):
 		num1 = line[3]
 		num2 = line[4]
 		l = line[5]
-		addr1 = addrDesc[num1]
-		addr2 = addrDesc[num2]
 
 		if isInt(num1) and isInt(num2):
-			reg = getReg(ans,lineno)
-			acode = acode + "addi " + reg + ", $zero, " + str(int(num1)%int(num2)) + "\n"
-			addrDesc[ans] = reg
+			if(rel == "<="):
+				if(int(num1) <= int(num2)):
+					acode = acode + "j " + labels[int(l)] +"\n"
 
+			if(rel == ">="):
+				if(int(num1) >= int(num2)):
+					acode = acode + "j " + labels[int(l)] +"\n"
+				
+			if(rel == "=="):
+				if(int(num1) == int(num2)):
+					acode = acode + "j " + labels[int(l)] +"\n"
+				
+			if(rel == ">"):
+				if(int(num1) > int(num2)):
+					acode = acode + "j " + labels[int(l)] +"\n"
+				
+			if(rel == "<"):
+				if(int(num1) < int(num2)):
+					acode = acode + "j " + labels[int(l)] +"\n"
+				
+			if(rel == "!="):
+				if(int(num1) != int(num2)):
+					acode = acode + "j " + labels[int(l)] +"\n"
+
+		elif isInt(num1) and not isInt(num2):
+			print("yes2")
+			addr2 = addrDesc[num2]
+			if(addr2 == "MEM"):
+				addr2 = getReg(num2,lineno)
+				
+			if(rel == "<="):
+				acode = acode + "bgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == ">="):
+				acode = acode + "blt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+
+				
+			if(rel == "=="):
+				acode = acode + "beq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == ">"):
+				acode = acode + "ble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == "<"):
+				acode = acode + "bge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == "!="):
+				acode = acode + "bne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+		
+		elif not isInt(num1) and isInt(num2):
+			#bge Rsrc1, Src2, label
+			print("yes3")
+			addr1 = addrDesc[num1]
+			if(addr1 == "MEM"):
+				addr1 = getReg(num1,lineno)
+				
+			if(rel == "<="):
+				acode = acode + "ble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == ">="):
+				acode = acode + "bge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+
+			if(rel == "=="):
+				acode = acode + "beq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == ">"):
+				acode = acode + "bgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == "<"):
+				acode = acode + "blt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == "!="):
+				acode = acode + "bne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+
+		elif not isInt(num1) and not isInt(num2):
+			#bge Rsrc1, Src2, label
+			print("yes4")
+			addr1 = addrDesc[num1]
+			if(addr1 == "MEM"):
+				addr1 = getReg(num1,lineno)
+			
+			addr2 = addrDesc[num2]
+			if(addr2 == "MEM"):
+				addr2 = getReg(num2,lineno)
+				
+			if(rel == "<="):
+				acode = acode + "ble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == ">="):
+				acode = acode + "bge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+
+			if(rel == "=="):
+				acode = acode + "beq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == ">"):
+				acode = acode + "bgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == "<"):
+				acode = acode + "blt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				
+			if(rel == "!="):
+				acode = acode + "bne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
 		# if(rel == "=="):
 		# 	if()
@@ -1492,8 +1593,8 @@ def main():
 	leaders = list(set(leaders))
 	leaders.sort()
 	print(leaders)
-	label = {i:"L"+str(i) for i in leaders}
-	print(label)
+	labels = {i:"L"+str(i) for i in leaders}
+	print(labels)
 # generating blocks here
 
 	num_instr = len(incode)
@@ -1546,7 +1647,7 @@ def main():
 	
 	for line in incode:
 		if(int(line[0]) in leaders):
-			acode = acode + label[int(line[0])] + ": "
+			acode = acode + labels[int(line[0])] + ": "
 		translate(line)
 	
 	print(acode)	
