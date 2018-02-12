@@ -478,7 +478,7 @@ def translate(line):
 		acode = acode +"\tmove, "+ addr1 + " ,$v0" + "\n"
 	if op=="call":
 		l=line[2]
-		acode = acode + "\tjal " + l.lexeme +"\n"
+		acode = acode + "\tjal " + l +"\n"
 	if op=="return":
 		if(ex==False):
 			acode = acode + "\tj exit\n"
@@ -652,7 +652,7 @@ def main():
 
 	for line in incode:
 		if(int(line[0]) in leaders):
-			acode = acode + labels[int(line[0])] + ": "
+			acode = acode + labels[int(line[0])] + ":\n"
 		translate(line)
 
 	acode = acode + "exit:\n\tli $v0, 10\n\tsyscall"
