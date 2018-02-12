@@ -144,7 +144,7 @@ def translate(line):
 	#print(op)
 	
 	if op in mathop:
-		# print(op)
+		print(op)
 		ans = line[2]
 		#print(ans)
 		num1 = line[3]
@@ -384,13 +384,19 @@ def translate(line):
 		addr1 = addrDesc[num1]
 		addr2 = addrDesc[num2]
 
-		if(rel == "=="):
-			if()
-	 	# for var in varlist:
-	 	# 	loc = getlocation(var)
-	 	# 	if loc != "mem":
-	 	# 		assembly = assembly + "movl " + loc + ", " + var + "\n"
-	 	# 		setlocation(var, "mem")
+		if isInt(num1) and isInt(num2):
+			reg = getReg(ans,lineno)
+			acode = acode + "addi " + reg + ", $zero, " + str(int(num1)%int(num2)) + "\n"
+			addrDesc[ans] = reg
+
+
+		# if(rel == "=="):
+		# 	if()
+	 # 	for var in varlist:
+	 # 		loc = getlocation(var)
+	 # 		if loc != "mem":
+	 # 			assembly = assembly + "movl " + loc + ", " + var + "\n"
+	 # 			setlocation(var, "mem")
 		
 	# 	label = instruction[2]
 	# 	if isnumber(label):
@@ -1540,9 +1546,9 @@ def main():
 	
 	for line in incode:
 		if(int(line[0]) in leaders):
-			acode = acode + label(int(line[0]) + ": "
+			acode = acode + label[int(line[0])] + ": "
 		translate(line)
-
+	
 	print(acode)	
 
 #print sections
