@@ -463,7 +463,7 @@ def translate(line):
 		addr1 = addrDesc[ans]
 		if(addr1 == "MEM"):
 			addr1 = getReg(ans,lineno)
-		acode = acode +"\tli $v0, 0\n"
+		acode = acode +"\tli $v0, 1\n"
 		acode = acode +"\tmove, $a0, " + addr1 + "\n"
 		acode = acode +"\tsyscall\n"
 
@@ -648,7 +648,8 @@ def main():
 		acode += var+":  "+".space 4\n"
 
 	acode += ".text\n"
-	acode += ".globl\tmain\n"
+	acode += ".globl main\n\n"
+	acode += ".ent main\n"
 
 	for line in incode:
 		if(int(line[0]) in leaders):

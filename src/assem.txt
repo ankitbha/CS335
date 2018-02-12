@@ -1,0 +1,25 @@
+# Generated Code
+.data
+a:  .space 4
+bh:  .space 4
+.text
+.globl main
+
+.ent main
+main:
+	li $t4, 2
+L2:
+	li $t8, 7
+	add $t4, $t4, $t8
+	ble $t4, 50, L2
+L5:
+	jal foo
+	j exit
+foo:
+	li $v0, 1
+	move, $a0, $t4
+	syscall
+	jr $ra
+exit:
+	li $v0, 10
+	syscall
