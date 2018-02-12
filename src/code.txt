@@ -6,4 +6,4 @@
 6, return
 7, label, foo
 8, printint, a
-9, return
+9, return, a
