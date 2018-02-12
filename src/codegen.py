@@ -70,6 +70,7 @@ def getReg(varObj, numLine):
 
             #write something like
             #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
+            # acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
             addrDesc[reg_float[spillReg]] = "MEM"
             reg_float[spillReg] = [varObj]
             addrDesc[varObj] = spillReg 
@@ -112,7 +113,7 @@ def getReg(varObj, numLine):
                     break
 
             #write something like
-            #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
+            acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
             addrDesc[reg_norm[spillReg]] = "MEM"
             reg_norm[spillReg] = [varObj]
             addrDesc[varObj] = spillReg
