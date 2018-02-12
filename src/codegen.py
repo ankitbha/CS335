@@ -41,7 +41,7 @@ def getReg(varObj, numLine):
 		for i in reg_float.keys():
 			if (reg_float[i]==varObj):
 				return i
-			
+
 		if unused_reg_float:
 			reg = unused_reg_float[0]
 			unused_reg_float.remove(reg)
@@ -49,7 +49,7 @@ def getReg(varObj, numLine):
 			reg_float[reg] = [varObj]
 			addrDesc[varObj] = reg
 			return reg
-			
+
 
 		else:
 			forNextUse=nextUseTable[numLine]
@@ -73,7 +73,7 @@ def getReg(varObj, numLine):
 			# acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
 			addrDesc[reg_float[spillReg]] = "MEM"
 			reg_float[spillReg] = [varObj]
-			addrDesc[varObj] = spillReg 
+			addrDesc[varObj] = spillReg
 			return spillReg
 
 	else:
@@ -91,9 +91,9 @@ def getReg(varObj, numLine):
 			unused_reg_norm.remove(reg)
 			used_reg_norm.append(reg)
 			reg_norm[reg] = varObj
-			addrDesc[varObj] = reg 
+			addrDesc[varObj] = reg
 			return reg
-			
+
 
 		else:
 			forNextUse=nextUseTable[numLine]
@@ -126,7 +126,7 @@ def isInt(s):
 		return True
 
 def RepresentsInt(s):
-	try: 
+	try:
 		int(s)
 		return True
 	except ValueError:
@@ -142,7 +142,7 @@ def translate(line):
 	op = line[1]
 	# Generating assembly code if the tac is a mathematical operation
 	#print(op)
-	
+
 	if op in mathop:
 		print(op)
 		ans = line[2]
@@ -162,9 +162,9 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2)
-				
+
 				acode = acode + "add " + reg + ", " + addr2 +", $zero" + "\n"
-				
+
 				acode = acode + "addi " + reg + ", " + reg + ", " +num1 + "\n"
 				addrDesc[ans] = reg
 
@@ -176,7 +176,7 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1, lineno)
 				acode = acode + "add " + reg + ", " + addr1 +", $zero" + "\n"
-				
+
 				acode = acode + "addi " + reg + ", " + reg + ", " + num2 + "\n"
 				addrDesc[ans] = reg
 
@@ -190,7 +190,7 @@ def translate(line):
 					addr1 = getReg(num1, lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1, lineno)
-				
+
 				acode = acode + "add " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -209,9 +209,9 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "sub " + reg  +", $zero, " + addr2 + "\n"
-				
+
 				acode = acode + "addi " + reg + ", " + reg + ", " + num1 + "\n"
 				addrDesc[ans] = reg
 
@@ -236,7 +236,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno)
-				
+
 				acode = acode + "sub " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -254,7 +254,7 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "mul " + reg + ", " + reg + ", " + addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -279,7 +279,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno)
-				
+
 				acode = acode + "mul " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -297,7 +297,7 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "div " + reg + ", " + reg + ", " + addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -322,7 +322,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno,lineno)
-				
+
 				acode = acode + "div " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -342,7 +342,7 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "rem " + reg + ", " + reg + ", " + addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -366,7 +366,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno)
-				
+
 				acode = acode + "rem " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -374,20 +374,20 @@ def translate(line):
 	# 	# Add code to write all the variables to the memory
 	 	l = line[2]
 	 	acode = acode + "j " + label[int(l)]
-	
-	elif op == "ifgoto":
-		#4, ifgoto, <=, a, 50, 2
-		rel = line[2]
-		num1 = line[3]
-		num2 = line[4]
-		l = line[5]
-		addr1 = addrDesc[num1]
-		addr2 = addrDesc[num2]
 
-		if isInt(num1) and isInt(num2):
-			reg = getReg(ans,lineno)
-			acode = acode + "addi " + reg + ", $zero, " + str(int(num1)%int(num2)) + "\n"
-			addrDesc[ans] = reg
+	# elif op == "ifgoto":
+	# 	#4, ifgoto, <=, a, 50, 2
+	# 	rel = line[2]
+	# 	num1 = line[3]
+	# 	num2 = line[4]
+	# 	l = line[5]
+	# 	addr1 = addrDesc[num1]
+	# 	addr2 = addrDesc[num2]
+	#
+	# 	if isInt(num1) and isInt(num2):
+	# 		reg = getReg(ans,lineno)
+	# 		acode = acode + "addi " + reg + ", $zero, " + str(int(num1)%int(num2)) + "\n"
+	# 		addrDesc[ans] = reg
 
 
 		# if(rel == "=="):
@@ -397,7 +397,7 @@ def translate(line):
 	 # 		if loc != "mem":
 	 # 			assembly = assembly + "movl " + loc + ", " + var + "\n"
 	 # 			setlocation(var, "mem")
-		
+
 	# 	label = instruction[2]
 	# 	if isnumber(label):
 	# 		assembly = assembly + "jmp L" + label + "\n"
@@ -495,13 +495,13 @@ def translate(line):
 	# 	if operator == "<=":
 	# 		assembly = assembly + "jle " + label + "\n"
 	# 	elif operator == ">=":
-	# 		assembly = assembly + "jge " + label + "\n" 
+	# 		assembly = assembly + "jge " + label + "\n"
 	# 	elif operator == "==":
-	# 		assembly = assembly + "je " + label + "\n" 
+	# 		assembly = assembly + "je " + label + "\n"
 	# 	elif operator == "<":
-	# 		assembly = assembly + "jl " + label + "\n" 
+	# 		assembly = assembly + "jl " + label + "\n"
 	# 	elif operator == ">":
-	# 		assembly = assembly + "jg " + label + "\n" 
+	# 		assembly = assembly + "jg " + label + "\n"
 	# 	elif operator == "!=":
 	# 		assembly = assembly + "jne " + label + "\n"
 
@@ -513,7 +513,7 @@ def translate(line):
 	# 		if loc != "mem":
 	# 			assembly = assembly + "movl " + loc + ", " + var + "\n"
 	# 			setlocation(var, "mem")
-		
+
 	# 	label = instruction[2]
 	# 	if isnumber(label):
 	# 		assembly = assembly + "jmp L" + label + "\n"
@@ -540,7 +540,7 @@ def translate(line):
 	# 	else:
 	# 		assembly = assembly + "pushl $" + operand + "\n"
 	# 		assembly = assembly + "pushl $str\n"
-	# 		assembly = assembly + "call printf\n"			
+	# 		assembly = assembly + "call printf\n"
 
 	# # Generating code for assignment operations
 	# elif operator == '=':
@@ -556,12 +556,12 @@ def translate(line):
 	# 	else:
 	# 		# If both the source and the destination reside in the memory
 	# 		loc2 = getlocation(source)
-	# 		if loc1 == "mem" and loc2 == "mem":				
+	# 		if loc1 == "mem" and loc2 == "mem":
 	# 			regdest = getReg(destination, line)
 	# 			assembly = assembly + "movl " + source + ", " + regdest + "\n"
 	# 			# Update the address descriptor entry for result variable to say where it is stored no
 	# 			setregister(regdest, destination)
-	# 			setlocation(destination, regdest)			
+	# 			setlocation(destination, regdest)
 	# 		# If the source is in a register
 	# 		elif loc1 == "mem" and loc2 != "mem":
 	# 			regdest = getReg(destination, line)
@@ -584,7 +584,7 @@ def translate(line):
 	# 	assembly = assembly + "pushl %ebp\n"
 	# 	assembly = assembly + "movl %esp, %ebp\n"
 
-		
+
 	# elif operator == "arg":
 	# 	#Lno, arg, i, a_i -----> Move parameter i to var a_i
 	# 	i = instruction[2]
@@ -640,7 +640,7 @@ def translate(line):
 	# 		else:
 	# 			assembly = assembly + "shl " + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		#case result = a << 2
 	# 		# Get the register to store the result
@@ -654,7 +654,7 @@ def translate(line):
 	# 		# Perform Left shift result = result << 2
 	# 		assembly = assembly + "shl $" + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		#case result = a << b
 	# 		# Get the register to store the result
@@ -674,7 +674,7 @@ def translate(line):
 	# 			assembly = assembly + "shl " + loc2 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand1 + ", " + regdest + "\n"
-	# 			assembly = assembly + "shl " + operand2 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "shl " + operand2 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		setregister(regdest, result)
 	# 		# Update the address descriptor entry for result variable to say where it is stored now
@@ -707,7 +707,7 @@ def translate(line):
 	# 		else:
 	# 			assembly = assembly + "shr " + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		#case result = a << 2
 	# 		# Get the register to store the result
@@ -721,7 +721,7 @@ def translate(line):
 	# 		# Perform Right shift result = result >> 2
 	# 		assembly = assembly + "shr $" + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		#case result = a >> b
 	# 		# Get the register to store the result
@@ -741,7 +741,7 @@ def translate(line):
 	# 			assembly = assembly + "shr " + loc2 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand1 + ", " + regdest + "\n"
-	# 			assembly = assembly + "shr " + operand2 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "shr " + operand2 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		setregister(regdest, result)
 	# 		# Update the address descriptor entry for result variable to say where it is stored now
@@ -772,7 +772,7 @@ def translate(line):
 	# 		else:
 	# 			assembly = assembly + "and " + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		#case result = a && 2
 	# 		# Get the register to store the result
@@ -786,7 +786,7 @@ def translate(line):
 	# 		# Perform Logical and result = result && 2
 	# 		assembly = assembly + "and $" + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		#case result = a && b
 	# 		# Get the register to store the result
@@ -806,7 +806,7 @@ def translate(line):
 	# 			assembly = assembly + "and " + loc2 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand1 + ", " + regdest + "\n"
-	# 			assembly = assembly + "and " + operand2 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "and " + operand2 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		setregister(regdest, result)
 	# 		# Update the address descriptor entry for result variable to say where it is stored now
@@ -837,7 +837,7 @@ def translate(line):
 	# 		else:
 	# 			assembly = assembly + "or " + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		#case result = a || 2
 	# 		# Get the register to store the result
@@ -851,7 +851,7 @@ def translate(line):
 	# 		# Perform Logical and result = result || 2
 	# 		assembly = assembly + "or $" + operand2 + ", " + regdest + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		#case result = a || b
 	# 		# Get the register to store the result
@@ -871,7 +871,7 @@ def translate(line):
 	# 			assembly = assembly + "or " + loc2 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand1 + ", " + regdest + "\n"
-	# 			assembly = assembly + "or " + operand2 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "or " + operand2 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		setregister(regdest, result)
 	# 		# Update the address descriptor entry for result variable to say where it is stored now
@@ -937,7 +937,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -956,7 +956,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -974,7 +974,7 @@ def translate(line):
 	# 			assembly = assembly + "cmpl " + loc1 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand2 + ", " + regdest + "\n"
-	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		assembly = assembly + "jle " + LT + "\n"
 	# 		assembly = assembly + "movl $0, " + regdest + "\n"
@@ -1019,7 +1019,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1038,7 +1038,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1056,7 +1056,7 @@ def translate(line):
 	# 			assembly = assembly + "cmpl " + loc1 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand2 + ", " + regdest + "\n"
-	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		assembly = assembly + "jge " + LT + "\n"
 	# 		assembly = assembly + "movl $0, " + regdest + "\n"
@@ -1101,7 +1101,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1120,7 +1120,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1138,7 +1138,7 @@ def translate(line):
 	# 			assembly = assembly + "cmpl " + loc1 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand2 + ", " + regdest + "\n"
-	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		assembly = assembly + "je " + LT + "\n"
 	# 		assembly = assembly + "movl $0, " + regdest + "\n"
@@ -1183,7 +1183,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1202,7 +1202,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1220,7 +1220,7 @@ def translate(line):
 	# 			assembly = assembly + "cmpl " + loc1 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand2 + ", " + regdest + "\n"
-	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		assembly = assembly + "jne " + LT + "\n"
 	# 		assembly = assembly + "movl $0, " + regdest + "\n"
@@ -1265,7 +1265,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1284,7 +1284,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1302,7 +1302,7 @@ def translate(line):
 	# 			assembly = assembly + "cmpl " + loc1 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand2 + ", " + regdest + "\n"
-	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		assembly = assembly + "jl " + LT + "\n"
 	# 		assembly = assembly + "movl $0, " + regdest + "\n"
@@ -1314,7 +1314,7 @@ def translate(line):
 	# 		# Update the address descriptor entry for result variable to say where it is stored now
 	# 		setlocation(result, regdest)
 	# 	relcount = relcount + 1
-		
+
 	# elif operator == '>':
 	# 	result = instruction[2]
 	# 	operand1 = instruction[3]
@@ -1347,7 +1347,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1366,7 +1366,7 @@ def translate(line):
 	# 		assembly = assembly + "movl $1, " + regdest + "\n"
 	# 		assembly = assembly + NLT + ":" + "\n"
 	# 		setregister(regdest, result)
-	# 		setlocation(result, regdest)				
+	# 		setlocation(result, regdest)
 	# 	elif not isnumber(operand1) and not isnumber(operand2):
 	# 		# Get the register to store the result
 	# 		regdest = getReg(result, line)
@@ -1384,7 +1384,7 @@ def translate(line):
 	# 			assembly = assembly + "cmpl " + loc1 + ", " + regdest + "\n"
 	# 		elif loc1 == "mem" and loc2 == "mem":
 	# 			assembly = assembly + "movl " + operand2 + ", " + regdest + "\n"
-	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"					
+	# 			assembly = assembly + "cmpl " + operand1 + ", " + regdest + "\n"
 	# 		# Update the register descriptor entry for regdest to say that it contains the result
 	# 		assembly = assembly + "jg " + LT + "\n"
 	# 		assembly = assembly + "movl $0, " + regdest + "\n"
@@ -1409,7 +1409,7 @@ labels = {}
 basicblocks = {}
 
 def main():
-	
+
 	global mathop
 	global addrDesc
 	global nextUseTable
@@ -1420,7 +1420,7 @@ def main():
 	global leaders
 	global basicblocks
 	global labels
-	
+
 	if len(sys.argv) == 2:
 		filename = str(sys.argv[1])
 	else:
@@ -1434,12 +1434,12 @@ def main():
 	reserved = keyword + relation + mathop + boolop
 	acode="# Generated Code \n"
 	incodestr = open(filename).read().splitlines()
-	
+
 	for line in incodestr:
 		incode.append(line.strip().split(', '))
 
 # populate variables list
-	
+
 	for line in incode:
 		#l = line.split(', ')
 		for var in line:
@@ -1450,7 +1450,7 @@ def main():
 	print(variables)
 
 # populate symbol table
-	
+
 	for v in variables:
 		symTable[v] = SymClass(v,'int')
 		symList.append(symTable[v])
@@ -1468,12 +1468,12 @@ def main():
 	print(incode)
 
 #address descriptors
-	
+
 	for s in symList:
 		addrDesc[s]='MEM'
 
 # set up leaders and basic blocks
-	
+
 	for line in incode:
 		#l = line.split(', ')
 		if 'ifgoto' in line:
@@ -1541,19 +1541,21 @@ def main():
 
 	print("####################################################")
 	#print(incode)
-    
+
+#print sections
+	print(".data")
+	for var in variables:
+		print(var+":  "+".space 4")
+
 	global acode
-	
+
 	for line in incode:
 		if(int(line[0]) in leaders):
 			acode = acode + label[int(line[0])] + ": "
 		translate(line)
-	
-	print(acode)	
 
-#print sections
-
+	acode = acode + "exit:\n\tli $v0, 10\n\tsyscall"
+	print(acode)
 
 if __name__ == "__main__":
 	main()
-
