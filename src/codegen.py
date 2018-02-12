@@ -501,19 +501,19 @@ def translate(line):
 		res = line[4]
 		addr= addrDesc[res]
 		if(addr=="MEM"):
-			addr=getReg(num1,lineno)
+			addr=getReg(res,lineno)
 		if(isInt(index)):
-			acode = acode + "\tlw" + addr + ", " + index + "(" + a.lexeme + ")\n"
+			acode = acode + "\tlw " + addr + ", " + str(4*int(index)) + "(" + arrray.lexeme + ")\n"
 		else:
 			addri = addrDesc[index]
 			if(addri=="MEM"):
 				addri=getReg(index,lineno)
-			arr = getReg(array,lineno)
-			acode = acode + "\tla" + arr + ", " + array.lexeme + "\n"
-			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
-			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
-			acode = acode + "\tadd" + arrdi + ", " + arr + "," + addri "\n"
-			acode = acode + "\tlw" + addr + ", " + arrdi +"\n"
+			arr = getReg(arrray,lineno)
+			acode = acode + "\tla " + arr + ", " + array.lexeme + "\n"
+			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
+			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
+			acode = acode + "\tadd " + arrdi + ", " + arr + "," + addri + "\n"
+			acode = acode + "\tlw " + addr + ", " + arrdi +"\n"
 
 	if op=="writearray":
 		#3, write, a, var, var
@@ -534,11 +534,8 @@ def translate(line):
 			acode = acode + "\tla" + arr + ", " + array.lexeme + "\n"
 			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
 			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
-			acode = acode + "\tadd" + arrdi + ", " + arr + "," + addri "\n"
+			acode = acode + "\tadd" + arrdi + ", " + arr + "," + addri + "\n"
 			acode = acode + "\tlw" + addr + ", " + arrdi +"\n"
-			
-
-$v1(a)
 
 
 mathop = ['+', '-', '*', '/', '%']
@@ -574,7 +571,7 @@ def main():
 		print("Too many or too few arguements")
 		exit()
 
-	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint']
+	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint', 'readarray', 'writearray']
 	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 
 	boolop = ['&', '|', '!']
@@ -598,6 +595,9 @@ def main():
 			pass
 		elif line[1] in ['readarray', 'writearray']:
 			arrayz.append(line[2])
+			for var in line[3:]:
+				if(var not in reserved and not RepresentsInt(var)):
+					variables.append(var)
 		else:
 			for var in line:
 				if(var not in reserved and not RepresentsInt(var)):

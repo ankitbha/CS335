@@ -1,10 +1,10 @@
-1, function, main
+1, call, main
 2, =, a, 25
 3, =, b, 3
 4, /, c, a, b
-5, print, c
+5, printint, c
 6, %, c, a, b
-7, print, c
+7, printint, c
 8, *, c, a, b
-9, print, c
+9, printint, c
 10, return

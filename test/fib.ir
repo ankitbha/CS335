@@ -1,12 +1,12 @@
-1, function, main
+1, call, main
 2, =, a, 10
 3, =, b, 0
 4, =, c, 1
 5, =, d, 0
 6, call, fib
-7, print, d
+7, printint, d
 8, return
-9, function, fib
+9, call, fib
 10, ifgoto, ==, a, 1, 16
 11, -, a, a, 1
 12, +, d, b, c
