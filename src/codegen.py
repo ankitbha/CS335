@@ -10,114 +10,114 @@ class SymClass(object):
 		self. typ = typ
 
 #class CodeGen:
-def reg_init():
-	vreg = {"$v0":None, "$v1":None}
-	areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
-	zreg = {"$zero":None}
-	treg = {"$t0":None, "$t1":None, "$t2":None, "$t3":None, "$t4":None, "$t5":None, "$t6":None, "$t7":None, "$t8":None, "$t9":None}
-	sreg = {"$s0":None, "$s1":None, "$s2":None, "$s3":None, "$s4":None, "$s5":None, "$s6":None, "$s7":None}
-	preg = { "$gp" : None, "$sp" : None, "$fp" : None, "ra" : None }
-	kreg = { "$k0" : None, "$k1" : None }
-	reg_float = dict()
-	for i in range(1,24):  reg_float.update({ '$f' + str(i) : [] })
-	reg_norm = {**treg, **sreg}
+# def reg_init():
+vreg = {"$v0":None, "$v1":None}
+areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
+zreg = {"$zero":None}
+treg = {"$t0":None, "$t1":None, "$t2":None, "$t3":None, "$t4":None, "$t5":None, "$t6":None, "$t7":None, "$t8":None, "$t9":None}
+sreg = {"$s0":None, "$s1":None, "$s2":None, "$s3":None, "$s4":None, "$s5":None, "$s6":None, "$s7":None}
+preg = { "$gp" : None, "$sp" : None, "$fp" : None, "ra" : None }
+kreg = { "$k0" : None, "$k1" : None }
+reg_float = dict()
+for i in range(1,24):  reg_float.update({ '$f' + str(i) : [] })
+reg_norm = {**treg, **sreg}
 
-	unused_reg_norm = list(reg_norm.keys())
-	used_reg_norm = []
-	unused_reg_float = list(reg_float.keys())
-	used_reg_float = []
+unused_reg_norm = list(reg_norm.keys())
+used_reg_norm = []
+unused_reg_float = list(reg_float.keys())
+used_reg_float = []
 
 
 	#regTuple = ()
 	#regDes = {}
 	#regDes = regDes.fromkeys(list(regTuple))
 
-<<<<<<< HEAD
 def check_reg(self, varName):
 	pass
 # basically check the register holding the given variable "var" and return it as string form. It will need symbol table implementation.
 def getReg(varObj, numLine):
-    if varObj.typ in ["float", "double"]:
-        for i in reg_float.keys():
-            if (reg_float[i]==varObj):
-                return i
-            
-        if unused_reg_float:
-            reg = unused_reg_float[0]
-            unused_reg_float.remove(reg)
-            used_reg_float.append(reg)
-            reg_float[reg] = [varObj]
-            addrDesc[varObj] = reg
-            return reg
-            
+	global acode
+	if varObj.typ in ["float", "double"]:
+		for i in reg_float.keys():
+			if (reg_float[i]==varObj):
+				return i
+			
+		if unused_reg_float:
+			reg = unused_reg_float[0]
+			unused_reg_float.remove(reg)
+			used_reg_float.append(reg)
+			reg_float[reg] = [varObj]
+			addrDesc[varObj] = reg
+			return reg
+			
 
-        else:
-            forNextUse=nextUseTable[numLine]
-            tempFarthest=None
-            #forNextUse should be a dictionary, so nextUseTable must also be a
-            #dictionary with keys as line numbers and value as another dictionary
-            #with key being variable names and values being nextUselineNo
-            for var in forNextUse.keys():
-                if (tempFarthest==None):
-                    tempFarthest=var
-                elif (forNextUse[var]>forNextUse[tempFarthest]):
-                    tempFarthest=var
-                else:
-                    continue
-            for spillReg in reg_float.keys():
-                if reg_float[spillReg]==tempFarthest:
-                    break
+		else:
+			forNextUse=nextUseTable[numLine]
+			tempFarthest=None
+			#forNextUse should be a dictionary, so nextUseTable must also be a
+			#dictionary with keys as line numbers and value as another dictionary
+			#with key being variable names and values being nextUselineNo
+			for var in forNextUse.keys():
+				if (tempFarthest==None):
+					tempFarthest=var
+				elif (forNextUse[var]>forNextUse[tempFarthest]):
+					tempFarthest=var
+				else:
+					continue
+			for spillReg in reg_float.keys():
+				if reg_float[spillReg]==tempFarthest:
+					break
 
-            #write something like
-            #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
-            # acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
-            addrDesc[reg_float[spillReg]] = "MEM"
-            reg_float[spillReg] = [varObj]
-            addrDesc[varObj] = spillReg 
-            return spillReg
+			#write something like
+			#    assembly = assembly + "movl " + regspill + ", " + var + "\n"
+			# acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
+			addrDesc[reg_float[spillReg]] = "MEM"
+			reg_float[spillReg] = [varObj]
+			addrDesc[varObj] = spillReg 
+			return spillReg
 
-    else:
-        #regExist=False
-        #emptyReg=None
-        for i in reg_norm.keys():
-            if (reg_norm[i]==varObj):
-                #regExist = True
-                return i
-            #if(emptyReg==None and !regExist):
+	else:
+		#regExist=False
+		#emptyReg=None
+		for i in reg_norm.keys():
+			if (reg_norm[i]==varObj):
+				#regExist = True
+				return i
+			#if(emptyReg==None and !regExist):
 
 
-        if unused_reg_norm:
-            reg = unused_reg_norm[0]
-            unused_reg_norm.remove(reg)
-            used_reg_norm.append(reg)
-            reg_norm[reg] = [varObj]
-            addrDesc[varObj] = reg 
-            return reg
-            
+		if unused_reg_norm:
+			reg = unused_reg_norm[0]
+			unused_reg_norm.remove(reg)
+			used_reg_norm.append(reg)
+			reg_norm[reg] = [varObj]
+			addrDesc[varObj] = reg 
+			return reg
+			
 
-        else:
-            forNextUse=nextUseTable[numLine]
-            tempFarthest=None
-            #forNextUse should be a dictionary, so nextUseTable must also be a
-            #dictionary with keys as line numbers and value as another dictionary
-            #with key being variable names and values being nextUselineNo
-            for var in forNextUse.keys():
-                if (tempFarthest==None):
-                    tempFarthest=var
-                elif (forNextUse[var]>forNextUse[tempFarthest]):
-                    tempFarthest=var
-                else:
-                    continue
-            for spillReg in reg_norm.keys():
-                if reg_norm[spillReg]==tempFarthest:
-                    break
+		else:
+			forNextUse=nextUseTable[numLine]
+			tempFarthest=None
+			#forNextUse should be a dictionary, so nextUseTable must also be a
+			#dictionary with keys as line numbers and value as another dictionary
+			#with key being variable names and values being nextUselineNo
+			for var in forNextUse.keys():
+				if (tempFarthest==None):
+					tempFarthest=var
+				elif (forNextUse[var]>forNextUse[tempFarthest]):
+					tempFarthest=var
+				else:
+					continue
+			for spillReg in reg_norm.keys():
+				if reg_norm[spillReg]==tempFarthest:
+					break
 
-            #write something like
-            acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
-            addrDesc[reg_norm[spillReg]] = "MEM"
-            reg_norm[spillReg] = [varObj]
-            addrDesc[varObj] = spillReg
-return spillReg
+			#write something like
+			acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
+			addrDesc[reg_norm[spillReg]] = "MEM"
+			reg_norm[spillReg] = [varObj]
+			addrDesc[varObj] = spillReg
+	return spillReg
 
 def isInt(s):
 	if (isinstance(s, SymClass)):
@@ -125,26 +125,37 @@ def isInt(s):
 	else:
 		return True
 
+def RepresentsInt(s):
+	try: 
+		int(s)
+		return True
+	except ValueError:
+		return False
 
 
+acode="# Generated Code \n"
 def translate(line):
-	acode = "# Generated Code \n"
+	global acode
+	#acode = acode + "# Generated Code \n"
 	lineno = int(line[0])
 	op = line[1]
 	# Generating assembly code if the tac is a mathematical operation
+	print(mathop)
 	
 	if op in mathop:
+		print(op)
 		ans = line[2]
+		print(ans)
 		num1 = line[3]
 		num2 = line[4]
 		# Addition
 		if op == '+':
 			if isInt(num1) and isInt(num2):
-				reg = getReg(ans)
+				reg = getReg(ans,lineno)
 				acode = acode + "addi " + reg + ", $zero, " + str(int(num1)+int(num2)) + "\n"
 
 			elif isInt(num1) and not isInt(num2):
-				reg = getReg(ans)
+				reg = getReg(ans,lineno)
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2)
@@ -157,10 +168,10 @@ def translate(line):
 				#update register
 
 			elif not isInt(num1) and isInt(num2):
-				reg = getReg(ans)
+				reg = getReg(ans,lineno)
 				addr1 = addrDesc[num1]
 				if(addr1 == "MEM"):
-					addr1 = getReg(num1)
+					addr1 = getReg(num1, lineno)
 				acode = acode + "add " + reg + ", " + addr1 +", $zero, " + "\n"
 				
 				acode = acode + "addi " + reg + ", " + reg + ", " + num2 + "\n"
@@ -169,13 +180,13 @@ def translate(line):
 				#update register
 
 			elif not isInt(num1) and not isInt(num2):
-				reg = getReg(ans)
+				reg = getReg(ans,lineno)
 				addr1 = addrDesc[num1]
 				addr2 = addrDesc[num2]
 				if(addr1 == "MEM"):
-					addr1 = getReg(num1)
+					addr1 = getReg(num1, lineno)
 				if(addr2 == "MEM"):
-					addr1 = getReg(num1)
+					addr1 = getReg(num1, lineno)
 				
 				acode = acode + "add " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
@@ -1362,14 +1373,8 @@ def translate(line):
 	# 		setlocation(result, regdest)
 	# 	relcount = relcount + 1
 
-	return acode
-
-
-keyword = ['ifgoto', 'goto', 'return', 'call', 'print', 'label', 'function', 'exit', 'return']
-relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 mathop = ['+', '-', '*', '/', '%']
-boolop = ['&', '|', '!']
-reserved = keyword + relation + mathop + boolop
+addrDesc = {}
 
 def main():
 	if len(sys.argv) == 2:
@@ -1378,6 +1383,12 @@ def main():
 		print("Too many or too few arguements")
 		exit()
 
+	keyword = ['ifgoto', 'goto', 'return', 'call', 'print', 'label', 'function', 'exit', 'return']
+	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
+
+	boolop = ['&', '|', '!']
+	reserved = keyword + relation + mathop + boolop
+	acode="# Generated Code \n"
 	incodestr = open(filename).read().splitlines()
 	incode = []
 	for line in incodestr:
@@ -1388,7 +1399,7 @@ def main():
 	for line in incode:
 		#l = line.split(', ')
 		for var in line:
-			if(var not in reserved and not isInt(var)):
+			if(var not in reserved and not RepresentsInt(var)):
 				variables.append(var)
 
 	variables = list(set(variables))
@@ -1408,12 +1419,13 @@ def main():
 
 	for line in incode:
 		for ind, var in enumerate(line):
-			if(var not in reserved and not isInt(var)):
+			if(var not in reserved and not RepresentsInt(var)):
 				line[ind] = symTable[var]
+	print("&&&&&&&&&&&&&&&&&&&&&")
 	print(incode)
 
 #address descriptors
-	addrDesc = {}
+	
 	for s in symList:
 		addrDesc[s]='MEM'
 
@@ -1486,14 +1498,15 @@ def main():
 	print(nextUseTable)
 
 	print("####################################################")
-	#print(incode)
+	print(incode)
 
 	for line in incode:
 		translate(line)
+
+	print(acode)	
 
 #print sections
 
 
 if __name__ == "__main__":
-	acode=""
 	main()
