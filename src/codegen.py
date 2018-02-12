@@ -7,7 +7,7 @@ import inspect
 class SymClass(object):
 	def __init__(self, lexeme, typ):
 		self.lexeme = lexeme
-		self. typ = typ
+		self.typ = typ
 
 #class CodeGen:
 # def reg_init():
@@ -115,12 +115,15 @@ def getReg(varObj, numLine):
 				if reg_norm[spillReg]==tempFarthest:
 					break
 
+			print(reg_norm)
+			print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+			print(spillReg)
 			#write something like
 			#print("spill",spillReg)
-			print("regnorm",reg_norm[spillReg].lexeme)
+			print("regnorm",reg_norm[spillReg])
 			#print("addr",addrDesc[reg_norm[spillReg]])
 			print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-			acode = acode + "\t" + "sw" + spillReg + ", " + reg_norm[spillReg].lexeme + "\n"
+			acode = acode + "\t" + "sw" + spillReg + ", " + (reg_norm[spillReg]).lexeme + "\n"
 			acode = acode + "\t" + "lw " + spillReg + ", " + varObj.lexeme + "\n"
 			addrDesc[reg_norm[spillReg]] = "MEM"
 			reg_norm[spillReg] = [varObj]
@@ -171,13 +174,8 @@ def translate(line):
 				reg = getReg(ans,lineno)
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
-<<<<<<< HEAD
-					addr2 = getReg(num2)
-
-=======
 					addr2 = getReg(num2,lineno)
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 				acode = acode + "\tadd " + reg + ", " + addr2 +", $zero" + "\n"
 
 				acode = acode + "\taddi " + reg + ", " + reg + ", " +num1 + "\n"
@@ -199,13 +197,8 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1, lineno)
 				if(addr2 == "MEM"):
-<<<<<<< HEAD
-					addr1 = getReg(num1, lineno)
-
-=======
 					addr2 = getReg(num2, lineno)
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 				acode = acode + "\tadd " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
 		elif op == '-':
@@ -238,13 +231,8 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
-<<<<<<< HEAD
-					addr1 = getReg(num1,lineno)
-
-=======
 					addr2 = getReg(num2,lineno)
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 				acode = acode + "\tsub " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
 		elif op == '*':
@@ -276,13 +264,8 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
-<<<<<<< HEAD
-					addr1 = getReg(num1,lineno)
-
-=======
 					addr2 = getReg(num2,lineno)
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 				acode = acode + "\tmul " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
 		# Division
@@ -315,13 +298,8 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
-<<<<<<< HEAD
-					addr1 = getReg(num1,lineno,lineno)
-
-=======
 					addr2 = getReg(num2,lineno)
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 				acode = acode + "\tdiv " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
 		# Modulus
@@ -354,13 +332,8 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
-<<<<<<< HEAD
-					addr1 = getReg(num1,lineno)
-
-=======
 					addr2 = getReg(num2,lineno)
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 				acode = acode + "\trem " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
 	elif op == "goto":
@@ -407,13 +380,8 @@ def translate(line):
 				addr2 = getReg(num2,lineno)
 
 			if(rel == "<="):
-<<<<<<< HEAD
-				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-
-=======
 				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 			if(rel == ">="):
 				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
@@ -422,19 +390,11 @@ def translate(line):
 				acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
 			if(rel == ">"):
-<<<<<<< HEAD
-				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-
-			if(rel == "<"):
-				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-
-=======
 				acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
 			if(rel == "<"):
 				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
->>>>>>> 759d4bb873b1a8684c3b44806b89a9ab19e207a8
 			if(rel == "!="):
 				acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
@@ -542,6 +502,7 @@ addrDesc = {}
 nextUseTable = {}
 incode = []
 variables = []
+#funcs=[]
 symList = []
 symTable = {}
 leaders = [1,]
@@ -586,8 +547,9 @@ def main():
 		# 		variables.append(var)
 		if line[1] in ['label', 'return']:
 			pass
-		if line[1] in ['function']:
-			funcs.append[line[2]]
+		elif line[1] in ['function', 'call']:
+			#funcs.append[line[2]]
+			pass
 		else:
 			for var in line:
 				if(var not in reserved and not RepresentsInt(var)):
@@ -609,11 +571,15 @@ def main():
 
 	for line in incode:
 		for ind, var in enumerate(line):
-			if(var not in reserved and not RepresentsInt(var)):
+			if(var in variables):
 				line[ind] = symTable[var]
 	print("&&&&&&&&&&&&&&&&&&&&&")
 	print(incode)
 
+	for v in symTable.values():
+		print(v.lexeme)
+	print("pppppppppppppppppppppppppppppppppppppppppppppppppppppppp")
+	print(symTable)
 #address descriptors
 
 	for s in symList:
@@ -640,7 +606,7 @@ def main():
 		#	labels[int(line[0])] = "L"+str(line[0])
 
 		elif 'label' in line:
-			line[2] = line[2].lexeme
+			#line[2] = line[2].lexeme
 			leaders.append(int(line[0]))
 			labels[int(line[0])] = line[2]
 	leaders = list(set(leaders))
