@@ -1,0 +1,14 @@
+1, function, main
+2, =, a, 2
+3, +, b, a, 4
+4, ifgoto, <=, b, 7, 8
+5, *, c, b, a
+6, ifgoto, <=, c, 10, 12
+7, goto, 14
+8, ifgoto, >=, a, 2, 10
+9, goto, 14
+10, print, c
+11, goto, 14
+12, print, c
+13, goto, 14
+14, return

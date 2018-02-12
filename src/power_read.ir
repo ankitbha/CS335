@@ -1,0 +1,10 @@
+1, function, main
+2, =, a, 3
+3, readInt, b
+4, =, t, 1
+5, ifgoto, <=, a, 0, 10
+6, *, t, t, b
+7, -, a, a, 1
+8, print, t
+9, goto, 5
+10, return

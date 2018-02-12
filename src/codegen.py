@@ -332,7 +332,7 @@ def translate(line):
 	elif op == "goto":
 	# 	# Add code to write all the variables to the memory
 		l = line[2]
-		acode = acode + "\tj " + label[int(l)] +"\n"
+		acode = acode + "\tj " + labels[int(l)] +"\n"
 
 	elif op == "ifgoto":
 		#4, ifgoto, <=, a, 50, 2
