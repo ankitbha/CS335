@@ -1644,11 +1644,11 @@ def main():
 	#print(incode)
 
 #print sections
-	print(".data")
-	for var in variables:
-		print(var+":  "+".space 4")
-
 	global acode
+	acode = ""
+	acode += ".data\n"
+	for var in variables:
+		acode += var+":  "+".space 4\n"
 
 	for line in incode:
 		if(int(line[0]) in leaders):
