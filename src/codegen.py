@@ -11,6 +11,7 @@ class SymClass(object):
 
 #class CodeGen:
 # def reg_init():
+ex=False
 vreg = {"$v0":None, "$v1":None}
 areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
 zreg = {"$zero":None}
@@ -138,9 +139,7 @@ acode="# Generated Code \n"
 def translate(line):
 	global acode
 	global labels
-	print("*************************************")
-	print(labels)
-	print("*************************************")
+	global ex
 	#print(acode)
 	#acode = acode + "# Generated Code \n"
 	lineno = int(line[0])
@@ -149,7 +148,7 @@ def translate(line):
 	#print(op)
 	
 	if op in mathop:
-		print(op)
+		#print(op)
 		ans = line[2]
 		#print(ans)
 		num1 = line[3]
@@ -419,20 +418,20 @@ def translate(line):
 				addr2 = getReg(num2,lineno)
 				
 			if(rel == "<="):
-				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 				
 			if(rel == ">="):
-				acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
 				
 			if(rel == "=="):
 				acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 				
 			if(rel == ">"):
-				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 				
 			if(rel == "<"):
-				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 				
 			if(rel == "!="):
 				acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
@@ -496,7 +495,7 @@ def translate(line):
 		num1=line[2]
 		addr1 = addrDesc[num1]
 		if(addr1 == "MEM"):
-				addr1 = getReg(num1,lineno)
+			addr1 = getReg(num1,lineno)
 		num2=line[3]
 		if isInt(num2):
 			acode=acode+"\tli "+ addr1 + ", " + num2 + "\n"
@@ -505,6 +504,36 @@ def translate(line):
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
 			acode = acode + "\tmove" + addr1 + ", " + addr2 + "\n" 
+	if op=="printint":
+		#8, print, a
+		ans=line[2];
+		addr1 = addrDesc[ans]
+		if(addr1 == "MEM"):
+			addr1 = getReg(ans,lineno)
+		acode = acode +"\tli $v0, 0\n"
+		acode = acode +"\tmove, $v0, " + addr1 + "\n"
+		acode = acode +"\tsyscall\n"
+
+	if op=="scanint":
+		#8, scanint, a
+		ans=line[2];
+		addr1 = addrDesc[ans]
+		if(addr1 == "MEM"):
+			addr1 = getReg(ans,lineno)
+		acode = acode +"\tli $v0, 5\n"
+		acode = acode +"\tsyscall\n"
+		acode = acode +"\tmove, "+ addr1 + " ,$v0" + "\n"
+	if op=="call":
+		l=line[2]
+		acode = acode + "\tjal " + l.lexeme +"\n"
+	if op=="return":
+		if(ex==False):
+			acode = acode + "\tj exit\n"
+			ex=True
+		else:
+			acode = acode + "\tjal $ra\n"
+
+
 
 mathop = ['+', '-', '*', '/', '%']
 addrDesc = {}
@@ -514,7 +543,7 @@ variables = []
 symList = []
 symTable = {}
 leaders = [1,]
-labels = {}
+labels = {1:"L1"}
 basicblocks = {}
 
 def main():
@@ -536,7 +565,7 @@ def main():
 		print("Too many or too few arguements")
 		exit()
 
-	keyword = ['ifgoto', 'goto', 'return', 'call', 'print', 'label', 'function', 'exit', 'return']
+	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'exit', 'return', 'scanint']
 	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 
 	boolop = ['&', '|', '!']
@@ -588,20 +617,27 @@ def main():
 		if 'ifgoto' in line:
 			leaders.append(int(line[-1]))
 			leaders.append(int(line[0])+1)
+			labels[int(line[-1])] = "L"+line[-1]
+			labels[int(line[0])+1] = "L"+str(int(line[0])+1)
 
 		elif 'goto' in line:
 			leaders.append(int(line[-1]))
 			leaders.append(int(line[0])+1)
+			labels[int(line[-1])] = "L"+line[-1]
+			labels[int(line[0])+1] = "L"+str(int(line[0])+1)
 
-		elif 'function' in line:
-			leaders.append(int(line[0]))
+		#elif 'function' in line:
+		#	leaders.append(int(line[0]))
+		#	labels[int(line[0])] = "L"+str(line[0])
 
 		elif 'label' in line:
+			line[2] = line[2].lexeme
 			leaders.append(int(line[0]))
+			labels[int(line[0])] = line[2]
 	leaders = list(set(leaders))
 	leaders.sort()
 	print(leaders)
-	labels = {i:"L"+str(i) for i in leaders}
+	#labels = {i:"L"+str(i) for i in leaders and not i in labels}
 	print(labels)
 # generating blocks here
 
@@ -613,10 +649,10 @@ def main():
 		else:
 			instruction2 = num_instr
 		basicblocks[instruction1] = incode[instruction1-1:instruction2]
-	print(basicblocks)
+	#print(basicblocks)
 
 # populate the nextUseTable
-	print(nextUseTable)
+	#print(nextUseTable)
 	for l, block in basicblocks.items():
 		tempTab = {}
 		for sym in symList:
@@ -642,7 +678,7 @@ def main():
 					tempTab[ins[3]] = (1,int(ins[0]))
 				if ins[4] in symList:
 					tempTab[ins[4]] = (1,int(ins[0]))
-			elif ins[1] == 'print':
+			elif ins[1] == 'printint':
 				if ins[2] in symList:
 					tempTab[ins[2]] = (1,int(ins[0]))
 			#addMore
