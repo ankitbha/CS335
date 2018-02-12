@@ -484,6 +484,12 @@ def translate(line):
 			acode = acode + "\tj exit\n"
 			ex=True
 		else:
+			if(len(line)==3):
+				ans=line[2]
+				addr1 = addrDesc[ans]
+				if(addr1 == "MEM"):
+					acode = acode + "\tlw $v0, " + ans.lexeme +"\n"
+				acode = acode + "\tmove $v0, " + addr1 +"\n"
 			acode = acode + "\tjr $ra\n"
 
 
