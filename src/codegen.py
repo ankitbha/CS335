@@ -1503,6 +1503,8 @@ addrDesc = {}
 nextUseTable = {}
 incode = []
 variables = []
+funcs = []
+arrays = []
 symList = []
 symTable = {}
 leaders = [1,]
@@ -1542,12 +1544,21 @@ def main():
 # populate variables list
 
 	for line in incode:
-		#l = line.split(', ')
-		for var in line:
-			if(var not in reserved and not RepresentsInt(var)):
-				variables.append(var)
+		# for var in line:
+		# 	if(var not in reserved and not RepresentsInt(var)):
+		# 		variables.append(var)
+		if line[1] in ['label', 'return']:
+			pass
+		if line[1] in ['function']:
+			funcs.append[line[2]]
+		else:
+			for var in line:
+				if(var not in reserved and not RepresentsInt(var)):
+					variables.append(var)
+
 
 	variables = list(set(variables))
+	funcs = list(set(funcs))
 	print(variables)
 
 # populate symbol table
