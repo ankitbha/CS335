@@ -617,7 +617,7 @@ def main():
 # generating blocks here
 
 	num_instr = len(incode)
-	for i in range(len(leaders)):
+	for i in range(len(leaders)):int(ins[0]
 		instruction1 = leaders[i]
 		if i+1<len(leaders):
 			instruction2 = leaders[i+1]-1
@@ -655,7 +655,12 @@ def main():
 			elif ins[1] == 'printint':
 				if ins[2] in symList:
 					tempTab[ins[2]] = (1,int(ins[0]))
+			elif ins[1] == 'scanint':
+				if ins[2] in symList:
+					tempTab[ins[2]] = (0,math.inf))
 			#addMore
+keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint']
+relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 	#print(nextUseTable)
 
 	print("####################################################")
