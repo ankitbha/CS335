@@ -491,7 +491,52 @@ def translate(line):
 					acode = acode + "\tlw $v0, " + ans.lexeme +"\n"
 				acode = acode + "\tmove $v0, " + addr1 +"\n"
 			acode = acode + "\tjr $ra\n"
+	if op=="readarray":
+		#3, readarray, a, var, var
+		#4, la, reg, label
+		arrray = line[2]
+		index = line[3]
+		res = line[4]
+		addr= addrDesc[res]
+		if(addr=="MEM"):
+			addr=getReg(num1,lineno)
+		if(isInt(index)):
+			acode = acode + "\tlw" + addr + ", " + index + "(" + a.lexeme + ")\n"
+		else:
+			addri = addrDesc[index]
+			if(addri=="MEM"):
+				addri=getReg(index,lineno)
+			arr = getReg(array,lineno)
+			acode = acode + "\tla" + arr + ", " + array.lexeme + "\n"
+			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
+			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
+			acode = acode + "\tadd" + arrdi + ", " + arr + "," + addri "\n"
+			acode = acode + "\tlw" + addr + ", " + arrdi +"\n"
 
+	if op=="writearray":
+		#3, write, a, var, var
+		#4, la, reg, label
+		arrray = line[2]
+		index = line[3]
+		res = line[4]
+		addr= addrDesc[res]
+		if(addr=="MEM"):
+			addr=getReg(num1,lineno)
+		if(isInt(index)):
+			acode = acode + "\tlw" + addr + ", " + index + "(" + a.lexeme + ")\n"
+		else:
+			addri = addrDesc[index]
+			if(addri=="MEM"):
+				addri=getReg(index,lineno)
+			arr = getReg(array,lineno)
+			acode = acode + "\tla" + arr + ", " + array.lexeme + "\n"
+			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
+			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
+			acode = acode + "\tadd" + arrdi + ", " + arr + "," + addri "\n"
+			acode = acode + "\tlw" + addr + ", " + arrdi +"\n"
+			
+
+$v1(a)
 
 
 mathop = ['+', '-', '*', '/', '%']
