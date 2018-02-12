@@ -484,7 +484,7 @@ def translate(line):
 			acode = acode + "\tj exit\n"
 			ex=True
 		else:
-			acode = acode + "\tjal $ra\n"
+			acode = acode + "\tjr $ra\n"
 
 
 
@@ -637,10 +637,10 @@ def main():
 			elif ins[1] == 'printint':
 				if ins[2] in symList:
 					tempTab[ins[2]] = (1,int(ins[0]))
-			# elif ins[1] == 'scanint':
-			# 	if ins[2] in symList:
-			# 		tempTab[ins[2]] = (0,math.inf))
-			# #addMore
+			elif ins[1] == 'scanint':
+				if ins[2] in symList:
+					tempTab[ins[2]] = (0,math.inf)
+			#addMore
 
 # keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint']
 # relation = ['<=', '>=', '==', '>', '<', '!=', '=']
