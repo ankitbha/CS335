@@ -497,7 +497,7 @@ variables = []
 symList = []
 symTable = {}
 leaders = [1,]
-labels = {1:"L1"}
+labels = {1:"main"}
 basicblocks = {}
 
 def main():
@@ -554,9 +554,6 @@ def main():
 	for v in variables:
 		symTable[v] = SymClass(v,'int')
 		symList.append(symTable[v])
-		# print("------------------------------------------")
-		# print(symTable[v].lexeme)
-		# print("------------------------------------------")
 
 # set the variables in IR to point to symTable dictionary's entries
 
@@ -649,6 +646,9 @@ def main():
 	acode += ".data\n"
 	for var in variables:
 		acode += var+":  "+".space 4\n"
+
+	acode += ".test\n"
+	acode += ".globl\tmain\n"
 
 	for line in incode:
 		if(int(line[0]) in leaders):
