@@ -1,6 +1,6 @@
 1, =, a, 2
-2, =, b, 7
-3, +, a, a, b
+2, =, bh, 7
+3, +, a, a, bh
 4, ifgoto, <=, a, 50, 2
 5, call, foo
 6, return
