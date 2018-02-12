@@ -147,7 +147,7 @@ def translate(line):
 	op = line[1]
 	# Generating assembly code if the tac is a mathematical operation
 	#print(op)
-	
+
 	if op in mathop:
 		print(op)
 		ans = line[2]
@@ -167,9 +167,9 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2)
-				
+
 				acode = acode + "\tadd " + reg + ", " + addr2 +", $zero" + "\n"
-				
+
 				acode = acode + "\taddi " + reg + ", " + reg + ", " +num1 + "\n"
 				addrDesc[ans] = reg
 
@@ -181,7 +181,7 @@ def translate(line):
 				if(addr1 == "MEM"):
 					addr1 = getReg(num1, lineno)
 				acode = acode + "\tadd " + reg + ", " + addr1 +", $zero" + "\n"
-				
+
 				acode = acode + "\taddi " + reg + ", " + reg + ", " + num2 + "\n"
 				addrDesc[ans] = reg
 
@@ -195,7 +195,7 @@ def translate(line):
 					addr1 = getReg(num1, lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1, lineno)
-				
+
 				acode = acode + "\tadd " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -214,9 +214,9 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "\tsub " + reg  +", $zero, " + addr2 + "\n"
-				
+
 				acode = acode + "\taddi " + reg + ", " + reg + ", " + num1 + "\n"
 				addrDesc[ans] = reg
 
@@ -241,7 +241,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno)
-				
+
 				acode = acode + "\tsub " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -259,7 +259,7 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "\tmul " + reg + ", " + reg + ", " + addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -284,7 +284,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno)
-				
+
 				acode = acode + "\tmul " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -302,7 +302,7 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "\tdiv " + reg + ", " + reg + ", " + addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -327,7 +327,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno,lineno)
-				
+
 				acode = acode + "\tdiv " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -347,7 +347,7 @@ def translate(line):
 				addr2 = addrDesc[num2]
 				if(addr2 == "MEM"):
 					addr2 = getReg(num2,lineno)
-				
+
 				acode = acode + "\trem " + reg + ", " + reg + ", " + addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -371,7 +371,7 @@ def translate(line):
 					addr1 = getReg(num1,lineno)
 				if(addr2 == "MEM"):
 					addr1 = getReg(num1,lineno)
-				
+
 				acode = acode + "\trem " + reg + ", " + addr1 +", "+ addr2 + "\n"
 				addrDesc[ans] = reg
 
@@ -379,7 +379,7 @@ def translate(line):
 	# 	# Add code to write all the variables to the memory
 	 	l = line[2]
 	 	acode = acode + "\tj " + label[int(l)] +"\n"
-	
+
 	elif op == "ifgoto":
 		#4, ifgoto, <=, a, 50, 2
 		rel = line[2]
@@ -395,19 +395,19 @@ def translate(line):
 			if(rel == ">="):
 				if(int(num1) >= int(num2)):
 					acode = acode + "\tj " + labels[int(l)] +"\n"
-				
+
 			if(rel == "=="):
 				if(int(num1) == int(num2)):
 					acode = acode + "\tj " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				if(int(num1) > int(num2)):
 					acode = acode + "\tj " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				if(int(num1) < int(num2)):
 					acode = acode + "\tj " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				if(int(num1) != int(num2)):
 					acode = acode + "\tj " + labels[int(l)] +"\n"
@@ -417,48 +417,48 @@ def translate(line):
 			addr2 = addrDesc[num2]
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
-				
+
 			if(rel == "<="):
 				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">="):
 				acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-				
+
 			if(rel == "=="):
 				acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-		
+
 		elif not isInt(num1) and isInt(num2):
 			#bge Rsrc1, Src2, label
 			print("yes3")
 			addr1 = addrDesc[num1]
 			if(addr1 == "MEM"):
 				addr1 = getReg(num1,lineno)
-				
+
 			if(rel == "<="):
 				acode = acode + "\tble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">="):
 				acode = acode + "\tbge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
 			if(rel == "=="):
 				acode = acode + "\tbeq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				acode = acode + "\tbgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				acode = acode + "\tblt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				acode = acode + "\tbne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
@@ -468,26 +468,26 @@ def translate(line):
 			addr1 = addrDesc[num1]
 			if(addr1 == "MEM"):
 				addr1 = getReg(num1,lineno)
-			
+
 			addr2 = addrDesc[num2]
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
-				
+
 			if(rel == "<="):
 				acode = acode + "\tble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">="):
 				acode = acode + "\tbge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
 			if(rel == "=="):
 				acode = acode + "\tbeq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				acode = acode + "\tbgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				acode = acode + "\tblt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				acode = acode + "\tbne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 	if op=="=":
@@ -504,7 +504,7 @@ def translate(line):
 			addr2 = addrDesc[num2]
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
-			acode = acode + "\tmove" + addr1 + ", " + addr2 + "\n" 
+			acode = acode + "\tmove" + addr1 + ", " + addr2 + "\n"
 
 mathop = ['+', '-', '*', '/', '%']
 addrDesc = {}
@@ -563,7 +563,6 @@ def main():
 			for var in line:
 				if(var not in reserved and not RepresentsInt(var)):
 					variables.append(var)
-
 
 	variables = list(set(variables))
 	funcs = list(set(funcs))
@@ -636,7 +635,6 @@ def main():
 			nextUseTable[int(ins[0])] = {}
 			for sym in symList:
 				nextUseTable[int(ins[0])][sym] = copy.deepcopy(tempTab[sym])
-				# print(nextUseTable)
 
 			if ins[1] in mathop:
 				tempTab[ins[2]] = (0,math.inf)
