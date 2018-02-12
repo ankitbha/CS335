@@ -501,6 +501,7 @@ addrDesc = {}
 nextUseTable = {}
 incode = []
 variables = []
+arrayz = []
 #funcs=[]
 symList = []
 symTable = {}
@@ -515,6 +516,7 @@ def main():
 	global nextUseTable
 	global incode
 	global variables
+	global arrayz
 	global symList
 	global symTable
 	global leaders
@@ -549,12 +551,15 @@ def main():
 		elif line[1] in ['function', 'call']:
 			#funcs.append[line[2]]
 			pass
+		elif line[1] in ['readarray', 'writearray']:
+			arrayz.append(line[2])
 		else:
 			for var in line:
 				if(var not in reserved and not RepresentsInt(var)):
 					variables.append(var)
 
 	variables = list(set(variables))
+	arrayz = list(set(arrayz))
 	#print(variables)
 
 # populate symbol table
@@ -562,12 +567,17 @@ def main():
 	for v in variables:
 		symTable[v] = SymClass(v,'int')
 		symList.append(symTable[v])
+	for v in arrayz:
+		symTable[v] = SymClass(v,'array_int')
+		symList.append(symTable[v])
 
 # set the variables in IR to point to symTable dictionary's entries
 
 	for line in incode:
 		for ind, var in enumerate(line):
 			if(var in variables):
+				line[ind] = symTable[var]
+			if(var in arrayz):
 				line[ind] = symTable[var]
 
 # address descriptors
@@ -654,6 +664,8 @@ def main():
 	acode += ".data\n"
 	for var in variables:
 		acode += var+":  "+".space 4\n"
+	for var in arrayz:
+		acode += var+":  "+".word 0:100\n"
 
 	acode += ".text\n"
 	acode += ".globl main\n\n"
