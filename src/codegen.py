@@ -32,89 +32,91 @@ def reg_init():
 	#regDes = {}
 	#regDes = regDes.fromkeys(list(regTuple))
 
+<<<<<<< HEAD
 def check_reg(self, varName):
 	pass
 # basically check the register holding the given variable "var" and return it as string form. It will need symbol table implementation.
-def getReg(varName, numLine, varType):
-	if varType in ["float", "double"]:
-		for i in reg_float.keys():
-			if (reg_float[i]==varName):
-				#regExist = True
-				return i
-			#if(emptyReg==None and !regExist):
+def getReg(varObj, numLine):
+    if varObj.typ in ["float", "double"]:
+        for i in reg_float.keys():
+            if (reg_float[i]==varObj):
+                return i
+            
+        if unused_reg_float:
+            reg = unused_reg_float[0]
+            unused_reg_float.remove(reg)
+            used_reg_float.append(reg)
+            reg_float[reg] = [varObj]
+            addrDesc[varObj] = reg
+            return reg
+            
+
+        else:
+            forNextUse=nextUseTable[numLine]
+            tempFarthest=None
+            #forNextUse should be a dictionary, so nextUseTable must also be a
+            #dictionary with keys as line numbers and value as another dictionary
+            #with key being variable names and values being nextUselineNo
+            for var in forNextUse.keys():
+                if (tempFarthest==None):
+                    tempFarthest=var
+                elif (forNextUse[var]>forNextUse[tempFarthest]):
+                    tempFarthest=var
+                else:
+                    continue
+            for spillReg in reg_float.keys():
+                if reg_float[spillReg]==tempFarthest:
+                    break
+
+            #write something like
+            #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
+            addrDesc[reg_float[spillReg]] = "MEM"
+            reg_float[spillReg] = [varObj]
+            addrDesc[varObj] = spillReg 
+            return spillReg
+
+    else:
+        #regExist=False
+        #emptyReg=None
+        for i in reg_norm.keys():
+            if (reg_norm[i]==varObj):
+                #regExist = True
+                return i
+            #if(emptyReg==None and !regExist):
 
 
-		if unused_reg_float:
-			reg = unused_reg_float[0]
-			unused_reg_float.remove(reg)
-			used_reg_float.append(reg)
-			reg_float[reg] = [varName]
-			return reg
-			# in this place we will need to change the symboltable for varName
+        if unused_reg_norm:
+            reg = unused_reg_norm[0]
+            unused_reg_norm.remove(reg)
+            used_reg_norm.append(reg)
+            reg_norm[reg] = [varObj]
+            addrDesc[varObj] = reg 
+            return reg
+            
 
-		else:
-			forNextUse=nextUseTable[numLine]
-			tempFarthest=None
-			#forNextUse should be a dictionary, so nextUseTable must also be a
-			#dictionary with keys as line numbers and value as another dictionary
-			#with key being variable names and values being nextUselineNo
-			for var in forNextUse.keys():
-				if (tempFarthest==None):
-					tempFarthest=var
-				elif (forNextUse[var]>forNextUse[tempFarthest]):
-					tempFarthest=var
-				else:
-					continue
-			for spillReg in reg_float.keys():
-				if reg_float[spillReg]==tempFarthest:
-					break
+        else:
+            forNextUse=nextUseTable[numLine]
+            tempFarthest=None
+            #forNextUse should be a dictionary, so nextUseTable must also be a
+            #dictionary with keys as line numbers and value as another dictionary
+            #with key being variable names and values being nextUselineNo
+            for var in forNextUse.keys():
+                if (tempFarthest==None):
+                    tempFarthest=var
+                elif (forNextUse[var]>forNextUse[tempFarthest]):
+                    tempFarthest=var
+                else:
+                    continue
+            for spillReg in reg_norm.keys():
+                if reg_norm[spillReg]==tempFarthest:
+                    break
 
-			#write something like
-			#    assembly = assembly + "movl " + regspill + ", " + var + "\n"
-			reg_float[spillReg] = [varName]
-			# in this place we will need to change the symboltable for varName and the variable originally in spillreg
-			return spillReg
-
-	else:
-		#regExist=False
-		#emptyReg=None
-		for i in reg_norm.keys():
-			if (reg_norm[i]==varName):
-				#regExist = True
-				return i
-			#if(emptyReg==None and !regExist):
-
-
-		if unused_reg_norm:
-			reg = unused_reg_norm[0]
-			unused_reg_norm.remove(reg)
-			used_reg_norm.append(reg)
-			reg_norm[reg] = [varName]
-			return reg
-			# in this place we will need to change the symboltable for varName
-
-		else:
-			forNextUse=nextUseTable[numLine]
-			tempFarthest=None
-			#forNextUse should be a dictionary, so nextUseTable must also be a
-			#dictionary with keys as line numbers and value as another dictionary
-			#with key being variable names and values being nextUselineNo
-			for var in forNextUse.keys():
-				if (tempFarthest==None):
-					tempFarthest=var
-				elif (forNextUse[var]>forNextUse[tempFarthest]):
-					tempFarthest=var
-				else:
-					continue
-			for spillReg in reg_norm.keys():
-				if reg_norm[spillReg]==tempFarthest:
-					break
-
-			#write something like
-			#    assembly = assembly + "movl " + regspill + ", " + var + "\n"
-			reg_norm[spillReg] = [varName]
-			# in this place we will need to change the symboltable for varName and the variable originally in spillreg
-			return spillReg
+            #write something like
+            #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
+            addrDesc[reg_norm[spillReg]] = "MEM"
+            reg_norm[spillReg] = [varObj]
+            addrDesc[varObj] = spillReg
+return spillReg
 
 def isInt(s):
 	if (isinstance(s, SymClass)):
