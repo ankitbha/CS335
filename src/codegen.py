@@ -31,25 +31,23 @@ def reg_init():
     #regDes = {}
     #regDes = regDes.fromkeys(list(regTuple))
 
-def check_reg(self, varName):
+def check_reg(self, varObj):
     pass
 # basically check the register holding the given variable "var" and return it as string form. It will need symbol table implementation.
-def getReg(varName, numLine, varType):
-    if varType in ["float", "double"]:
+def getReg(varObj, numLine):
+    if varObj.typ in ["float", "double"]:
         for i in reg_float.keys():
-            if (reg_float[i]==varName):
-                #regExist = True
+            if (reg_float[i]==varObj):
                 return i
-            #if(emptyReg==None and !regExist):
-
-
+            
         if unused_reg_float:
             reg = unused_reg_float[0]
             unused_reg_float.remove(reg)
             used_reg_float.append(reg)
-            reg_float[reg] = [varName]
+            reg_float[reg] = [varObj]
+            addrDesc[varObj] = reg
             return reg
-            # in this place we will need to change the symboltable for varName
+            
 
         else:
             forNextUse=nextUseTable[numLine]
@@ -70,15 +68,16 @@ def getReg(varName, numLine, varType):
 
             #write something like
             #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
-            reg_float[spillReg] = [varName]
-            # in this place we will need to change the symboltable for varName and the variable originally in spillreg
+            addrDesc[reg_float[spillReg]] = "MEM"
+            reg_float[spillReg] = [varObj]
+            addrDesc[varObj] = spillReg 
             return spillReg
 
     else:
         #regExist=False
         #emptyReg=None
         for i in reg_norm.keys():
-            if (reg_norm[i]==varName):
+            if (reg_norm[i]==varObj):
                 #regExist = True
                 return i
             #if(emptyReg==None and !regExist):
@@ -88,9 +87,10 @@ def getReg(varName, numLine, varType):
             reg = unused_reg_norm[0]
             unused_reg_norm.remove(reg)
             used_reg_norm.append(reg)
-            reg_norm[reg] = [varName]
+            reg_norm[reg] = [varObj]
+            addrDesc[varObj] = reg 
             return reg
-            # in this place we will need to change the symboltable for varName
+            
 
         else:
             forNextUse=nextUseTable[numLine]
@@ -111,8 +111,9 @@ def getReg(varName, numLine, varType):
 
             #write something like
             #    assembly = assembly + "movl " + regspill + ", " + var + "\n"
-            reg_norm[spillReg] = [varName]
-            # in this place we will need to change the symboltable for varName and the variable originally in spillreg
+            addrDesc[reg_norm[spillReg]] = "MEM"
+            reg_norm[spillReg] = [varObj]
+            addrDesc[varObj] = spillReg
             return spillReg
 
 def isInt(s):
