@@ -464,7 +464,7 @@ def translate(line):
 		if(addr1 == "MEM"):
 			addr1 = getReg(ans,lineno)
 		acode = acode +"\tli $v0, 0\n"
-		acode = acode +"\tmove, $v0, " + addr1 + "\n"
+		acode = acode +"\tmove, $a0, " + addr1 + "\n"
 		acode = acode +"\tsyscall\n"
 
 	if op=="scanint":
@@ -647,7 +647,7 @@ def main():
 	for var in variables:
 		acode += var+":  "+".space 4\n"
 
-	acode += ".test\n"
+	acode += ".text\n"
 	acode += ".globl\tmain\n"
 
 	for line in incode:
