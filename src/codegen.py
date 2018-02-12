@@ -378,25 +378,8 @@ def translate(line):
 	elif op == "goto":
 	# 	# Add code to write all the variables to the memory
 	 	l = line[2]
-<<<<<<< HEAD
-	 	acode = acode + "j " + label[int(l)]
-
-	# elif op == "ifgoto":
-	# 	#4, ifgoto, <=, a, 50, 2
-	# 	rel = line[2]
-	# 	num1 = line[3]
-	# 	num2 = line[4]
-	# 	l = line[5]
-	# 	addr1 = addrDesc[num1]
-	# 	addr2 = addrDesc[num2]
-	#
-	# 	if isInt(num1) and isInt(num2):
-	# 		reg = getReg(ans,lineno)
-	# 		acode = acode + "addi " + reg + ", $zero, " + str(int(num1)%int(num2)) + "\n"
-	# 		addrDesc[ans] = reg
-=======
 	 	acode = acode + "j " + label[int(l)] +"\n"
-	
+
 	elif op == "ifgoto":
 		#4, ifgoto, <=, a, 50, 2
 		rel = line[2]
@@ -412,19 +395,19 @@ def translate(line):
 			if(rel == ">="):
 				if(int(num1) >= int(num2)):
 					acode = acode + "j " + labels[int(l)] +"\n"
-				
+
 			if(rel == "=="):
 				if(int(num1) == int(num2)):
 					acode = acode + "j " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				if(int(num1) > int(num2)):
 					acode = acode + "j " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				if(int(num1) < int(num2)):
 					acode = acode + "j " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				if(int(num1) != int(num2)):
 					acode = acode + "j " + labels[int(l)] +"\n"
@@ -434,49 +417,48 @@ def translate(line):
 			addr2 = addrDesc[num2]
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
-				
+
 			if(rel == "<="):
 				acode = acode + "bgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">="):
 				acode = acode + "blt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-				
+
 			if(rel == "=="):
 				acode = acode + "beq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				acode = acode + "ble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				acode = acode + "bge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				acode = acode + "bne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
-		
+
 		elif not isInt(num1) and isInt(num2):
 			#bge Rsrc1, Src2, label
 			print("yes3")
 			addr1 = addrDesc[num1]
 			if(addr1 == "MEM"):
 				addr1 = getReg(num1,lineno)
-				
+
 			if(rel == "<="):
 				acode = acode + "ble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">="):
 				acode = acode + "bge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
->>>>>>> 9e504862c10d5371c0ed7891aeda4202c01747d8
 
 			if(rel == "=="):
 				acode = acode + "beq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				acode = acode + "bgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				acode = acode + "blt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				acode = acode + "bne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
@@ -486,26 +468,26 @@ def translate(line):
 			addr1 = addrDesc[num1]
 			if(addr1 == "MEM"):
 				addr1 = getReg(num1,lineno)
-			
+
 			addr2 = addrDesc[num2]
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
-				
+
 			if(rel == "<="):
 				acode = acode + "ble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">="):
 				acode = acode + "bge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
 			if(rel == "=="):
 				acode = acode + "beq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == ">"):
 				acode = acode + "bgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "<"):
 				acode = acode + "blt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
-				
+
 			if(rel == "!="):
 				acode = acode + "bne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
