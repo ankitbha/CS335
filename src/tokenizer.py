@@ -1,55 +1,47 @@
 
 reserved = {
-	'ABS' : 'KEY_ABS',
-	'ARRAY' : 'KEY_ARRAY',
-	'BEGIN' : 'KEY_BEGIN',
-	'BOOLEAN' : 'KEY_BOOLEAN',
-	'CASE' : 'KEY_CASE',
-	'CAP' : 'KEY_CAP',
-	'CHAR' : 'KEY_CHAR',
-	'CHR' : 'KEY_CHR',
-	'CONST' : 'KEY_CONST',
-	'DIV' : 'KEY_DIV',
-	'DO' : 'KEY_DO',
-	'ELSE' : 'KEY_ELSE',
-	'ELSIF' : 'KEY_ELSIF',
-	'END' : 'KEY_END',
-	'EXIT' : 'KEY_EXIT',
-	'FCLOSE' : 'KEY_FCLOSE',
-	'FOPEN' : 'KEY_FOPEN',
-	'FOR' : 'KEY_FOR',
-	'FPRINTF' : 'KEY_FPRINTF',
-	'FREAD' : 'KEY_FREAD',
-	'IF' : 'KEY_IF',
-	'IN' : 'KEY_IN',
-	'INTEGER' : 'KEY_INTEGER',
-	'IS' : 'KEY_IS',
-	'LEN' : 'KEY_LEN',
-	'LOOP' : 'KEY_LOOP',
-	'MOD' : 'KEY_MOD',
-	'MODULE' : 'KEY_MODULE',
-	'NEW' : 'KEY_NEW',
-	'NIL' : 'KEY_NIL',
-	'NOT' : 'KEY_NOT',
-	'ODD' : 'KEY_ODD',
-	'OF' : 'KEY_OF',
-	'ORD' : 'KEY_ORD',
-	'POINTER' : 'KEY_POINTER',
-	'PROCEDURE' : 'KEY_PROCEDURE',
-	'READ' : 'KEY_READ',
-	'REAL' : 'KEY_REAL',
-	'RECORD' : 'KEY_RECORD',
-	'REPEAT' : 'KEY_REPEAT',
-	'RETURN' : 'KEY_RETURN',
-	'SET' : 'KEY_SET',
-	'THEN' : 'KEY_THEN',
-	'TO' : 'KEY_TO',
-	'TYPE' : 'KEY_TYPE',
-	'UNTIL' : 'KEY_UNTIL',
-	'VAR' : 'KEY_VAR',
-	'WHILE' : 'KEY_WHILE',
-	'WRITE' : 'KEY_WRITE',
-	'WRITELN' : 'KEY_WRITELN'
+	'ABS' : 'KEY_ABS',                                 # Absolute
+	'ARRAY' : 'KEY_ARRAY',                             # declare array
+	'BEGIN' : 'KEY_BEGIN',                             # start block
+	'BOOLEAN' : 'KEY_BOOLEAN',                         # var type
+	'CASE' : 'KEY_CASE',                               # switch case
+	'CHAR' : 'KEY_CHAR',                               # declare array
+	'CHR' : 'KEY_CHR',                                 # ascii to char
+	'CONST' : 'KEY_CONST',                             # define constant
+	'DO' : 'KEY_DO',                                   # do while
+	'ELSE' : 'KEY_ELSE',                               # if else
+	'ELSIF' : 'KEY_ELSIF',                             # if else
+	'END' : 'KEY_END',                                 # end block
+	'EXIT' : 'KEY_EXIT',                               # end program
+	'FCLOSE' : 'KEY_FCLOSE',                           # close file
+	'FOPEN' : 'KEY_FOPEN',                             # open file
+	'FOR' : 'KEY_FOR',                                 # for loop
+	'FPRINTF' : 'KEY_FPRINTF',                         # file write
+	'FREAD' : 'KEY_FREAD',                             # file read
+	'IF' : 'KEY_IF',                                   # if else
+	'IN' : 'KEY_IN',                                   # set 
+	'INTEGER' : 'KEY_INTEGER',                         # data type
+	'IS' : 'KEY_IS',                                   # check type
+	'MODULE' : 'KEY_MODULE',                           # start keyword
+	'NEW' : 'KEY_NEW',                                 # new object/record
+	'NIL' : 'KEY_NIL',                                 # nil set
+	'NOT' : 'KEY_NOT',                                 # bool operator
+	'OF' : 'KEY_OF',                                   # array declare keyword
+	'ORD' : 'KEY_ORD',                                 # num to char
+	'POINTER' : 'KEY_POINTER',                         # pointer
+	'PROCEDURE' : 'KEY_PROCEDURE',                     # function
+	'READ' : 'KEY_READ',                               # get input
+	'REAL' : 'KEY_REAL',                               # data type
+	'RECORD' : 'KEY_RECORD',                           # data structure
+	'RETURN' : 'KEY_RETURN',                           # return value
+	'SET' : 'KEY_SET',                                 # data type
+	'THEN' : 'KEY_THEN',                               # if else
+	'TO' : 'KEY_TO',                                   # pointer to
+	'TYPE' : 'KEY_TYPE',                               # data type
+	'VAR' : 'KEY_VAR',                                 # declare variable
+	'WHILE' : 'KEY_WHILE',                             # while/do while loop
+	'WRITE' : 'KEY_WRITE',                             # write output
+	'WRITELN' : 'KEY_WRITELN'                          # outuput in new line
    }
 
 class tokenizer(object):
@@ -74,6 +66,7 @@ class tokenizer(object):
         # BOOLEAN
         t_OR = r'\|'
         t_AND = r'&'
+        t_NOT = r'!'
 
         # Delimiters
         t_COMMA = r','
@@ -92,7 +85,8 @@ class tokenizer(object):
         t_VBOOLEAN = r'TRUE|FALSE'
         t_VSTRING = r'\"([^\\]|(\\.))*?\"'
         t_VCHAR = r'(L)?\'(.|\n)\''
-        tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'AND' , 'EQUAL' ,  'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VINTEGER', 'VREAL', 'VSTRING', 'VBOOLEAN', 'VCHAR', 'DOT_DOT' , 'COLON' ] + list(reserved.values())
+        tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'NOT', 'AND' , 'EQUAL' ,  'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VINTEGER', 'VREAL', 'VSTRING', 'VBOOLEAN', 'VCHAR' , 'COLON' ] + list(reserved.values())
+        
         def t_IDENT(self, t):
                 r'[a-zA-Z]([a-zA-Z0-9])*'
                 t.type = reserved.get(t.value,'IDENT')
