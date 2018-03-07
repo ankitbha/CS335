@@ -27,9 +27,12 @@ class Parser(object):
 
 	def p_module(self, p):
 		'''
-			module : KEY_MODULE IDENT SCOLON declarationsequence KEY_BEGIN statementsequence KEY_END IDENT DOT
+			module : KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT
 		'''
-		
+	def p_ifStatement(self,p):
+		'''
+			ifStatement  :  KEY_IF KEY_THEN KEY_END
+		'''	
 	# def ident(self, p):
 	# 	'''
 	# 		ident : IDENT
@@ -87,6 +90,6 @@ if __name__=="__main__":
 		# if argv[1] == '-p':
 		#     filename = argv[2]
 		# else:
-	filename = argv[1]
+	filename = sys.argv[1]
 
 	result = parser.parse_file(filename, debug = True)        						

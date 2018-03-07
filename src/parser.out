@@ -2,78 +2,79 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    KEY_ELSE
-    KEY_THEN
-    GT
-    KEY_ELSIF
-    KEY_ABS
-    ASSIGN
-    KEY_NEW
-    KEY_FOR
-    VBOOLEAN
-    KEY_DO
-    MULTIPLY
-    KEY_READ
-    KEY_WRITE
-    KEY_POINTER
-    KEY_FPRINTF
-    MODULUS
-    KEY_TYPE
-    KEY_CHR
-    AND
-    KEY_VAR
-    KEY_RECORD
-    KEY_OF
-    VCHAR
-    KEY_NIL
     LCB
-    PLUS
-    KEY_REAL
-    NOT
-    COMMA
-    KEY_SET
-    LRB
-    KEY_ORD
-    KEY_IS
-    KEY_RETURN
-    KEY_CASE
-    RCB
-    KEY_BOOLEAN
-    LT
-    KEY_FREAD
-    KEY_EXIT
-    KEY_ARRAY
-    KEY_TO
-    RRB
-    KEY_FCLOSE
-    KEY_WHILE
-    KEY_IF
+    EQUAL
     RSB
     KEY_FOPEN
-    OR
-    MINUS
-    KEY_IN
-    EQUAL
-    VINTEGER
-    KEY_CHAR
-    LTEQ
-    DIVIDE
-    COLON
-    GTEQ
-    VSTRING
     NEQUAL
+    KEY_CHR
+    KEY_FPRINTF
+    KEY_BOOLEAN
+    LTEQ
+    KEY_NEW
+    KEY_FCLOSE
+    KEY_ABS
+    AND
+    KEY_WHILE
+    VSTRING
+    ASSIGN
+    KEY_IN
     LSB
+    KEY_WRITE
+    KEY_ELSIF
+    KEY_FOR
+    KEY_IS
+    MINUS
+    KEY_ARRAY
+    RCB
+    KEY_NIL
+    COLON
+    KEY_POINTER
+    MULTIPLY
+    LT
+    KEY_CHAR
+    VINTEGER
+    KEY_EXIT
+    VBOOLEAN
+    VCHAR
+    KEY_RECORD
+    LRB
     VREAL
-    KEY_INTEGER
-    KEY_CONST
-    KEY_WRITELN
+    GTEQ
+    KEY_ELSE
     KEY_PROCEDURE
+    NOT
+    KEY_FREAD
+    MODULUS
+    KEY_CASE
+    COMMA
+    DIVIDE
+    KEY_WRITELN
+    KEY_TYPE
+    KEY_OF
+    KEY_READ
+    PLUS
+    OR
+    KEY_INTEGER
+    GT
+    KEY_REAL
+    KEY_VAR
+    KEY_ORD
+    KEY_CONST
+    KEY_RETURN
     KEY_SWITCH
+    KEY_BREAK
+    KEY_DO
+    RRB
+    KEY_SET
+    KEY_TO
+    KEY_CONTINUE
 
 Grammar
 
 Rule 0     S' -> module
-Rule 1     module -> KEY_MODULE IDENT SCOLON declarationsequence KEY_BEGIN statementsequence KEY_END IDENT DOT
+Rule 1     module -> KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT
+Rule 2     ifStatement -> KEY_IF KEY_THEN KEY_END
 
 Terminals, with rules where they appear
 
@@ -91,21 +92,23 @@ KEY_ABS              :
 KEY_ARRAY            : 
 KEY_BEGIN            : 1
 KEY_BOOLEAN          : 
+KEY_BREAK            : 
 KEY_CASE             : 
 KEY_CHAR             : 
 KEY_CHR              : 
 KEY_CONST            : 
+KEY_CONTINUE         : 
 KEY_DO               : 
 KEY_ELSE             : 
 KEY_ELSIF            : 
-KEY_END              : 1
+KEY_END              : 1 2
 KEY_EXIT             : 
 KEY_FCLOSE           : 
 KEY_FOPEN            : 
 KEY_FOR              : 
 KEY_FPRINTF          : 
 KEY_FREAD            : 
-KEY_IF               : 
+KEY_IF               : 2
 KEY_IN               : 
 KEY_INTEGER          : 
 KEY_IS               : 
@@ -122,7 +125,7 @@ KEY_RECORD           :
 KEY_RETURN           : 
 KEY_SET              : 
 KEY_SWITCH           : 
-KEY_THEN             : 
+KEY_THEN             : 2
 KEY_TO               : 
 KEY_TYPE             : 
 KEY_VAR              : 
@@ -154,7 +157,101 @@ error                :
 
 Nonterminals, with rules where they appear
 
-declarationsequence  : 1
+ifStatement          : 1
 module               : 0
-statementsequence    : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . module
+    (1) module -> . KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT
+
+    KEY_MODULE      shift and go to state 2
+
+    module                         shift and go to state 1
+
+state 1
+
+    (0) S' -> module .
+
+
+
+state 2
+
+    (1) module -> KEY_MODULE . IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT
+
+    IDENT           shift and go to state 3
+
+
+state 3
+
+    (1) module -> KEY_MODULE IDENT . SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT
+
+    SCOLON          shift and go to state 4
+
+
+state 4
+
+    (1) module -> KEY_MODULE IDENT SCOLON . KEY_BEGIN ifStatement KEY_END IDENT DOT
+
+    KEY_BEGIN       shift and go to state 5
+
+
+state 5
+
+    (1) module -> KEY_MODULE IDENT SCOLON KEY_BEGIN . ifStatement KEY_END IDENT DOT
+    (2) ifStatement -> . KEY_IF KEY_THEN KEY_END
+
+    KEY_IF          shift and go to state 7
+
+    ifStatement                    shift and go to state 6
+
+state 6
+
+    (1) module -> KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement . KEY_END IDENT DOT
+
+    KEY_END         shift and go to state 8
+
+
+state 7
+
+    (2) ifStatement -> KEY_IF . KEY_THEN KEY_END
+
+    KEY_THEN        shift and go to state 9
+
+
+state 8
+
+    (1) module -> KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END . IDENT DOT
+
+    IDENT           shift and go to state 10
+
+
+state 9
+
+    (2) ifStatement -> KEY_IF KEY_THEN . KEY_END
+
+    KEY_END         shift and go to state 11
+
+
+state 10
+
+    (1) module -> KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT . DOT
+
+    DOT             shift and go to state 12
+
+
+state 11
+
+    (2) ifStatement -> KEY_IF KEY_THEN KEY_END .
+
+    KEY_END         reduce using rule 2 (ifStatement -> KEY_IF KEY_THEN KEY_END .)
+
+
+state 12
+
+    (1) module -> KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT .
+
+    $end            reduce using rule 1 (module -> KEY_MODULE IDENT SCOLON KEY_BEGIN ifStatement KEY_END IDENT DOT .)
 
