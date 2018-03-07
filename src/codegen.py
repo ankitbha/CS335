@@ -499,11 +499,12 @@ def translate(line):
 		array = line[2]
 		index = line[3]
 		res = line[4]
-		addr= addrDesc[res]
+		addr = addrDesc[res]
 		if(addr=="MEM"):
 			addr=getReg(res,lineno)
 		if(isInt(index)):
-			acode = acode + "\tlw " + addr + ", " + index + "(" + array.lexeme + ")\n"
+			acode = acode + "\tlw " + addr + ", " + str(4*int(index)) + "(" + array.lexeme() + ")\n"
+
 		else:
 			addri = addrDesc[index]
 			if(addri=="MEM"):
@@ -522,28 +523,33 @@ def translate(line):
 		index = line[3]
 		res = line[4]
 		arr = getReg(array,lineno)
-		if(isInt(res)):
+		if (not isInt(res)):
+			rres = getReg(res,lineno)
 			if(isInt(index)):
-				addi
-
-				acode = acode + "\tsw" + 
-			addr = addrDesc[res]
-		
-		if(addr=="MEM"):
-			addr=getReg(num1,lineno)
-		if(isInt(index)):
-			acode = acode + "\tlw" + addr + ", " + index + "(" + a.lexeme + ")\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				# rres = getReg("number",lineno)
+				acode = acode + "\tsw " + rres + ", " + arr + "\n"
+			else:
+				rindex = getReg(index,lineno)
+				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
+				acode = acode + "\tadd " + arr + ", " + arr + ", " + rindex + "\n"
+				acode = acode + "\tsw " + rres + ", " + arr + "\n"
 		else:
-			addri = addrDesc[index]
-			if(addri=="MEM"):
-				addri=getReg(index,lineno)
-			arr = getReg(array,lineno)
-			acode = acode + "\tla" + arr + ", " + array.lexeme + "\n"
-			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
-			acode = acode + "\tadd" + addri + ", " + addri + ", " + addri + "\n"
-			acode = acode + "\tadd" + arrdi + ", " + arr + "," + addri + "\n"
-			acode = acode + "\tlw" + addr + ", " + arrdi +"\n"
-
+			if(isInt(index)):
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				# rres = getReg("number",lineno)
+				acode = acode + "\tli " + arr + ", " + res + "\n"
+			else:
+				rindex = getReg(index,lineno)
+				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
+				acode = acode + "\tadd " + arr + ", " + arr + ", " + rindex + "\n"
+				acode = acode + "\tli " +  arr +  ", " + res + "\n"		
 
 mathop = ['+', '-', '*', '/', '%']
 addrDesc = {}
@@ -578,7 +584,7 @@ def main():
 		print("Too many or too few arguements")
 		exit()
 
-	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint']
+	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint', 'readarray', 'writearray']
 	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 
 	boolop = ['&', '|', '!']
@@ -602,6 +608,9 @@ def main():
 			pass
 		elif line[1] in ['readarray', 'writearray']:
 			arrayz.append(line[2])
+			for var in line[3:]:
+				if(var not in reserved and not RepresentsInt(var)):
+					variables.append(var)
 		else:
 			for var in line:
 				if(var not in reserved and not RepresentsInt(var)):
