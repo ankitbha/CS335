@@ -31,7 +31,8 @@ class Parser(object):
 		'''
 	def p_ifStatement(self,p):
 		'''
-			ifStatement  :  KEY_IF KEY_THEN KEY_END
+			ifStatement  :  KEY_IF LCB KEY_THEN RCB KEY_END
+							| KEY_IF LCB KEY_ELSE RCB KEY_END
 		'''	
 	# def ident(self, p):
 	# 	'''
