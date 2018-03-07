@@ -25,7 +25,6 @@ reserved = {
 	'MODULE' : 'KEY_MODULE',                           # start keyword
 	'NEW' : 'KEY_NEW',                                 # new object/record
 	'NIL' : 'KEY_NIL',                                 # nil set
-	'NOT' : 'KEY_NOT',                                 # bool operator
 	'OF' : 'KEY_OF',                                   # array declare keyword
 	'ORD' : 'KEY_ORD',                                 # num to char
 	'POINTER' : 'KEY_POINTER',                         # pointer
@@ -35,6 +34,7 @@ reserved = {
 	'RECORD' : 'KEY_RECORD',                           # data structure
 	'RETURN' : 'KEY_RETURN',                           # return value
 	'SET' : 'KEY_SET',                                 # data type
+    'SWITCH' : 'KEY_SWITCH'                            # switch case
 	'THEN' : 'KEY_THEN',                               # if else
 	'TO' : 'KEY_TO',                                   # pointer to
 	'TYPE' : 'KEY_TYPE',                               # data type
