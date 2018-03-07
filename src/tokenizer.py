@@ -4,10 +4,12 @@ reserved = {
 	'ARRAY' : 'KEY_ARRAY',                             # declare array
 	'BEGIN' : 'KEY_BEGIN',                             # start block
 	'BOOLEAN' : 'KEY_BOOLEAN',                         # var type
+    'BREAK' : 'KEY_BREAK',                             # break loop
 	'CASE' : 'KEY_CASE',                               # switch case
 	'CHAR' : 'KEY_CHAR',                               # declare array
 	'CHR' : 'KEY_CHR',                                 # ascii to char
 	'CONST' : 'KEY_CONST',                             # define constant
+    'CONTINUE' : 'KEY_CONTINUE',                       # continue loop
 	'DO' : 'KEY_DO',                                   # do while
 	'ELSE' : 'KEY_ELSE',                               # if else
 	'ELSIF' : 'KEY_ELSIF',                             # if else
