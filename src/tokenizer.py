@@ -34,7 +34,7 @@ reserved = {
 	'RECORD' : 'KEY_RECORD',                           # data structure
 	'RETURN' : 'KEY_RETURN',                           # return value
 	'SET' : 'KEY_SET',                                 # data type
-    'SWITCH' : 'KEY_SWITCH'                            # switch case
+    'SWITCH' : 'KEY_SWITCH',                           # switch case
 	'THEN' : 'KEY_THEN',                               # if else
 	'TO' : 'KEY_TO',                                   # pointer to
 	'TYPE' : 'KEY_TYPE',                               # data type
