@@ -1,0 +1,160 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    KEY_ELSE
+    KEY_THEN
+    GT
+    KEY_ELSIF
+    KEY_ABS
+    ASSIGN
+    KEY_NEW
+    KEY_FOR
+    VBOOLEAN
+    KEY_DO
+    MULTIPLY
+    KEY_READ
+    KEY_WRITE
+    KEY_POINTER
+    KEY_FPRINTF
+    MODULUS
+    KEY_TYPE
+    KEY_CHR
+    AND
+    KEY_VAR
+    KEY_RECORD
+    KEY_OF
+    VCHAR
+    KEY_NIL
+    LCB
+    PLUS
+    KEY_REAL
+    NOT
+    COMMA
+    KEY_SET
+    LRB
+    KEY_ORD
+    KEY_IS
+    KEY_RETURN
+    KEY_CASE
+    RCB
+    KEY_BOOLEAN
+    LT
+    KEY_FREAD
+    KEY_EXIT
+    KEY_ARRAY
+    KEY_TO
+    RRB
+    KEY_FCLOSE
+    KEY_WHILE
+    KEY_IF
+    RSB
+    KEY_FOPEN
+    OR
+    MINUS
+    KEY_IN
+    EQUAL
+    VINTEGER
+    KEY_CHAR
+    LTEQ
+    DIVIDE
+    COLON
+    GTEQ
+    VSTRING
+    NEQUAL
+    LSB
+    VREAL
+    KEY_INTEGER
+    KEY_CONST
+    KEY_WRITELN
+    KEY_PROCEDURE
+    KEY_SWITCH
+
+Grammar
+
+Rule 0     S' -> module
+Rule 1     module -> KEY_MODULE IDENT SCOLON declarationsequence KEY_BEGIN statementsequence KEY_END IDENT DOT
+
+Terminals, with rules where they appear
+
+AND                  : 
+ASSIGN               : 
+COLON                : 
+COMMA                : 
+DIVIDE               : 
+DOT                  : 1
+EQUAL                : 
+GT                   : 
+GTEQ                 : 
+IDENT                : 1 1
+KEY_ABS              : 
+KEY_ARRAY            : 
+KEY_BEGIN            : 1
+KEY_BOOLEAN          : 
+KEY_CASE             : 
+KEY_CHAR             : 
+KEY_CHR              : 
+KEY_CONST            : 
+KEY_DO               : 
+KEY_ELSE             : 
+KEY_ELSIF            : 
+KEY_END              : 1
+KEY_EXIT             : 
+KEY_FCLOSE           : 
+KEY_FOPEN            : 
+KEY_FOR              : 
+KEY_FPRINTF          : 
+KEY_FREAD            : 
+KEY_IF               : 
+KEY_IN               : 
+KEY_INTEGER          : 
+KEY_IS               : 
+KEY_MODULE           : 1
+KEY_NEW              : 
+KEY_NIL              : 
+KEY_OF               : 
+KEY_ORD              : 
+KEY_POINTER          : 
+KEY_PROCEDURE        : 
+KEY_READ             : 
+KEY_REAL             : 
+KEY_RECORD           : 
+KEY_RETURN           : 
+KEY_SET              : 
+KEY_SWITCH           : 
+KEY_THEN             : 
+KEY_TO               : 
+KEY_TYPE             : 
+KEY_VAR              : 
+KEY_WHILE            : 
+KEY_WRITE            : 
+KEY_WRITELN          : 
+LCB                  : 
+LRB                  : 
+LSB                  : 
+LT                   : 
+LTEQ                 : 
+MINUS                : 
+MODULUS              : 
+MULTIPLY             : 
+NEQUAL               : 
+NOT                  : 
+OR                   : 
+PLUS                 : 
+RCB                  : 
+RRB                  : 
+RSB                  : 
+SCOLON               : 1
+VBOOLEAN             : 
+VCHAR                : 
+VINTEGER             : 
+VREAL                : 
+VSTRING              : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+declarationsequence  : 1
+module               : 0
+statementsequence    : 1
+
