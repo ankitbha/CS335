@@ -32,7 +32,7 @@ class Parser(object):
 
 	def p_declarationSequence(self, p):
 		'''
-			declarationsequence : declarationSequence KEY_CONST conss
+			declarationSequence : declarationSequence KEY_CONST conss
 								| declarationSequence KEY_TYPE typess
 								| declarationSequence KEY_VAR varss
 								| declarationSequence
@@ -84,13 +84,13 @@ class Parser(object):
 		'''
 			simpleExpression : PLUS term simpless
 							 | term simpless
-			 				 | MINUS term simpless
+							 | MINUS term simpless
 		'''
 
 	def p_simpless(self, p):
 		'''
 			simpless : simpless addOperator term
-			 		 | empty
+					 | empty
 		'''
 
 	def p_term(self, p):
@@ -128,13 +128,19 @@ class Parser(object):
 
 	def p_number(self, p):
 		'''
-			number : VINTEGER | VREAL
+			number : VINTEGER 
+				   | VREAL
 		'''
 
 	def p_char(self, p):
 		'''
 			char : VCHAR
 		'''
+
+	def p_string(self, p):
+		'''
+			string : VSTRING
+		'''	
 
 	def p_set(self, p):
 		'''
@@ -242,7 +248,7 @@ class Parser(object):
 
 	def p_comass(self, p):
 		'''
-			comass : commas COMMA length
+			comass : comass COMMA length
 				   | empty
 		'''
 
@@ -420,10 +426,10 @@ class Parser(object):
 		'''
 
 	def p_empty(self, p):
-        '''
-            empty :
-        '''
-        pass
+		'''
+			empty :
+		'''
+		pass
 
 
 #======================================= need to finish grammar part ===========================

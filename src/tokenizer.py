@@ -12,7 +12,7 @@ reserved = {
     'CONTINUE' : 'KEY_CONTINUE',                       # continue loop
 	'DO' : 'KEY_DO',                                   # do while
 	'ELSE' : 'KEY_ELSE',                               # if else
-	'ELSIF' : 'KEY_ELSIF',                             # if else
+	'ELSEIF' : 'KEY_ELSEIF',                             # if else
 	'END' : 'KEY_END',                                 # end block
 	'EXIT' : 'KEY_EXIT',                               # end program
 	'FCLOSE' : 'KEY_FCLOSE',                           # close file
@@ -36,6 +36,7 @@ reserved = {
 	'RECORD' : 'KEY_RECORD',                           # data structure
 	'RETURN' : 'KEY_RETURN',                           # return value
 	'SET' : 'KEY_SET',                                 # data type
+    'STRING' : 'KEY_STRING',
     'SWITCH' : 'KEY_SWITCH',                           # switch case
 	'THEN' : 'KEY_THEN',                               # if else
 	'TO' : 'KEY_TO',                                   # pointer to

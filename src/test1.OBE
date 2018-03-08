@@ -1,0 +1,20 @@
+MODULE Code;
+VAR a, b, c, d, e : INTEGER;
+
+BEGIN
+	a := 21;
+  b := 10;
+
+	c := a + b;
+	WRITELN(c);
+
+	c := a - b;
+	WRITELN(c);
+
+	c := a / b;
+	WRITELN(c);
+
+	c := a % b;
+	WRITELN(c);
+
+END Code.
