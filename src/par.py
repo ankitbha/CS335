@@ -32,16 +32,41 @@ class Parser(object):
 
 	def p_declarationSequence(self, p):
 		'''
-			declarationsequence : declarationSequence LCB KEY_CONST LCB constantDeclaration SCOLON RCB
-								| declarationSequence KEY_TYPE LCB typeDeclaration SCOLON RCB
-								| declarationSequence KEY_VAR LCB variableDeclaration SCOLON RCB
-								| declarationSequence LCB procedureDeclaration SCOLON RCB
+			declarationsequence : declarationSequence KEY_CONST conss
+								| declarationSequence KEY_TYPE typess
+								| declarationSequence KEY_VAR varss
+								| declarationSequence
 								| empty
+		'''
+
+	def p_conss(self, p):
+		'''
+			conss : conss constantDeclaration SCOLON
+				  | empty
+		'''
+
+	def p_typess(self, p):
+		'''
+			typess : typess typeDeclaration SCOLON
+				  | empty
+		'''
+
+	def p_varss(self, p):
+		'''
+			varss : varss variableDeclaration SCOLON
+				  | empty
+		'''
+
+	def p_procss(self, p):
+		'''
+			procss : procss procedureDeclaration SCOLON
+				  | empty
 		'''
 
 	def p_statementSequence(self, p):
 		'''
-			statementSequence : statement LCB SCOLON statement RCB
+			statementSequence : statementSequence SCOLON statement
+							  | statement
 		'''
 
 	def p_constantDeclaration(self, p):
@@ -51,18 +76,32 @@ class Parser(object):
 
 	def p_expression(self, p):
 		'''
-			expression : simpleExpression LSB relation simpleExpression RSB
+			expression : simpleExpression
+					   | simpleExpression relation simpleExpression
 		'''
 
 	def p_simpleExpression(self, p):
 		'''
-			simpleExpression : LSB PLUS RSB term LCB addOperator term RCB
-			 				 | LSB MINUS RSB term LCB addOperator term RCB
+			simpleExpression : PLUS term simpless
+							 | term simpless
+			 				 | MINUS term simpless
+		'''
+
+	def p_simpless(self, p):
+		'''
+			simpless : simpless addOperator term
+			 		 | empty
 		'''
 
 	def p_term(self, p):
 		'''
-			term : factor LCB mulOperator factor RCB
+			term : factor termss
+		'''
+
+	def p_termss(self, p):
+		'''
+			termss : termss mulOperator factor
+				   | empty
 		'''
 
 	def p_factor(self, p):
@@ -73,7 +112,7 @@ class Parser(object):
 				   | KEY_NIL
 				   | set
 				   | designator
-				   | LSB actualParameters
+				   | designator actualParameters
 				   | LRB expression RRB
 				   | NOT factor
 				   | KEY_ABS factor
@@ -99,7 +138,8 @@ class Parser(object):
 
 	def p_set(self, p):
 		'''
-			set : LCB LSB element COMMA element RSB RCB
+			set : LCB element COMMA element RCB
+				| LCB RCB
 		'''
 
 	def p_element(self, p):
@@ -110,33 +150,38 @@ class Parser(object):
 	def p_designator(self, p):
 		'''
 			designator : qualident designator2
+					   | qualident
 		'''
 
 	def p_designator2(self, p):
 		'''
 			designator2 : designator2 DOT identdef
 						| designator2 LSB expList RSB
-						| LRB qualident RRB
+						| designator LRB qualident RRB
 		'''
 
 	def p_qualident(self, p):
 		'''
-			qualident : LSB identdef DOT RSB identdef
+			qualident : identdef
+					  | identdef DOT identdef
 		'''
 
 	def p_identdef(self, p):
 		'''
-			identdef : LSB MULTIPLY RSB IDENT
+			identdef : IDENT
+					 | MULTIPLY IDENT
 		'''
 
 	def p_expList(self, p):
 		'''
-			expList : expression LCB COMMA expression RCB
+			expList : expList COMMA expression
+					| expression
 		'''
 
 	def p_actualParameters(self, p):
 		'''
-			actualParameters : LRB LSB expList RSB RRB
+			actualParameters : LRB expList RRB
+							 | LRB RRB
 		'''
 
 	def p_mulOperator(self, p):
@@ -192,7 +237,13 @@ class Parser(object):
 
 	def p_arrayType(self, p):
 		'''
-			arrayType : KEY_ARRAY length LCB COMMA length RCB KEY_OF type
+			arrayType : KEY_ARRAY length comass KEY_OF type
+		'''
+
+	def p_comass(self, p):
+		'''
+			comass : commas COMMA length
+				   | empty
 		'''
 
 	def p_length(self, p):
@@ -202,7 +253,8 @@ class Parser(object):
 
 	def p_recordType(self, p):
 		'''
-			recordType : KEY_RECORD LSB LRB baseType RRB RSB fieldListSequence KEY_END
+			recordType : KEY_RECORD fieldListSequence KEY_END
+					   | KEY_RECORD LRB baseType RRB fieldListSequence KEY_END
 		'''
 
 	def p_baseType(self, p):
@@ -212,17 +264,20 @@ class Parser(object):
 
 	def p_fieldListSequence(self, p):
 		'''
-			fieldListSequence : fieldList LCB SCOLON fieldList RCB
+			fieldListSequence : fieldListSequence SCOLON fieldList
+							  | fieldList
 		'''
 
 	def p_fieldList(self, p):
 		'''
-			fieldList : LSB identList COLON type RSB
+			fieldList : identList COLON type
+					  | empty
 		'''
 
 	def p_identList(self, p):
 		'''
-			identList : IDENT LCB COMMA IDENT RCB
+			identList : identList COMMA IDENT
+					  | IDENT
 		'''
 
 	def p_pointerType(self, p):
@@ -243,17 +298,31 @@ class Parser(object):
 
 	def p_procedureHeading(self, p):
 		'''
-			procedureHeading : KEY_PROCEDURE IDENT LSB formalParameters RSB COLON type
+			procedureHeading : KEY_PROCEDURE IDENT formalParameters COLON type
+							 | KEY_PROCEDURE IDENT COLON type
 		'''
 
 	def p_formalParameters(self, p):
 		'''
-			formalParameters : LRB LSB FPSection LCB SCOLON FPSection RCB RSB RRB
+			formalParameters : LRB FPSection formalss RRB
+							 | LRB RRB
+		'''
+
+	def p_formalss(self, p):
+		'''
+			formalss : formalss SCOLON FPSection
+					 | empty
 		'''
 
 	def p_FPSection(self, p):
 		'''
-			FPSection : IDENT LCB COMMA IDENT RCB COLON type
+			FPSection : IDENT FPs COLON type
+		'''
+
+	def p_FPs(self, p):
+		'''
+			FPs : FPs COMMA IDENT
+				| empty
 		'''
 
 	def p_procedureBody(self, p):
@@ -263,19 +332,21 @@ class Parser(object):
 
 	def p_statement(self, p):
 		'''
-			statement : LSB assignment RSB
-					  | LSB procedureCall RSB
-					  | LSB ifStatement RSB
-					  | LSB switchStatement RSB
-					  | LSB whileStatement RSB
-					  | LSB forStatement RSB
-					  | LSB doWhileStatement RSB
+			statement : assignment
+					  | procedureCall
+					  | ifStatement
+					  | switchStatement
+					  | whileStatement
+					  | forStatement
+					  | doWhileStatement
 					  | KEY_EXIT
-					  | KEY_RETURN LSB expression RSB
+					  | KEY_RETURN expression
+					  | KEY_RETURN
 					  | ioStatement
 					  | fileStatement
 					  | KEY_BREAK
 					  | KEY_CONTINUE
+					  | empty
 		'''
 
 	def p_assignment(self, p):
@@ -285,17 +356,32 @@ class Parser(object):
 
 	def p_procedureCall(self, p):
 		'''
-			procedureCall : designator LSB actualParameters RSB
+			procedureCall : designator actualParameters
+						  | designator
 		'''
 
 	def p_ifStatement(self, p):
 		'''
-			ifStatement : KEY_IF expression KEY_THEN statementSequence LCB KEY_ELSEIF expression KEY_THEN statementSequence RCB LSB KEY_ELSE statementSequence RSB KEY_END
+			ifStatement : KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END
+						| KEY_IF expression KEY_THEN statementSequence ifss KEY_END
+		'''
+
+	def p_ifss(self, p):
+		'''
+			ifss : ifss KEY_ELSEIF expression KEY_THEN statementSequence
+				 | empty
 		'''
 
 	def p_switchStatement(self, p):
 		'''
-			switchStatement : KEY_SWITCH expression KEY_BEGIN case LCB OR case RCB LSB KEY_ELSE COLON statementSequence RSB KEY_END
+			switchStatement : KEY_SWITCH expression KEY_BEGIN case casess KEY_ELSE COLON statementSequence KEY_END
+							| KEY_SWITCH expression KEY_BEGIN case casess KEY_END
+		'''
+
+	def p_casess(self, p):
+		'''
+			casess : casess OR case
+				   | empty
 		'''
 
 	def p_case(self, p):
