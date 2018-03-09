@@ -128,7 +128,7 @@ class Parser(object):
 
 	def p_number(self, p):
 		'''
-			number : VINTEGER 
+			number : VINTEGER
 				   | VREAL
 		'''
 
@@ -140,7 +140,7 @@ class Parser(object):
 	def p_string(self, p):
 		'''
 			string : VSTRING
-		'''	
+		'''
 
 	def p_set(self, p):
 		'''
@@ -431,7 +431,19 @@ class Parser(object):
 		'''
 		pass
 
+	def p_error(self, p):
+		print('\n-------------------------------------------------------')
 
+		print('Error: \'{}\' at line no: {}'.format(p.value, p.lineno))
+
+		with open(filename,'r') as fp:
+			for i, line in enumerate(fp):
+				if i+1 == p.lineno:
+					print("\t\t\tin {}".format(line.strip(),))
+
+		print('-------------------------------------------------------\n')
+
+		exit(1)
 #======================================= need to finish grammar part ===========================
 
 

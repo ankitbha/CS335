@@ -14,7 +14,7 @@ BEGIN
 	c := a / b;
 	WRITELN(c);
 
-	c := a % b;
+	c := a * b;
 	WRITELN(c);
 
 END Code.
