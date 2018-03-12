@@ -169,7 +169,7 @@ class Parser(object):
 	def p_qualident(self, p):
 		'''
 			qualident : identdef
-					  | identdef DOT identdef
+					  | identdef DOT qualident
 		'''
 
 	def p_identdef(self, p):
@@ -305,7 +305,7 @@ class Parser(object):
 	def p_procedureHeading(self, p):
 		'''
 			procedureHeading : KEY_PROCEDURE IDENT formalParameters COLON type
-							 | KEY_PROCEDURE IDENT COLON type
+							 | KEY_PROCEDURE IDENT formalParameters
 		'''
 
 	def p_formalParameters(self, p):
