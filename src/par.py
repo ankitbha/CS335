@@ -175,7 +175,7 @@ class Parser(object):
 	def p_identdef(self, p):
 		'''
 			identdef : IDENT
-					 | MULTIPLY IDENT
+					 | AT IDENT
 		'''
 
 	def p_expList(self, p):

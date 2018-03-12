@@ -56,6 +56,7 @@ class tokenizer(object):
         t_DIVIDE = r'/'
         t_MODULUS = r'%'
         t_DOT = r'\.'
+        t_AT = r'@'
 
         # Relation
         t_ASSIGN = r':='
@@ -88,7 +89,7 @@ class tokenizer(object):
         t_VBOOLEAN = r'TRUE|FALSE'
         t_VSTRING = r'\"([^\\]|(\\.))*?\"'
         t_VCHAR = r'(L)?\'(.|\n)\''
-        tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'NOT', 'AND' , 'EQUAL' ,  'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VINTEGER', 'VREAL', 'VSTRING', 'VBOOLEAN', 'VCHAR' , 'COLON' ] + list(reserved.values())
+        tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'NOT', 'AND' , 'EQUAL' ,  'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VINTEGER', 'VREAL', 'VSTRING', 'VBOOLEAN', 'VCHAR' , 'COLON' , 'AT' ] + list(reserved.values())
         
         def t_IDENT(self, t):
                 r'[a-zA-Z]([a-zA-Z0-9])*'
