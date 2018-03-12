@@ -1,0 +1,17 @@
+(*program to basic arithmetic and relation/ boolean operations *)
+MODULE Pattern;
+	VAR i, j:INTEGER ; r: REAL ; b,c : BOOLEAN ;
+BEGIN
+	i := 2 + 3;
+	WRITEINT(i);	
+	j := i * 2 - (-i);
+	WRITEINT(j);
+	r := j + 2.3;
+	WRITEREAL(r);
+	b := FALSE;
+	WRITEINT(b);
+	c := 3 < 4;
+	WRITEINT(c);
+	b := TRUE OR FALSE;
+	WRITEINT(b);
+END Pattern.

@@ -1,0 +1,23 @@
+(*Bubble sort program*)
+MODULE sort;
+VAR a ,b, t : INTEGER ; c : ARRAY 10 OF INTEGER;
+
+BEGIN
+a:=1;
+WHILE a <=10 DO READINT(c[a]); a := a +1 ;END;
+a:=1;
+WHILE a<=9 DO
+	b:= a+1 ;	
+	WHILE b <= 10 DO
+		IF(c[a] > c[b]) THEN
+		t := c[a];
+		c[a] := c[b];
+		c[b] := t;
+		END;
+	b:=b+1;	
+	END;
+	a:=a+1;
+END;
+a:= 1;
+WHILE a<=10 DO WRITEINT(c[a]); a:=a+1; END; 
+END sort.

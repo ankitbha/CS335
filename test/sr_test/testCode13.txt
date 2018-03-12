@@ -1,0 +1,15 @@
+(*program to test call be reference for records *)
+MODULE Pattern;
+	TYPE utype = RECORD x: INTEGER END;
+	VAR a : utype ;
+	PROCEDURE func(VAR alpha : utype);
+	BEGIN 
+		alpha.x := 2;
+	END func;
+
+BEGIN
+	a.x := 100;
+	WRITEINT(a.x);
+	func(a);
+	WRITEINT(a.x);
+END Pattern.

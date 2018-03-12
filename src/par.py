@@ -35,7 +35,7 @@ class Parser(object):
 			declarationSequence : declarationSequence KEY_CONST conss
 								| declarationSequence KEY_TYPE typess
 								| declarationSequence KEY_VAR varss
-								| declarationSequence
+								| declarationSequence procss
 								| empty
 		'''
 
@@ -60,7 +60,7 @@ class Parser(object):
 	def p_procss(self, p):
 		'''
 			procss : procss procedureDeclaration SCOLON
-				  | empty
+				   | empty
 		'''
 
 	def p_statementSequence(self, p):
@@ -299,7 +299,7 @@ class Parser(object):
 
 	def p_procedureDeclaration(self, p):
 		'''
-			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT SCOLON
+			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT 
 		'''
 
 	def p_procedureHeading(self, p):

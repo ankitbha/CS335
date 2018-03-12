@@ -1,0 +1,24 @@
+(* REPEAT LOOP statement *)
+MODULE Pattern;
+	VAR x : INTEGER;
+	PROCEDURE func(VAR x : INTEGER);
+		VAR y: INTEGER;
+		PROCEDURE prod(x, y :INTEGER) : INTEGER ;
+		BEGIN
+			RETURN x*y
+		END prod;
+	BEGIN 
+		IF x < 0 THEN
+			x := -1*x;
+		END;
+		y:=1;
+		REPEAT
+			WRITEINT(prod(x, y));
+			y := y +1 ;
+		UNTIL y > 10 ;
+	END func;
+
+BEGIN
+	x:=7;
+	func(x);
+END Pattern.

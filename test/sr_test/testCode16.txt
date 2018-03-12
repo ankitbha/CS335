@@ -1,0 +1,12 @@
+(* function to replace one row of a 2 D array by a 1 D array : Just behaving like objects???? *)
+MODULE Pattern;
+	VAR a : ARRAY 10 OF ARRAY 10 OF INTEGER;
+	VAR b : ARRAY 10 OF INTEGER;
+
+BEGIN
+	a[3,6] := 100;
+	WRITEINT(a[3,6]);
+	b[6]:= 600;
+	a[3] := b;
+	WRITEINT(a[3,6]);
+END Pattern.
