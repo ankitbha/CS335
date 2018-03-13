@@ -9,7 +9,7 @@ MODULE Pattern;
 BEGIN
 	a := 15;
 	b := 1;
-	WHILE b <= 10 DO
+	WHILE b <= 10 BEGIN
 		WRITEINT(product(a,b));
 		b:= b+ 1;
 	END

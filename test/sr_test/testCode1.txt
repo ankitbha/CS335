@@ -5,7 +5,7 @@ MODULE Pattern;
 	BEGIN 
 		IF  ( a > b ) THEN
 			RETURN a
-		ELSIF (a = b) THEN
+		ELSEIF (a = b) THEN
 			RETURN 0
 		ELSE
 			RETURN b

@@ -1,7 +1,7 @@
 (* Program for a 3 level code *)
 MODULE Pattern;
 	VAR x : INTEGER;
-	PROCEDURE func(VAR x : INTEGER);
+	PROCEDURE func(x : INTEGER);
 		VAR y: INTEGER;
 		PROCEDURE prod(x, y :INTEGER) : INTEGER ;
 		BEGIN
@@ -12,7 +12,7 @@ MODULE Pattern;
 			x := -1*x;
 		END;
 		y:=1;
-		WHILE y <= 10 DO
+		WHILE y <= 10 BEGIN
 			WRITEINT(prod(x, y));
 			y := y +1 ;
 		END;

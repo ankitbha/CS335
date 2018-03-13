@@ -12,6 +12,6 @@ BEGIN
 	WRITEINT(b);
 	c := 3 < 4;
 	WRITEINT(c);
-	b := TRUE OR FALSE;
+	b := TRUE | FALSE;
 	WRITEINT(b);
 END Pattern.

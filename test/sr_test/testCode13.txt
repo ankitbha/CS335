@@ -2,7 +2,7 @@
 MODULE Pattern;
 	TYPE utype = RECORD x: INTEGER END;
 	VAR a : utype ;
-	PROCEDURE func(VAR alpha : utype);
+	PROCEDURE func(alpha : utype);
 	BEGIN 
 		alpha.x := 2;
 	END func;

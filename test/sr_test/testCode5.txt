@@ -1,12 +1,11 @@
 (*program to test function overloading *)
 MODULE Pattern;
-
-	PROCEDURE func(VAR x, y : INTEGER) : INTEGER; 
+	PROCEDURE func(x, y : INTEGER) : INTEGER; 
 	BEGIN 
 		RETURN x+y
 	END func;
 
-	PROCEDURE func(VAR x, y, z : INTEGER) : INTEGER; 
+	PROCEDURE func(x, y, z : INTEGER) : INTEGER; 
 	BEGIN 
 		RETURN x*y*z
 	END func;

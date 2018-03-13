@@ -5,7 +5,7 @@ MODULE Pattern;
 
 BEGIN
 	NEW(x);
-	x^ := 4;
+	x := 4;
 	y := x;
-	WRITEINT(y^);
+	WRITEINT(y);
 END Pattern.

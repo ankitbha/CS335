@@ -1,6 +1,0 @@
-MODULE Pattern;
-BEGIN
-IF THEN 
-THEN
-END
-END Pattern.

@@ -5,9 +5,9 @@ MODULE Pattern;
 	VAR rec : POINTER TO list ;
 BEGIN
 	NEW(rec);
-	rec^.index := 1;
-	NEW(rec^.next);
-	rec^.next^.index := 2;
-	WRITEINT(rec^.index);
-	WRITEINT(rec^.next^.index);
+	@rec.index := 1;
+	NEW(@rec.next);
+	@rec.@next.index := 2;
+	WRITEINT(@rec.index);
+	WRITEINT(@rec.@next.index);
 END Pattern.

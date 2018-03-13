@@ -9,8 +9,8 @@ BEGIN
 	WRITEINT(x-y);
 	WRITEINT(x*y);
 	WRITEREAL(x/y);
-	WRITEINT(x MOD y);
-	WRITEINT(x DIV y);
+	WRITEINT(x % y);
+	WRITEINT(x / y);
 	WRITEREAL(x+z);
 	WRITEREAL(x-z);
 	WRITEREAL(x*z);

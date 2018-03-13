@@ -1,9 +1,0 @@
-1, =, a, 2
-2, =, bh, 7
-3, +, a, a, bh
-4, ifgoto, <=, a, 50, 2
-5, call, foo
-6, return
-7, label, foo
-8, printint, a
-9, return, a
