@@ -1,13 +1,14 @@
 (* PROGRAM to test LOOP EXIT statement : Print table of 7 *)
+(* Not in our grammar *)
 MODULE Pattern;
 VAR x : INTEGER;
-PROCEDURE func(VAR x : INTEGER);
+PROCEDURE func( x : INTEGER);
 VAR y: INTEGER;
 	PROCEDURE prod(x, y :INTEGER) : INTEGER ;
 	BEGIN
 	RETURN x*y
 	END prod;
-BEGIN 
+BEGIN
 IF x < 0 THEN
 x := -1*x;
 END;

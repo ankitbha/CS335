@@ -156,7 +156,6 @@ class Parser(object):
 	def p_designator(self, p):
 		'''
 			designator : qualident designator2
-					   | qualident
 		'''
 
 	def p_designator2(self, p):
@@ -164,6 +163,7 @@ class Parser(object):
 			designator2 : designator2 DOT identdef
 						| designator2 LSB expList RSB
 						| designator LRB qualident RRB
+						| empty
 		'''
 
 	def p_qualident(self, p):
@@ -299,7 +299,7 @@ class Parser(object):
 
 	def p_procedureDeclaration(self, p):
 		'''
-			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT 
+			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT
 		'''
 
 	def p_procedureHeading(self, p):
@@ -397,7 +397,7 @@ class Parser(object):
 
 	def p_whileStatement(self, p):
 		'''
-			whileStatement : KEY_WHILE expression KEY_BEGIN statementSequence KEY_END
+			whileStatement : KEY_WHILE expression KEY_DO KEY_BEGIN statementSequence KEY_END
 		'''
 
 	def p_forStatement(self, p):
@@ -413,6 +413,8 @@ class Parser(object):
 	def p_ioStatement(self, p):
 		'''
 			ioStatement : KEY_WRITE LRB expression RRB
+						| KEY_WRITEINT LRB expression RRB
+						| KEY_WRITEREAL LRB expression RRB
 						| KEY_WRITELN LRB expression RRB
 						| KEY_READ LRB expression RRB
 		'''

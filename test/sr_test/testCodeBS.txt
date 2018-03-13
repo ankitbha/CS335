@@ -4,20 +4,20 @@ VAR a ,b, t : INTEGER ; c : ARRAY 10 OF INTEGER;
 
 BEGIN
 a:=1;
-WHILE a <=10 BEGIN READINT(c[a]); a := a +1 ;END;
+WHILE a <=10 DO BEGIN READINT(c[a]); a := a +1 ;END;
 a:=1;
-WHILE a<=9 BEGIN
-	b:= a+1 ;	
-	WHILE b <= 10 BEGIN
+WHILE a<=9 DO BEGIN
+	b:= a+1 ;
+	WHILE b <= 10 DO BEGIN
 		IF(c[a] > c[b]) THEN
 		t := c[a];
 		c[a] := c[b];
 		c[b] := t;
 		END;
-	b:=b+1;	
+	b:=b+1;
 	END;
 	a:=a+1;
 END;
 a:= 1;
-WHILE a<=10 BEGIN WRITEINT(c[a]); a:=a+1; END; 
+WHILE a<=10 DO BEGIN WRITEINT(c[a]); a:=a+1; END; 
 END sort.
