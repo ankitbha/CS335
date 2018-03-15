@@ -1,6 +1,7 @@
 
 reserved = {
 	'ABS' : 'KEY_ABS',                                 # Absolute
+    'ADD' : 'KEY_ADD',
 	'ARRAY' : 'KEY_ARRAY',                             # declare array
 	'BEGIN' : 'KEY_BEGIN',                             # start block
 	'BOOLEAN' : 'KEY_BOOLEAN',                         # var type
@@ -11,8 +12,9 @@ reserved = {
 	'CONST' : 'KEY_CONST',                             # define constant
 	'CONTINUE' : 'KEY_CONTINUE',                       # continue loop
 	'DO' : 'KEY_DO',                                   # do while
+    'DEL' : 'KEY_DEL',                                 # delete from set
 	'ELSE' : 'KEY_ELSE',                               # if else
-	'ELSEIF' : 'KEY_ELSEIF',                             # if else
+	'ELSEIF' : 'KEY_ELSEIF',                           # if else
 	'END' : 'KEY_END',                                 # end block
 	'EXIT' : 'KEY_EXIT',                               # end program
 	'FCLOSE' : 'KEY_FCLOSE',                           # close file
@@ -32,11 +34,15 @@ reserved = {
 	'POINTER' : 'KEY_POINTER',                         # pointer
 	'PROCEDURE' : 'KEY_PROCEDURE',                     # function
 	'READ' : 'KEY_READ',                               # get input
+    'READREAL' : 'KEY_READREAL',                       # read real
+    'READINT' : 'KEY_READINT',                         # read integer
+    'READCHAR' : 'KEY_READCHAR',                       # read char
+    'READBOOL' : 'KEY_READBOOL',                       # read bool
 	'REAL' : 'KEY_REAL',                               # data type
 	'RECORD' : 'KEY_RECORD',                           # data structure
 	'RETURN' : 'KEY_RETURN',                           # return value
 	'SET' : 'KEY_SET',                                 # data type
-	'STRING' : 'KEY_STRING',
+	'STRING' : 'KEY_STRING',                           # data type
 	'SWITCH' : 'KEY_SWITCH',                           # switch case
 	'THEN' : 'KEY_THEN',                               # if else
 	'TO' : 'KEY_TO',                                   # pointer to
@@ -44,9 +50,11 @@ reserved = {
 	'VAR' : 'KEY_VAR',                                 # declare variable
 	'WHILE' : 'KEY_WHILE',                             # while/do while loop
 	'WRITE' : 'KEY_WRITE',                             # write output
-	'WRITEREAL' : 'KEY_WRITEREAL',
-	'WRITELN' : 'KEY_WRITELN',                          # outuput in new line
-	'WRITEINT' : 'KEY_WRITEINT'
+	'WRITEREAL' : 'KEY_WRITEREAL',                     # write real
+	'WRITELN' : 'KEY_WRITELN',                         # outuput in new line
+	'WRITEINT' : 'KEY_WRITEINT',                       # write integer
+    'WRITECHAR' : 'KEY_WRITECHAR',                     # write char
+    'WRITEBOOL' : 'KEY_WRITEBOOL'                      # write bool
    }
 
 class tokenizer(object):

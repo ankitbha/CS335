@@ -12,8 +12,6 @@ class Parser(object):
 		('right', 'ASSIGN'),
 		('left', 'OR'),
 		('left', 'AND'),
-		('left', 'OR'),
-		('left', 'AND'),
 		('left', 'EQUAL', 'NEQUAL'),
 		('left', 'GT', 'GTEQ', 'LT', 'LTEQ'),
 		('left', 'PLUS', 'MINUS'),
@@ -71,7 +69,7 @@ class Parser(object):
 
 	def p_constantDeclaration(self, p):
 		'''
-			constantDeclaration : IDENT ASSIGN expression
+			constantDeclaration : IDENT ASSIGN expression COLON type
 		'''
 
 	def p_expression(self, p):
@@ -109,7 +107,7 @@ class Parser(object):
 			factor : number
 				   | char
 				   | string
-				   | KEY_NIL
+				   | KEY_NIL LRB designator RRB
 				   | set
 				   | designator
 				   | designator actualParameters
@@ -124,6 +122,8 @@ class Parser(object):
 				   | KEY_STRING
 				   | KEY_REAL
 				   | KEY_SET
+				   | KEY_CHR LRB factor RRB
+				   | KEY_ORD LRB factor RRB
 		'''
 
 	def p_number(self, p):
@@ -353,12 +353,27 @@ class Parser(object):
 					  | KEY_BREAK
 					  | KEY_CONTINUE
 					  | empty
+					  | memoryalloc
+					  | setStatement
 		'''
 
 	def p_assignment(self, p):
 		'''
 			assignment : designator ASSIGN expression
 		'''
+
+	def p_setStatement(self, p):
+		'''
+			setStatement : qualident DOT KEY_ADD LRB expression RRB
+						 | qualident DOT KEY_DEL LRB expression RRB
+
+		'''
+
+	def p_memoryalloc(self, p):
+		'''
+			memoryalloc : KEY_NEW LRB designator RRB
+		'''
+
 
 	def p_procedureCall(self, p):
 		'''
@@ -386,18 +401,18 @@ class Parser(object):
 
 	def p_casess(self, p):
 		'''
-			casess : casess OR case
+			casess : case casess
 				   | empty
 		'''
 
 	def p_case(self, p):
 		'''
-			case : KEY_CASE COLON expression statementSequence
+			case : KEY_CASE expression COLON statementSequence
 		'''
 
 	def p_whileStatement(self, p):
 		'''
-			whileStatement : KEY_WHILE expression KEY_DO KEY_BEGIN statementSequence KEY_END
+			whileStatement : KEY_WHILE expression KEY_BEGIN statementSequence KEY_END
 		'''
 
 	def p_forStatement(self, p):
@@ -407,7 +422,7 @@ class Parser(object):
 
 	def p_doWhileStatement(self, p):
 		'''
-			doWhileStatement : KEY_DO statementSequence KEY_WHILE expression
+			doWhileStatement : KEY_DO KEY_BEGIN statementSequence KEY_END KEY_WHILE expression
 		'''
 
 	def p_ioStatement(self, p):
@@ -415,8 +430,15 @@ class Parser(object):
 			ioStatement : KEY_WRITE LRB expression RRB
 						| KEY_WRITEINT LRB expression RRB
 						| KEY_WRITEREAL LRB expression RRB
+						| KEY_WRITECHAR LRB expression RRB
+						| KEY_WRITEBOOL LRB expression RRB
 						| KEY_WRITELN LRB expression RRB
+						| KEY_WRITELN LRB RRB
 						| KEY_READ LRB expression RRB
+						| KEY_READINT LRB expression RRB
+						| KEY_READREAL LRB expression RRB
+						| KEY_READCHAR LRB expression RRB
+						| KEY_READBOOL LRB expression RRB
 		'''
 
 	def p_fileStatement(self, p):
