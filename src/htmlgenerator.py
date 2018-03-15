@@ -61,6 +61,7 @@ if __name__ == "__main__":
 		pat1 = re.compile('^Action : Reduce rule \[([^]]+)\] with \[(([^]]|\'\]\')+)\] .*')
 		pat2 = re.compile('^Stack  : .*')
 		flag = 0
+		counter = 0
 		for line in file:
 			if(flag == 0):
 				var1 = pat1.search(line)
@@ -100,8 +101,9 @@ if __name__ == "__main__":
 					word1 = words[:kindex]
 					word2 = words[kindex+1:]
 					# print(word2)
-					code = '<br></br><div><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
+					code = '<br></br><div class = "tab"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
 					htmlCode += code
+					counter = 1
 
 			if(flag == 2):
 				var3 = pat1.search(line)
@@ -112,15 +114,22 @@ if __name__ == "__main__":
 					if(str(words[kindex]) == str(lhs)):
 						words = word1 + rhs + word2
 						# print(words)
+						counter += 1
 						kindex = findindex(words)
 						if(kindex != -1):
 							word1 = words[:kindex]
 							word2 = words[kindex+1:]
-							code = '<br></br><div><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
+							if(counter%2 == 0):
+								code = '<br></br><div class="main"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
+							else:
+								code = '<br></br><div class="tab"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
 							htmlCode += code
 
 						else:
-							code = '<br></br><div><font>' + converttostr(words) + '</font></div>'
+							if(counter%2 == 0):
+								code = '<br></br><div class="main"><font>' + converttostr(words) + '</font></div>'
+							else:
+								code = '<br></br><div class="tab"><font>' + converttostr(words) + '</font></div>'
 							htmlCode += code
 							break	
 						# print(words[kindex])
