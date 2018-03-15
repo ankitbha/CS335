@@ -1,0 +1,1646 @@
+PLY: PARSE DEBUG END
+Done   : Returning <NoneType @ 0xa40060> (None)
+Stack  : module . $end
+State  : 1
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [module -> KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT] with ['MODULE','Pattern',';',None,'BEGIN',None,'END','Pattern','.'] and goto state 1
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT . None
+Defaulted state 254: Reduce using 1
+State  : 254
+
+Action : Shift and goto state 254
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT . LexToken(DOT,'.',20,353)
+State  : 194
+
+Action : Shift and goto state 194
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END . LexToken(IDENT,'Pattern',20,346)
+State  : 123
+
+Action : Shift and goto state 123
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(KEY_END,'END',20,342)
+State  : 53
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 53
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON statement . LexToken(KEY_END,'END',20,342)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> empty] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON empty . LexToken(KEY_END,'END',20,342)
+State  : 42
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 42
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON . LexToken(KEY_END,'END',20,342)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(SCOLON,';',19,340)
+State  : 53
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 53
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON statement . LexToken(SCOLON,';',19,340)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> ioStatement] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON ioStatement . LexToken(SCOLON,';',19,340)
+State  : 41
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [ioStatement -> KEY_WRITEINT LRB expression RRB] with ['WRITEINT','(',None,')'] and goto state 41
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB expression RRB . LexToken(SCOLON,';',19,340)
+State  : 240
+
+Action : Shift and goto state 240
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB expression . LexToken(RRB,')',19,339)
+State  : 180
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 180
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB simpleExpression . LexToken(RRB,')',19,339)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB term simpless . LexToken(RRB,')',19,339)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB term empty . LexToken(RRB,')',19,339)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB term . LexToken(RRB,')',19,339)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB factor termss . LexToken(RRB,')',19,339)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB factor empty . LexToken(RRB,')',19,339)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB factor . LexToken(RRB,')',19,339)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB designator . LexToken(RRB,')',19,339)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB qualident designator2 . LexToken(RRB,')',19,339)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB qualident empty . LexToken(RRB,')',19,339)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB qualident . LexToken(RRB,')',19,339)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB identdef . LexToken(RRB,')',19,339)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['test'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB IDENT . LexToken(RRB,')',19,339)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT LRB . LexToken(IDENT,'test',19,335)
+State  : 107
+
+Action : Shift and goto state 107
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON KEY_WRITEINT . LexToken(LRB,'(',19,334)
+State  : 24
+
+Action : Shift and goto state 24
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON . LexToken(KEY_WRITEINT,'WRITEINT',19,326)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(SCOLON,';',18,323)
+State  : 53
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 53
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON statement . LexToken(SCOLON,';',18,323)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> assignment] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON assignment . LexToken(SCOLON,';',18,323)
+State  : 29
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [assignment -> designator ASSIGN expression] with [None,':=',None] and goto state 29
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN expression . LexToken(SCOLON,';',18,323)
+State  : 171
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 171
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN simpleExpression . LexToken(SCOLON,';',18,323)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN term simpless . LexToken(SCOLON,';',18,323)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN term empty . LexToken(SCOLON,';',18,323)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN term . LexToken(SCOLON,';',18,323)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN factor termss . LexToken(SCOLON,';',18,323)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN factor empty . LexToken(SCOLON,';',18,323)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN factor . LexToken(SCOLON,';',18,323)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator actualParameters] with [None,None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator actualParameters . LexToken(SCOLON,';',18,323)
+State  : 145
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [actualParameters -> LRB expList RRB] with ['(',None,')'] and goto state 145
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList RRB . LexToken(SCOLON,';',18,323)
+State  : 235
+
+Action : Shift and goto state 235
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList . LexToken(RRB,')',18,322)
+State  : 174
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expList -> expList COMMA expression] with [None,',',None] and goto state 174
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA expression . LexToken(RRB,')',18,322)
+State  : 292
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 292
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA simpleExpression . LexToken(RRB,')',18,322)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA term simpless . LexToken(RRB,')',18,322)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA term empty . LexToken(RRB,')',18,322)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA term . LexToken(RRB,')',18,322)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA factor termss . LexToken(RRB,')',18,322)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA factor empty . LexToken(RRB,')',18,322)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA factor . LexToken(RRB,')',18,322)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA designator . LexToken(RRB,')',18,322)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA qualident designator2 . LexToken(RRB,')',18,322)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA qualident empty . LexToken(RRB,')',18,322)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA qualident . LexToken(RRB,')',18,322)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA identdef . LexToken(RRB,')',18,322)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['b'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA IDENT . LexToken(RRB,')',18,322)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList COMMA . LexToken(IDENT,'b',18,321)
+State  : 234
+
+Action : Shift and goto state 234
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expList . LexToken(COMMA,',',18,320)
+State  : 174
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expList -> expression] with [None] and goto state 174
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB expression . LexToken(COMMA,',',18,320)
+State  : 173
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 173
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB simpleExpression . LexToken(COMMA,',',18,320)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB term simpless . LexToken(COMMA,',',18,320)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB term empty . LexToken(COMMA,',',18,320)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB term . LexToken(COMMA,',',18,320)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB factor termss . LexToken(COMMA,',',18,320)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB factor empty . LexToken(COMMA,',',18,320)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB factor . LexToken(COMMA,',',18,320)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB designator . LexToken(COMMA,',',18,320)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB qualident designator2 . LexToken(COMMA,',',18,320)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB qualident empty . LexToken(COMMA,',',18,320)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB qualident . LexToken(COMMA,',',18,320)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB identdef . LexToken(COMMA,',',18,320)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['a'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB IDENT . LexToken(COMMA,',',18,320)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator LRB . LexToken(IDENT,'a',18,319)
+State  : 101
+
+Action : Shift and goto state 101
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN designator . LexToken(LRB,'(',18,318)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN qualident designator2 . LexToken(LRB,'(',18,318)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN qualident empty . LexToken(LRB,'(',18,318)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN qualident . LexToken(LRB,'(',18,318)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN identdef . LexToken(LRB,'(',18,318)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['bigger'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN IDENT . LexToken(LRB,'(',18,318)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN . LexToken(IDENT,'bigger',18,312)
+State  : 100
+
+Action : Shift and goto state 100
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator . LexToken(ASSIGN,':=',18,309)
+State  : 16
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 16
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON qualident designator2 . LexToken(ASSIGN,':=',18,309)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON qualident empty . LexToken(ASSIGN,':=',18,309)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON qualident . LexToken(ASSIGN,':=',18,309)
+State  : 14
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 14
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON identdef . LexToken(ASSIGN,':=',18,309)
+State  : 48
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['test'] and goto state 48
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON IDENT . LexToken(ASSIGN,':=',18,309)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON . LexToken(IDENT,'test',18,304)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(SCOLON,';',17,301)
+State  : 53
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 53
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON statement . LexToken(SCOLON,';',17,301)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> assignment] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON assignment . LexToken(SCOLON,';',17,301)
+State  : 29
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [assignment -> designator ASSIGN expression] with [None,':=',None] and goto state 29
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN expression . LexToken(SCOLON,';',17,301)
+State  : 171
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 171
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN simpleExpression . LexToken(SCOLON,';',17,301)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN term simpless . LexToken(SCOLON,';',17,301)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN term empty . LexToken(SCOLON,';',17,301)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN term . LexToken(SCOLON,';',17,301)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN factor termss . LexToken(SCOLON,';',17,301)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN factor empty . LexToken(SCOLON,';',17,301)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN factor . LexToken(SCOLON,';',17,301)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> number] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN number . LexToken(SCOLON,';',17,301)
+State  : 76
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [number -> VINTEGER] with ['1'] and goto state 76
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN VINTEGER . LexToken(SCOLON,';',17,301)
+State  : 97
+
+Action : Shift and goto state 97
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator ASSIGN . LexToken(VINTEGER,'1',17,300)
+State  : 100
+
+Action : Shift and goto state 100
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON designator . LexToken(ASSIGN,':=',17,297)
+State  : 16
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 16
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON qualident designator2 . LexToken(ASSIGN,':=',17,297)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON qualident empty . LexToken(ASSIGN,':=',17,297)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON qualident . LexToken(ASSIGN,':=',17,297)
+State  : 14
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 14
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON identdef . LexToken(ASSIGN,':=',17,297)
+State  : 48
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['b'] and goto state 48
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON IDENT . LexToken(ASSIGN,':=',17,297)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON . LexToken(IDENT,'b',17,295)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(SCOLON,';',16,292)
+State  : 53
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statement] with [None] and goto state 53
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statement . LexToken(SCOLON,';',16,292)
+State  : 17
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> assignment] with [None] and goto state 17
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN assignment . LexToken(SCOLON,';',16,292)
+State  : 29
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [assignment -> designator ASSIGN expression] with [None,':=',None] and goto state 29
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN expression . LexToken(SCOLON,';',16,292)
+State  : 171
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 171
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN simpleExpression . LexToken(SCOLON,';',16,292)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN term simpless . LexToken(SCOLON,';',16,292)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN term empty . LexToken(SCOLON,';',16,292)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN term . LexToken(SCOLON,';',16,292)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN factor termss . LexToken(SCOLON,';',16,292)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN factor empty . LexToken(SCOLON,';',16,292)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN factor . LexToken(SCOLON,';',16,292)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> number] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN number . LexToken(SCOLON,';',16,292)
+State  : 76
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [number -> VINTEGER] with ['1'] and goto state 76
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN VINTEGER . LexToken(SCOLON,';',16,292)
+State  : 97
+
+Action : Shift and goto state 97
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator ASSIGN . LexToken(VINTEGER,'1',16,291)
+State  : 100
+
+Action : Shift and goto state 100
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN designator . LexToken(ASSIGN,':=',16,288)
+State  : 16
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 16
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN qualident designator2 . LexToken(ASSIGN,':=',16,288)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN qualident empty . LexToken(ASSIGN,':=',16,288)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN qualident . LexToken(ASSIGN,':=',16,288)
+State  : 14
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 14
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN identdef . LexToken(ASSIGN,':=',16,288)
+State  : 48
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['a'] and goto state 48
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN IDENT . LexToken(ASSIGN,':=',16,288)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN . LexToken(IDENT,'a',16,286)
+State  : 7
+
+Action : Shift and goto state 7
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence . LexToken(KEY_BEGIN,'BEGIN',15,279)
+State  : 6
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [declarationSequence -> declarationSequence procss] with [None,None] and goto state 6
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss . LexToken(KEY_BEGIN,'BEGIN',15,279)
+State  : 11
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [procss -> procss procedureDeclaration SCOLON] with [None,None,';'] and goto state 11
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureDeclaration SCOLON . LexToken(KEY_BEGIN,'BEGIN',15,279)
+State  : 132
+
+Action : Shift and goto state 132
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureDeclaration . LexToken(SCOLON,';',13,276)
+State  : 60
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [procedureDeclaration -> procedureHeading SCOLON procedureBody IDENT] with [None,';',None,'bigger'] and goto state 60
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON procedureBody IDENT . None
+Defaulted state 279: Reduce using 110
+State  : 279
+
+Action : Shift and goto state 279
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON procedureBody . LexToken(IDENT,'bigger',13,270)
+State  : 207
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [procedureBody -> declarationSequence KEY_BEGIN statementSequence KEY_END] with [None,'BEGIN',None,'END'] and goto state 207
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END . None
+Defaulted state 347: Reduce using 120
+State  : 347
+
+Action : Shift and goto state 347
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(KEY_END,'END',13,266)
+State  : 318
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 318
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON statement . LexToken(KEY_END,'END',13,266)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> empty] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON empty . LexToken(KEY_END,'END',13,266)
+State  : 42
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 42
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statementSequence SCOLON . LexToken(KEY_END,'END',13,266)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statementSequence . LexToken(SCOLON,';',12,263)
+State  : 318
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statement] with [None] and goto state 318
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN statement . LexToken(SCOLON,';',12,263)
+State  : 17
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> ifStatement] with [None] and goto state 17
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN ifStatement . LexToken(SCOLON,';',12,263)
+State  : 45
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [ifStatement -> KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END] with ['IF',None,'THEN',None,None,'ELSE',None,'END'] and goto state 45
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END . LexToken(SCOLON,';',12,263)
+State  : 367
+
+Action : Shift and goto state 367
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence . LexToken(KEY_END,'END',12,259)
+State  : 353
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 353
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence SCOLON statement . LexToken(KEY_END,'END',12,259)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> empty] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence SCOLON empty . LexToken(KEY_END,'END',12,259)
+State  : 42
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 42
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence SCOLON . LexToken(KEY_END,'END',12,259)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence . LexToken(SCOLON,';',11,255)
+State  : 353
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statement] with [None] and goto state 353
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statement . LexToken(SCOLON,';',11,255)
+State  : 17
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> KEY_RETURN expression] with ['RETURN',None] and goto state 17
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN expression . LexToken(SCOLON,';',11,255)
+State  : 112
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 112
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN simpleExpression . LexToken(SCOLON,';',11,255)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN term simpless . LexToken(SCOLON,';',11,255)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN term empty . LexToken(SCOLON,';',11,255)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN term . LexToken(SCOLON,';',11,255)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN factor termss . LexToken(SCOLON,';',11,255)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN factor empty . LexToken(SCOLON,';',11,255)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN factor . LexToken(SCOLON,';',11,255)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN designator . LexToken(SCOLON,';',11,255)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN qualident designator2 . LexToken(SCOLON,';',11,255)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN qualident empty . LexToken(SCOLON,';',11,255)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN qualident . LexToken(SCOLON,';',11,255)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN identdef . LexToken(SCOLON,';',11,255)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['b'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN IDENT . LexToken(SCOLON,';',11,255)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE KEY_RETURN . LexToken(IDENT,'b',11,253)
+State  : 35
+
+Action : Shift and goto state 35
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE . LexToken(KEY_RETURN,'RETURN',11,246)
+State  : 332
+
+Action : Shift and goto state 332
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss . LexToken(KEY_ELSE,'ELSE',10,238)
+State  : 302
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [ifss -> ifss KEY_ELSEIF expression KEY_THEN statementSequence] with [None,'ELSEIF',None,'THEN',None] and goto state 302
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN statementSequence . LexToken(KEY_ELSE,'ELSE',10,238)
+State  : 373
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 373
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN statementSequence SCOLON statement . LexToken(KEY_ELSE,'ELSE',10,238)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> empty] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN statementSequence SCOLON empty . LexToken(KEY_ELSE,'ELSE',10,238)
+State  : 42
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 42
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN statementSequence SCOLON . LexToken(KEY_ELSE,'ELSE',10,238)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN statementSequence . LexToken(SCOLON,';',9,234)
+State  : 373
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statement] with [None] and goto state 373
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN statement . LexToken(SCOLON,';',9,234)
+State  : 17
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> KEY_RETURN expression] with ['RETURN',None] and goto state 17
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN expression . LexToken(SCOLON,';',9,234)
+State  : 112
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 112
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN simpleExpression . LexToken(SCOLON,';',9,234)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN term simpless . LexToken(SCOLON,';',9,234)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN term empty . LexToken(SCOLON,';',9,234)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN term . LexToken(SCOLON,';',9,234)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN factor termss . LexToken(SCOLON,';',9,234)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN factor empty . LexToken(SCOLON,';',9,234)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN factor . LexToken(SCOLON,';',9,234)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> number] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN number . LexToken(SCOLON,';',9,234)
+State  : 76
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [number -> VINTEGER] with ['0'] and goto state 76
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN VINTEGER . LexToken(SCOLON,';',9,234)
+State  : 97
+
+Action : Shift and goto state 97
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN KEY_RETURN . LexToken(VINTEGER,'0',9,232)
+State  : 35
+
+Action : Shift and goto state 35
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression KEY_THEN . LexToken(KEY_RETURN,'RETURN',9,225)
+State  : 366
+
+Action : Shift and goto state 366
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF expression . LexToken(KEY_THEN,'THEN',8,217)
+State  : 352
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 352
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF simpleExpression . LexToken(KEY_THEN,'THEN',8,217)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF term simpless . LexToken(KEY_THEN,'THEN',8,217)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF term empty . LexToken(KEY_THEN,'THEN',8,217)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF term . LexToken(KEY_THEN,'THEN',8,217)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF factor termss . LexToken(KEY_THEN,'THEN',8,217)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF factor empty . LexToken(KEY_THEN,'THEN',8,217)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF factor . LexToken(KEY_THEN,'THEN',8,217)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> LRB expression RRB] with ['(',None,')'] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB expression RRB . LexToken(KEY_THEN,'THEN',8,217)
+State  : 226
+
+Action : Shift and goto state 226
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB expression . LexToken(RRB,')',8,215)
+State  : 151
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression relation simpleExpression] with [None,None,None] and goto state 151
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation simpleExpression . LexToken(RRB,')',8,215)
+State  : 227
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 227
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation term simpless . LexToken(RRB,')',8,215)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation term empty . LexToken(RRB,')',8,215)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation term . LexToken(RRB,')',8,215)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation factor termss . LexToken(RRB,')',8,215)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation factor empty . LexToken(RRB,')',8,215)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation factor . LexToken(RRB,')',8,215)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation designator . LexToken(RRB,')',8,215)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation qualident designator2 . LexToken(RRB,')',8,215)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation qualident empty . LexToken(RRB,')',8,215)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation qualident . LexToken(RRB,')',8,215)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation identdef . LexToken(RRB,')',8,215)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['b'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation IDENT . LexToken(RRB,')',8,215)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression relation . LexToken(IDENT,'b',8,214)
+State  : 157
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [relation -> EQUAL] with ['='] and goto state 157
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression EQUAL . LexToken(IDENT,'b',8,214)
+State  : 154
+
+Action : Shift and goto state 154
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB simpleExpression . LexToken(EQUAL,'=',8,212)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB term simpless . LexToken(EQUAL,'=',8,212)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB term empty . LexToken(EQUAL,'=',8,212)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB term . LexToken(EQUAL,'=',8,212)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB factor termss . LexToken(EQUAL,'=',8,212)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB factor empty . LexToken(EQUAL,'=',8,212)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB factor . LexToken(EQUAL,'=',8,212)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB designator . LexToken(EQUAL,'=',8,212)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB qualident designator2 . LexToken(EQUAL,'=',8,212)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB qualident empty . LexToken(EQUAL,'=',8,212)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB qualident . LexToken(EQUAL,'=',8,212)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB identdef . LexToken(EQUAL,'=',8,212)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['a'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB IDENT . LexToken(EQUAL,'=',8,212)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF LRB . LexToken(IDENT,'a',8,210)
+State  : 86
+
+Action : Shift and goto state 86
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSEIF . LexToken(LRB,'(',8,209)
+State  : 330
+
+Action : Shift and goto state 330
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence ifss . LexToken(KEY_ELSEIF,'ELSEIF',8,202)
+State  : 302
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [ifss -> empty] with [None] and goto state 302
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence empty . LexToken(KEY_ELSEIF,'ELSEIF',8,202)
+State  : 301
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 301
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence . LexToken(KEY_ELSEIF,'ELSEIF',8,202)
+State  : 255
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statementSequence SCOLON statement] with [None,';',None] and goto state 255
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence SCOLON statement . LexToken(KEY_ELSEIF,'ELSEIF',8,202)
+State  : 195
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> empty] with [None] and goto state 195
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence SCOLON empty . LexToken(KEY_ELSEIF,'ELSEIF',8,202)
+State  : 42
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 42
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence SCOLON . LexToken(KEY_ELSEIF,'ELSEIF',8,202)
+State  : 124
+
+Action : Shift and goto state 124
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statementSequence . LexToken(SCOLON,';',7,198)
+State  : 255
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statementSequence -> statement] with [None] and goto state 255
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN statement . LexToken(SCOLON,';',7,198)
+State  : 17
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [statement -> KEY_RETURN expression] with ['RETURN',None] and goto state 17
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN expression . LexToken(SCOLON,';',7,198)
+State  : 112
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 112
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN simpleExpression . LexToken(SCOLON,';',7,198)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN term simpless . LexToken(SCOLON,';',7,198)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN term empty . LexToken(SCOLON,';',7,198)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN term . LexToken(SCOLON,';',7,198)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN factor termss . LexToken(SCOLON,';',7,198)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN factor empty . LexToken(SCOLON,';',7,198)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN factor . LexToken(SCOLON,';',7,198)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN designator . LexToken(SCOLON,';',7,198)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN qualident designator2 . LexToken(SCOLON,';',7,198)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN qualident empty . LexToken(SCOLON,';',7,198)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN qualident . LexToken(SCOLON,';',7,198)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN identdef . LexToken(SCOLON,';',7,198)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['a'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN IDENT . LexToken(SCOLON,';',7,198)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN KEY_RETURN . LexToken(IDENT,'a',7,196)
+State  : 35
+
+Action : Shift and goto state 35
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression KEY_THEN . LexToken(KEY_RETURN,'RETURN',7,189)
+State  : 196
+
+Action : Shift and goto state 196
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF expression . LexToken(KEY_THEN,'THEN',6,181)
+State  : 125
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression] with [None] and goto state 125
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF simpleExpression . LexToken(KEY_THEN,'THEN',6,181)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF term simpless . LexToken(KEY_THEN,'THEN',6,181)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF term empty . LexToken(KEY_THEN,'THEN',6,181)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF term . LexToken(KEY_THEN,'THEN',6,181)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF factor termss . LexToken(KEY_THEN,'THEN',6,181)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF factor empty . LexToken(KEY_THEN,'THEN',6,181)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF factor . LexToken(KEY_THEN,'THEN',6,181)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> LRB expression RRB] with ['(',None,')'] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB expression RRB . LexToken(KEY_THEN,'THEN',6,181)
+State  : 226
+
+Action : Shift and goto state 226
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB expression . LexToken(RRB,')',6,179)
+State  : 151
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [expression -> simpleExpression relation simpleExpression] with [None,None,None] and goto state 151
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation simpleExpression . LexToken(RRB,')',6,179)
+State  : 227
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 227
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation term simpless . LexToken(RRB,')',6,179)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation term empty . LexToken(RRB,')',6,179)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation term . LexToken(RRB,')',6,179)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation factor termss . LexToken(RRB,')',6,179)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation factor empty . LexToken(RRB,')',6,179)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation factor . LexToken(RRB,')',6,179)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation designator . LexToken(RRB,')',6,179)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation qualident designator2 . LexToken(RRB,')',6,179)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation qualident empty . LexToken(RRB,')',6,179)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation qualident . LexToken(RRB,')',6,179)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation identdef . LexToken(RRB,')',6,179)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['b'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation IDENT . LexToken(RRB,')',6,179)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression relation . LexToken(IDENT,'b',6,177)
+State  : 157
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [relation -> GT] with ['>'] and goto state 157
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression GT . LexToken(IDENT,'b',6,177)
+State  : 153
+
+Action : Shift and goto state 153
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB simpleExpression . LexToken(GT,'>',6,175)
+State  : 89
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpleExpression -> term simpless] with [None,None] and goto state 89
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB term simpless . LexToken(GT,'>',6,175)
+State  : 143
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [simpless -> empty] with [None] and goto state 143
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB term empty . LexToken(GT,'>',6,175)
+State  : 144
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 144
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB term . LexToken(GT,'>',6,175)
+State  : 74
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [term -> factor termss] with [None,None] and goto state 74
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB factor termss . LexToken(GT,'>',6,175)
+State  : 147
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [termss -> empty] with [None] and goto state 147
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB factor empty . LexToken(GT,'>',6,175)
+State  : 146
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 146
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB factor . LexToken(GT,'>',6,175)
+State  : 78
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [factor -> designator] with [None] and goto state 78
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB designator . LexToken(GT,'>',6,175)
+State  : 75
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator -> qualident designator2] with [None,None] and goto state 75
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB qualident designator2 . LexToken(GT,'>',6,175)
+State  : 70
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [designator2 -> empty] with [None] and goto state 70
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB qualident empty . LexToken(GT,'>',6,175)
+State  : 71
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 71
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB qualident . LexToken(GT,'>',6,175)
+State  : 66
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [qualident -> identdef] with [None] and goto state 66
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB identdef . LexToken(GT,'>',6,175)
+State  : 68
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identdef -> IDENT] with ['a'] and goto state 68
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB IDENT . LexToken(GT,'>',6,175)
+State  : 38
+
+Action : Shift and goto state 38
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF LRB . LexToken(IDENT,'a',6,173)
+State  : 86
+
+Action : Shift and goto state 86
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN KEY_IF . LexToken(LRB,'(',6,171)
+State  : 54
+
+Action : Shift and goto state 54
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence KEY_BEGIN . LexToken(KEY_IF,'IF',6,167)
+State  : 278
+
+Action : Shift and goto state 278
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON declarationSequence . LexToken(KEY_BEGIN,'BEGIN',5,158)
+State  : 206
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [declarationSequence -> empty] with [None] and goto state 206
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON empty . LexToken(KEY_BEGIN,'BEGIN',5,158)
+State  : 5
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 5
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading SCOLON . LexToken(KEY_BEGIN,'BEGIN',5,158)
+State  : 134
+
+Action : Shift and goto state 134
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss procedureHeading . LexToken(SCOLON,';',4,155)
+State  : 62
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [procedureHeading -> KEY_PROCEDURE IDENT formalParameters COLON type] with ['PROCEDURE','bigger',None,':',None] and goto state 62
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT formalParameters COLON type . LexToken(SCOLON,';',4,155)
+Defaulted state 313: Reduce using 111
+State  : 313
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [type -> varType] with [None] and goto state 313
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT formalParameters COLON varType . LexToken(SCOLON,';',4,155)
+State  : 269
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [varType -> KEY_INTEGER] with ['INTEGER'] and goto state 269
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT formalParameters COLON KEY_INTEGER . LexToken(SCOLON,';',4,155)
+State  : 259
+
+Action : Shift and goto state 259
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT formalParameters COLON . LexToken(KEY_INTEGER,'INTEGER',4,148)
+State  : 274
+
+Action : Shift and goto state 274
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT formalParameters . LexToken(COLON,':',4,146)
+State  : 204
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [formalParameters -> LRB FPSection formalss RRB] with ['(',None,None,')'] and goto state 204
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB FPSection formalss RRB . LexToken(COLON,':',4,146)
+State  : 346
+
+Action : Shift and goto state 346
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB FPSection formalss . LexToken(RRB,')',4,144)
+State  : 317
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [formalss -> empty] with [None] and goto state 317
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB FPSection empty . LexToken(RRB,')',4,144)
+State  : 316
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 316
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB FPSection . LexToken(RRB,')',4,144)
+State  : 277
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [FPSection -> IDENT FPs COLON type] with ['a',None,':',None] and goto state 277
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs COLON type . LexToken(RRB,')',4,144)
+State  : 360
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [type -> varType] with [None] and goto state 360
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs COLON varType . LexToken(RRB,')',4,144)
+State  : 269
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [varType -> KEY_INTEGER] with ['INTEGER'] and goto state 269
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs COLON KEY_INTEGER . LexToken(RRB,')',4,144)
+State  : 259
+
+Action : Shift and goto state 259
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs COLON . LexToken(KEY_INTEGER,'INTEGER',4,137)
+State  : 343
+
+Action : Shift and goto state 343
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs . LexToken(COLON,':',4,135)
+State  : 314
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [FPs -> FPs COMMA IDENT] with [None,',','b'] and goto state 314
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs COMMA IDENT . LexToken(COLON,':',4,135)
+State  : 361
+
+Action : Shift and goto state 361
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs COMMA . LexToken(IDENT,'b',4,134)
+State  : 344
+
+Action : Shift and goto state 344
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT FPs . LexToken(COMMA,',',4,132)
+State  : 314
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [FPs -> empty] with [None] and goto state 314
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT empty . LexToken(COMMA,',',4,132)
+State  : 315
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 315
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB IDENT . LexToken(COMMA,',',4,132)
+State  : 275
+
+Action : Shift and goto state 275
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT LRB . LexToken(IDENT,'a',4,131)
+State  : 205
+
+Action : Shift and goto state 205
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE IDENT . LexToken(LRB,'(',4,130)
+State  : 133
+
+Action : Shift and goto state 133
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss KEY_PROCEDURE . LexToken(IDENT,'bigger',4,124)
+State  : 61
+
+Action : Shift and goto state 61
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence procss . LexToken(KEY_PROCEDURE,'PROCEDURE',4,114)
+State  : 11
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [procss -> empty] with [None] and goto state 11
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence empty . LexToken(KEY_PROCEDURE,'PROCEDURE',4,114)
+State  : 8
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 8
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence . LexToken(KEY_PROCEDURE,'PROCEDURE',4,114)
+State  : 6
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [declarationSequence -> declarationSequence KEY_VAR varss] with [None,'VAR',None] and goto state 6
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss . LexToken(KEY_PROCEDURE,'PROCEDURE',4,114)
+State  : 58
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [varss -> varss variableDeclaration SCOLON] with [None,None,';'] and goto state 58
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss variableDeclaration SCOLON . LexToken(KEY_PROCEDURE,'PROCEDURE',4,114)
+State  : 201
+
+Action : Shift and goto state 201
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss variableDeclaration . LexToken(SCOLON,';',3,111)
+State  : 130
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [variableDeclaration -> identList COLON type] with [None,':',None] and goto state 130
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COLON type . LexToken(SCOLON,';',3,111)
+Defaulted state 258: Reduce using 109
+State  : 258
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [type -> varType] with [None] and goto state 258
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COLON varType . LexToken(SCOLON,';',3,111)
+State  : 269
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [varType -> KEY_INTEGER] with ['INTEGER'] and goto state 269
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COLON KEY_INTEGER . LexToken(SCOLON,';',3,111)
+State  : 259
+
+Action : Shift and goto state 259
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COLON . LexToken(KEY_INTEGER,'INTEGER',3,103)
+State  : 202
+
+Action : Shift and goto state 202
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList . LexToken(COLON,':',3,101)
+State  : 131
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identList -> identList COMMA IDENT] with [None,',','test'] and goto state 131
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COMMA IDENT . LexToken(COLON,':',3,101)
+State  : 273
+
+Action : Shift and goto state 273
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COMMA . LexToken(IDENT,'test',3,96)
+State  : 203
+
+Action : Shift and goto state 203
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList . LexToken(COMMA,',',3,94)
+State  : 131
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identList -> identList COMMA IDENT] with [None,',','b'] and goto state 131
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COMMA IDENT . LexToken(COMMA,',',3,94)
+State  : 273
+
+Action : Shift and goto state 273
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList COMMA . LexToken(IDENT,'b',3,93)
+State  : 203
+
+Action : Shift and goto state 203
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss identList . LexToken(COMMA,',',3,91)
+State  : 131
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [identList -> IDENT] with ['a'] and goto state 131
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss IDENT . LexToken(COMMA,',',3,91)
+State  : 129
+
+Action : Shift and goto state 129
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR varss . LexToken(IDENT,'a',3,90)
+State  : 58
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [varss -> empty] with [None] and goto state 58
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR empty . LexToken(IDENT,'a',3,90)
+State  : 59
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 59
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence KEY_VAR . LexToken(IDENT,'a',3,90)
+State  : 10
+
+Action : Shift and goto state 10
+Stack  : KEY_MODULE IDENT SCOLON declarationSequence . LexToken(KEY_VAR,'VAR',3,86)
+State  : 6
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [declarationSequence -> empty] with [None] and goto state 6
+Stack  : KEY_MODULE IDENT SCOLON empty . LexToken(KEY_VAR,'VAR',3,86)
+State  : 5
+
+Result : <NoneType @ 0xa40060> (None)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 5
+Stack  : KEY_MODULE IDENT SCOLON . LexToken(KEY_VAR,'VAR',3,86)
+State  : 4
+
+Action : Shift and goto state 4
+Stack  : KEY_MODULE IDENT . LexToken(SCOLON,';',2,83)
+State  : 3
+
+Action : Shift and goto state 3
+Stack  : KEY_MODULE . LexToken(IDENT,'Pattern',2,76)
+State  : 2
+
+Action : Shift and goto state 2
+Stack  : . LexToken(KEY_MODULE,'MODULE',2,69)
+State  : 0
+
+PLY: PARSE DEBUG START
