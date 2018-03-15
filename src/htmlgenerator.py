@@ -36,7 +36,7 @@ if __name__ == "__main__":
 			div.rule{
 				margin: 10px auto;
 				padding: 10px;
-				background-color: white;
+				background-color: pink;
 				width: 80%;
 				word-wrap: break-word;
 			}
@@ -101,6 +101,8 @@ if __name__ == "__main__":
 					word1 = words[:kindex]
 					word2 = words[kindex+1:]
 					# print(word2)
+					code = '<br></br><div class = "rule"><font>' + var1.group(1) + '</font></div>'
+					htmlCode += code
 					code = '<br></br><div class = "tab"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
 					htmlCode += code
 					counter = 1
@@ -110,12 +112,15 @@ if __name__ == "__main__":
 				if var3 != None:
 					lhs, rhs = var3.group(1).split(' -> ')
 					# print(rhs)
+					# print(var3.group(1))
 					rhs = rhs.split(' ')
 					if(str(words[kindex]) == str(lhs)):
 						words = word1 + rhs + word2
 						# print(words)
 						counter += 1
 						kindex = findindex(words)
+						code = '<br></br><div class = "rule"><font>' + var3.group(1) + '</font></div>'
+						htmlCode += code
 						if(kindex != -1):
 							word1 = words[:kindex]
 							word2 = words[kindex+1:]
