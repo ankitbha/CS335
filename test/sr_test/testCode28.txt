@@ -1,0 +1,12 @@
+MODULE pswitch;
+VAR a : INTEGER;
+BEGIN
+	a := -2;
+	SWITCH(ABS(a))
+	BEGIN
+		CASE 1: WRITE("ONE"); BREAK;
+		CASE 2: WRITE("TWO"); BREAK;
+		CASE 3: WRITE("THREE"); BREAK;
+		ELSE : WRITE ("NONE");
+	END
+END pswitch.

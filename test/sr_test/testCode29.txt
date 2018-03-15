@@ -1,0 +1,6 @@
+MODULE fileio;
+	CONST file := "test.txt" : STRING;
+BEGIN
+	x:=7;
+	func(x);
+END Pattern.

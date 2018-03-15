@@ -12,7 +12,7 @@ MODULE Pattern;
 
 BEGIN
 	x:=1;
-	WHILE x < 10 DO
+	WHILE x < 10
 	BEGIN
 		WRITEINT(fib(x));
 		x:=x+1;

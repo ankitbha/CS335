@@ -1,0 +1,13 @@
+MODULE pchar;
+VAR a : CHAR ; b : INTEGER;
+BEGIN
+	READCHAR(a);	
+	WRITE("Value is: ");
+	WRITECHAR(a);
+	WRITELN();
+	WRITE("Order is: ");
+	WRITEINT( ORD(a) );
+	b := 50;
+	WRITE("Char for b is: ");
+	WRITECHAR( CHR(b) );
+END pchar.

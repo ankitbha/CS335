@@ -5,9 +5,9 @@ VAR i, j : INTEGER;
 BEGIN
 i:=0;
 j:=0;
-WHILE i<3 DO
+WHILE i<3
 BEGIN
-	WHILE j<3 DO
+	WHILE j<3
 	BEGIN
 		a[i,j] := j;
 		j:=j+1;
@@ -17,9 +17,9 @@ BEGIN
 END;
 i:=0;
 j:=0;
-WHILE i<3 DO
+WHILE i<3
 BEGIN
-	WHILE j<3 DO
+	WHILE j<3
 	BEGIN
 		WRITEINT(a[i,j]);
 		j:=j+1;

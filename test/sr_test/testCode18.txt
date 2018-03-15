@@ -12,11 +12,11 @@ MODULE Pattern;
 			x := -1*x;
 		END;
 		y:=1;
-		WHILE (y>10) DO
+		DO
 		BEGIN
 			WRITEINT(prod(x, y));
 			y := y +1 ;
-		END ;
+		END WHILE(y>10) ;
 	END func;
 
 BEGIN
