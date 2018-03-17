@@ -310,24 +310,24 @@ class Parser(object):
 
 	def p_formalParameters(self, p):
 		'''
-			formalParameters : LRB FPSection formalss RRB
+			formalParameters : LRB fpSection formalss RRB
 							 | LRB RRB
 		'''
 
 	def p_formalss(self, p):
 		'''
-			formalss : formalss SCOLON FPSection
+			formalss : formalss SCOLON fpSection
 					 | empty
 		'''
 
-	def p_FPSection(self, p):
+	def p_fpSection(self, p):
 		'''
-			FPSection : IDENT FPs COLON type
+			fpSection : IDENT fps COLON type
 		'''
 
-	def p_FPs(self, p):
+	def p_fps(self, p):
 		'''
-			FPs : FPs COMMA IDENT
+			fps : fps COMMA IDENT
 				| empty
 		'''
 
