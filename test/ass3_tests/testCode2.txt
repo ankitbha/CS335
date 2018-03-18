@@ -3,7 +3,7 @@ MODULE Pattern;
 	VAR a, b, test : INTEGER ;
 	PROCEDURE product(a, b: INTEGER) : INTEGER;
 	BEGIN 
-		RETURN a*b
+		RETURN a*b;
 	END product;
 
 BEGIN
@@ -12,5 +12,5 @@ BEGIN
 	WHILE b <= 10 BEGIN
 		WRITEINT(product(a,b));
 		b:= b+ 1;
-	END
+	END;
 END Pattern.

@@ -2,12 +2,12 @@
 MODULE Pattern;
 	PROCEDURE func(x, y : INTEGER) : INTEGER; 
 	BEGIN 
-		RETURN x+y
+		RETURN x+y;
 	END func;
 
 	PROCEDURE func(x, y, z : INTEGER) : INTEGER; 
 	BEGIN 
-		RETURN x*y*z
+		RETURN x*y*z;
 	END func;
 
 BEGIN

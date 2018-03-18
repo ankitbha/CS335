@@ -6,8 +6,8 @@ MODULE Pattern;
 		IF a = 0 THEN
 			RETURN 1;
 		ELSE
-			RETURN a*factorial(a-1);
-		END
+			RETURN a * factorial(a-1);
+		END;
 	END factorial;
 
 BEGIN
