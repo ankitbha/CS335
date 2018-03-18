@@ -63,8 +63,8 @@ class Parser(object):
 
 	def p_statementSequence(self, p):
 		'''
-			statementSequence : statementSequence SCOLON statement
-							  | statement
+			statementSequence : statementSequence statement SCOLON
+							  | empty
 		'''
 
 	def p_constantDeclaration(self, p):

@@ -1,6 +1,6 @@
 #!bin/bash
 
-python3 src/par.py ./test/sr_test/testCode$1.txt 2> debug
+python3 src/par.py ./test/ass3_tests/testCode$1.txt 2> debug
 tac debug > debug2
 python3 ./src/htmlgenerator.py debug2
 rm debug

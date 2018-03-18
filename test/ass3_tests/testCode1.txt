@@ -2,7 +2,7 @@
 MODULE Pattern;
 	VAR a, b, test : INTEGER ;
 	PROCEDURE bigger(a, b: INTEGER) : INTEGER;
-	BEGIN 
+	BEGIN
 		IF  ( a > b ) THEN
 			RETURN a ;
 		ELSEIF (a = b) THEN
