@@ -448,10 +448,11 @@ class Parser(object):
 
 	def p_fileStatement(self, p):
 		'''
-			fileStatement : identdef EQUAL KEY_FOPEN LRB string COMMA char RRB
+			fileStatement : identdef EQUAL KEY_FOPEN LRB IDENT COMMA char RRB
+						  | identdef EQUAL KEY_FREAD LRB identdef COMMA VINTEGER RRB
+						  | KEY_FWRITE LRB identdef COMMA string RRB
+						  | KEY_FAPPEND LRB identdef COMMA string RRB
 						  | KEY_FCLOSE LRB identdef RRB
-						  | KEY_FPRINTF LRB identdef COMMA string RRB
-						  | KEY_FREAD LRB identdef COMMA identdef COMMA VINTEGER RRB
 		'''
 
 	def p_empty(self, p):

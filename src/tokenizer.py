@@ -20,7 +20,8 @@ reserved = {
 	'FCLOSE' : 'KEY_FCLOSE',                           # close file
 	'FOPEN' : 'KEY_FOPEN',                             # open file
 	'FOR' : 'KEY_FOR',                                 # for loop
-	'FPRINTF' : 'KEY_FPRINTF',                         # file write
+	'FAPPEND' : 'KEY_FAPPEND',                         # file write
+	'FWRITE' : 'KEY_FWRITE',                         # file write
 	'FREAD' : 'KEY_FREAD',                             # file read
 	'IF' : 'KEY_IF',                                   # if else
 	'IN' : 'KEY_IN',                                   # set
