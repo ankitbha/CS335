@@ -22,6 +22,18 @@ def converttostr(word1):
 	return string	
 
 
+def removeempty(words):
+	for i in range(len(words)):
+		# print(words[i])
+		if(str(words[i]) == 'empty'):
+			# print(words[i])
+			# print("found")
+			words[i] = ""
+			# print(words[i])
+	return words		
+
+
+
 if __name__ == "__main__":
 	htmlCode = """
 		<!DOCTYPE html>
@@ -132,8 +144,16 @@ if __name__ == "__main__":
 
 						else:
 							if(counter%2 == 0):
+								# code = '<br></br><div class="main"><font>' + converttostr(words) + '</font></div>'
+								# print(words)
+								words = removeempty(words)
+								# print(words)
 								code = '<br></br><div class="main"><font>' + converttostr(words) + '</font></div>'
 							else:
+								# code = '<br></br><div class="tab"><font>' + converttostr(words) + '</font></div>'
+								# print(words)
+								words = removeempty(words)
+								# print(words)
 								code = '<br></br><div class="tab"><font>' + converttostr(words) + '</font></div>'
 							htmlCode += code
 							break	
