@@ -149,13 +149,14 @@ class Parser(object):
 
 	def p_set(self, p):
 		'''
-			set : LCB element COMMA element RCB
+			set : LCB element RCB
 				| LCB RCB
 		'''
 
 	def p_element(self, p):
 		'''
-			element : expression
+			element : element COMMA element
+			        | expression
 		'''
 
 	def p_designator(self, p):
