@@ -1,7 +1,9 @@
-(* program to find bigger of two numbers TEST of if-else statement*)
-MODULE Pattern;
-	VAR a, b, test : INTEGER ;
-	PROCEDURE bigger(a, b: INTEGER) : INTEGER;
+(* program to find bigger of two numbers*)
+MODULE testCode1;
+
+VAR a, b, test : INTEGER ;
+
+PROCEDURE bigger(a, b: INTEGER) : INTEGER;
 	BEGIN
 		IF  ( a > b ) THEN
 			RETURN a ;
@@ -17,4 +19,4 @@ BEGIN
 	b := 1;
 	test := bigger(a,b);
 	WRITEINT(test);
-END Pattern.
+END testCode1.

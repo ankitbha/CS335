@@ -1,8 +1,11 @@
 (*program to try kind of a dynamically created linked list *)
-MODULE Pattern;
-	TYPE ulist = RECORD index : INTEGER END;
-	TYPE list = RECORD index : INTEGER; next : POINTER TO ulist END;
-	VAR rec : POINTER TO list ;
+
+MODULE testCode10;
+
+TYPE ulist = RECORD index : INTEGER END;
+TYPE list = RECORD index : INTEGER; next : POINTER TO ulist END;
+VAR rec : POINTER TO list ;
+
 BEGIN
 	NEW(rec);
 	@rec.index := 1;
@@ -10,4 +13,4 @@ BEGIN
 	@rec.@next.index := 2;
 	WRITEINT(@rec.index);
 	WRITEINT(@rec.@next.index);
-END Pattern.
+END testCode10.

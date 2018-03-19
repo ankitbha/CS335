@@ -1,6 +1,8 @@
 (*program to basic arithmetic and relation/ boolean operations *)
-MODULE Pattern;
-	VAR i, j:INTEGER ; r: REAL ; b,c : BOOLEAN ;
+MODULE testCode4;
+
+VAR i, j:INTEGER ; r: REAL ; b,c : BOOLEAN ;
+
 BEGIN
 	i := 2 + 3;
 	WRITEINT(i);	
@@ -14,5 +16,4 @@ BEGIN
 	WRITEINT(c);
 	b := TRUE | FALSE;
 	WRITEINT(b);
-END Pattern.
-
+END testCode4.

@@ -1,8 +1,11 @@
-MODULE Pattern;
-VAR test : INTEGER ;
+(*first program*)
+MODULE testCode0;
+
+VAR a,b,test : INTEGER ;
+
 BEGIN
 	a := 1;
 	b := 1;
 	test := a+b;
 	WRITEINT(test);
-END Pattern.
+END testCode0.

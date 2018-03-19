@@ -1,11 +1,13 @@
 (*program to test call be reference of a pointer *)
-MODULE Pattern;
-	VAR x, y : POINTER TO INTEGER ;
-	PROCEDURE func(x, y : POINTER TO INTEGER);
-	BEGIN 
-		@x:=2;
-		@y:=1;
-	END func;
+MODULE testCode12;
+
+VAR x, y : POINTER TO INTEGER ;
+
+PROCEDURE func(x, y : POINTER TO INTEGER);
+BEGIN 
+	@x:=2;
+	@y:=1;
+END func;
 
 BEGIN
 	NEW(x);
@@ -17,4 +19,4 @@ BEGIN
 	func(x,y);
 	WRITEINT(@x);
 	WRITEINT(@y);
-END Pattern.
+END testCode12.
