@@ -40,25 +40,25 @@ class Parser(object):
 	def p_conss(self, p):
 		'''
 			conss : conss constantDeclaration SCOLON
-				  | empty
+				  | constantDeclaration SCOLON
 		'''
 
 	def p_typess(self, p):
 		'''
 			typess : typess typeDeclaration SCOLON
-				  | empty
+				  | typeDeclaration SCOLON
 		'''
 
 	def p_varss(self, p):
 		'''
 			varss : varss variableDeclaration SCOLON
-				  | empty
+				  | variableDeclaration SCOLON
 		'''
 
 	def p_procss(self, p):
 		'''
 			procss : procss procedureDeclaration SCOLON
-				   | empty
+				   | procedureDeclaration SCOLON
 		'''
 
 	def p_statementSequence(self, p):
