@@ -115,8 +115,6 @@ class Parser(object):
 				   | LRB expression RRB
 				   | NOT factor
 				   | KEY_ABS factor
-				   | KEY_CHR factor
-				   | KEY_ORD factor
 				   | KEY_INTEGER
 				   | KEY_BOOLEAN
 				   | KEY_CHAR
