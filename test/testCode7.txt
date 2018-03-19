@@ -1,0 +1,20 @@
+(*program to test NESTED records *)
+MODULE Pattern;
+
+	VAR rec: RECORD x,y : INTEGER ; z: REAL ;
+	 	a : RECORD x: INTEGER END
+		END ;
+	VAR x : INTEGER;
+
+BEGIN
+	x := 1;
+	rec.x := 2;
+	rec.y := 3;
+	rec.z := 4.5;
+	rec.a.x := x;
+	WRITEINT(x);
+	WRITEINT(rec.x);
+	WRITEINT(rec.y);
+	WRITEREAL(rec.z);
+	WRITEINT(rec.a.x);
+END Pattern.

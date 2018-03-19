@@ -1,0 +1,20 @@
+(*program to test recursion : print first n fibonacci numbers*)
+MODULE Pattern;
+	VAR x: INTEGER;
+	PROCEDURE fib(n: INTEGER) : INTEGER;
+	BEGIN
+		IF ((n = 1) | (n = 2)) THEN
+			RETURN 1;
+		ELSE
+			RETURN fib(n-1) + fib(n-2);
+		END;
+	END fib;
+
+BEGIN
+	x:=1;
+	WHILE x < 10
+	BEGIN
+		WRITEINT(fib(x));
+		x:=x+1;
+	END;
+END Pattern.

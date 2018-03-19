@@ -1,0 +1,17 @@
+(*change qualident*)
+MODULE pset;
+VAR a : SET ; b : INTEGER;
+BEGIN
+	ADD(a,1);
+	ADD(a,2);
+	ADD(a,3);
+	DEL(a,2);
+	DEL(a,3);
+	b := 1;
+	IF b IN a THEN
+		WRITE(a IS SET);
+	ELSEIF NIL(a) THEN
+		WRITEBOOL(FALSE);
+	END;
+	
+END pset.
