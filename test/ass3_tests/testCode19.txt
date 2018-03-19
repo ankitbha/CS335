@@ -26,3 +26,4 @@ BEGIN
 x:=7;
 func(x);
 END Pattern.
+(*19 23 27 28*)

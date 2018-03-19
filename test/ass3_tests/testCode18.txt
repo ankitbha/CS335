@@ -5,7 +5,7 @@ MODULE Pattern;
 		VAR y: INTEGER;
 		PROCEDURE prod(x, y :INTEGER) : INTEGER ;
 		BEGIN
-			RETURN x*y
+			RETURN x*y;
 		END prod;
 	BEGIN
 		IF x < 0 THEN
