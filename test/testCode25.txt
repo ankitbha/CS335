@@ -1,0 +1,14 @@
+(*program to test TYPE EXTENSION *)
+MODULE Pattern;
+
+	TYPE Figure = RECORD x, y, width, height : INTEGER END;
+	VAR circle : RECORD (Figure) radius : INTEGER END;
+
+BEGIN
+	circle.x:=1;
+	circle.y:=2;
+	circle.radius:=5;
+	WRITEINT(circle.x);
+	WRITEINT(circle.y);
+	WRITEINT(circle.radius);
+END Pattern.

@@ -19,7 +19,7 @@ def converttostr(word1):
 	for i in range(len(word1)):
 		string += str(word1[i]) + '		'
 
-	return string	
+	return string
 
 
 def removeempty(words):
@@ -30,7 +30,7 @@ def removeempty(words):
 			# print("found")
 			words[i] = ""
 			# print(words[i])
-	return words		
+	return words
 
 
 
@@ -158,19 +158,19 @@ if __name__ == "__main__":
 								# print(words)
 								code = '<br></br><div class="tab"><font>' + converttostr(words) + '</font></div>'
 							htmlCode += code
-							break	
+							break
 						# print(words[kindex])
-					# flag = 3				
+					# flag = 3
 
 		htmlCode += '</body></html>'
 		file.close()
 		try:
 			directory = "./"
-			with open(directory + "htmlCode.html", 'w') as fs:
+			with open(directory + "test.html", 'w') as fs:
 				fs.write(htmlCode)
 		except:
 			print("Cannot write to file!")
-			exit(EXIT_FAILURE)				
+			exit(EXIT_FAILURE)
 
 	else:
-		print("no file")	
+		print("no file")

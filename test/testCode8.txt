@@ -1,0 +1,11 @@
+(*program to test pointers and DYNAMIC ALLOCATION *)
+MODULE Pattern;
+
+	VAR x, y : POINTER TO INTEGER;
+
+BEGIN
+	NEW(x);
+	@x := 4;
+	@y := x;
+	WRITEINT(@y);
+END Pattern.

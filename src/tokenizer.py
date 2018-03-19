@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 reserved = {
 	'ABS' : 'KEY_ABS',                                 # Absolute
