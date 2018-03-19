@@ -1,16 +1,17 @@
 (*program to test function overloading *)
-MODULE Pattern;
-	PROCEDURE func(x, y : INTEGER) : INTEGER; 
-	BEGIN 
-		RETURN x+y;
-	END func;
+MODULE testCode5;
+	
+PROCEDURE func(x, y : INTEGER) : INTEGER; 
+BEGIN 
+	RETURN x+y;
+END func;
 
-	PROCEDURE func(x, y, z : INTEGER) : INTEGER; 
-	BEGIN 
-		RETURN x*y*z;
-	END func;
+PROCEDURE func(x, y, z : INTEGER) : INTEGER; 
+BEGIN 
+	RETURN x*y*z;
+END func;
 
 BEGIN
 	WRITEINT(func(1,2));
 	WRITEINT(func(5,3,2));
-END Pattern.
+END testCode5. 

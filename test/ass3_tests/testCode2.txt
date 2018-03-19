@@ -1,10 +1,12 @@
-(*program to test While and Function CALL : print table of 15 *)
-MODULE Pattern;
-	VAR a, b, test : INTEGER ;
-	PROCEDURE product(a, b: INTEGER) : INTEGER;
-	BEGIN 
-		RETURN a*b;
-	END product;
+(*program to print table of 15 *)
+MODULE testCode2;
+
+VAR a, b : INTEGER ;
+
+PROCEDURE product(a, b: INTEGER) : INTEGER;
+BEGIN 
+	RETURN a*b;
+END product;
 
 BEGIN
 	a := 15;
@@ -13,4 +15,4 @@ BEGIN
 		WRITEINT(product(a,b));
 		b:= b+ 1;
 	END;
-END Pattern.
+END testCode2.

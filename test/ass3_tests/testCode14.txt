@@ -1,6 +1,8 @@
 (* program to see IMPLICIT type Casting *)
-MODULE Pattern;
-	VAR x,y: INTEGER ; z: REAL;
+MODULE testCode14;
+
+VAR x,y: INTEGER ; z: REAL;
+
 BEGIN
 	x:= 3;
 	y:=2;
@@ -15,4 +17,4 @@ BEGIN
 	WRITEREAL(x-z);
 	WRITEREAL(x*z);
 	WRITEREAL(x/z);
-END Pattern.
+END testCode14.
