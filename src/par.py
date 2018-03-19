@@ -123,6 +123,7 @@ class Parser(object):
 				   | KEY_STRING
 				   | KEY_REAL
 				   | KEY_SET
+				   | KEY_FILE
 				   | KEY_CHR LRB factor RRB
 				   | KEY_ORD LRB factor RRB
 		'''
@@ -244,6 +245,7 @@ class Parser(object):
 					| KEY_STRING
 					| KEY_REAL
 					| KEY_SET
+					| KEY_FILE
 		'''
 
 	def p_arrayType(self, p):
