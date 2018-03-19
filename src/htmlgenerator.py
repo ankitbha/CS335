@@ -133,6 +133,7 @@ if __name__ == "__main__":
 						kindex = findindex(words)
 						code = '<br></br><div class = "rule"><font>' + var3.group(1) + '</font></div>'
 						htmlCode += code
+						words = removeempty(words)
 						if(kindex != -1):
 							word1 = words[:kindex]
 							word2 = words[kindex+1:]
