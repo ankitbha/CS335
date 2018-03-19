@@ -105,6 +105,7 @@ class Parser(object):
 	def p_factor(self, p):
 		'''
 			factor : number
+				   | boolean
 				   | char
 				   | string
 				   | KEY_NIL LRB designator RRB
@@ -130,6 +131,11 @@ class Parser(object):
 		'''
 			number : VINTEGER
 				   | VREAL
+		'''
+
+	def p_boolean(self, p):
+		'''
+			boolean : VBOOLEAN
 		'''
 
 	def p_char(self, p):
@@ -162,7 +168,7 @@ class Parser(object):
 		'''
 			designator2 : designator2 DOT identdef
 						| designator2 LSB expList RSB
-						| designator LRB qualident RRB
+						| designator2 LRB qualident RRB
 						| empty
 		'''
 
