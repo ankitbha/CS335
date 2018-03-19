@@ -17,7 +17,7 @@ class Parser(object):
 		('left', 'PLUS', 'MINUS'),
 		('left', 'MULTIPLY', 'DIVIDE', 'MODULUS'),
 		('right', 'NOT'),
-		('left', 'DOT') ## member access
+		('left', 'DOT')
 	)
 
 	def __init__(self, lexer):
@@ -105,6 +105,7 @@ class Parser(object):
 	def p_factor(self, p):
 		'''
 			factor : number
+				   | boolean
 				   | char
 				   | string
 				   | KEY_NIL LRB designator RRB
@@ -130,6 +131,11 @@ class Parser(object):
 		'''
 			number : VINTEGER
 				   | VREAL
+		'''
+
+	def p_boolean(self, p):
+		'''
+			boolean : VBOOLEAN
 		'''
 
 	def p_char(self, p):
@@ -468,7 +474,6 @@ class Parser(object):
 		print('-------------------------------------------------------\n')
 
 		exit(1)
-#======================================= need to finish grammar part ===========================
 
 
 class Parserrr(object):
@@ -485,37 +490,13 @@ class Parserrr(object):
 		_file.close()
 		return content
 
-	# def tokenize_string(self, code):
-	#     self.lexer.input(code)
-	#     for token in self.lexer:
-	#         print(token)
-
-	# def tokenize_file(self, _file):
-	#     content = self.read_file(_file)
-	#     return self.tokenize_string(content)
-
-	# def parse_string(self, code, debug=False, lineno=1):
-	#     return self.parser.parse(code, lexer=self.lexer, debug=debug)
-
 	def parse_file(self, _file, debug=False):
 		content = self.read_file(_file)
 		parse_ret = self.parser.parse(content, lexer=self.lexer, debug=debug)
 		return parse_ret
 
 if __name__=="__main__":
-	# initialize Parser
 	parser = Parserrr()
-	# handle_errors(argv)
-
-	# for Tokenizing a file
-	# if argv[1] == '-l':
-	#     parser.tokenize_file(argv[2])
-	#     exit()
-
-	# else:
-		# if argv[1] == '-p':
-		#     filename = argv[2]
-		# else:
 	filename = sys.argv[1]
 
 	result = parser.parse_file(filename, debug = True)
