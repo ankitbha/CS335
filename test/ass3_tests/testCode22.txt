@@ -1,5 +1,5 @@
 (*Bubble sort program*)
-MODULE sort;
+MODULE testCode22;
 VAR a ,b, t : INTEGER ; c : ARRAY 10 OF INTEGER;
 
 BEGIN
@@ -23,4 +23,4 @@ FOR (a:=1 ; a<=10 ; a:=a+1)
 BEGIN
 WRITEINT(c[a]);
 END;
-END sort.
+END testCode22.

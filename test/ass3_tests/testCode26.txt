@@ -1,4 +1,4 @@
-MODULE pchar;
+MODULE testCode26;
 VAR a : CHAR ; b : INTEGER;
 BEGIN
 	READCHAR(a);	
@@ -10,4 +10,4 @@ BEGIN
 	b := 50;
 	WRITE("Char for b is: ");
 	WRITECHAR( CHR(b) );
-END pchar.
+END testCode26.

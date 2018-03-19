@@ -1,5 +1,5 @@
 (*program to test TYPE EXTENSION *)
-MODULE Pattern;
+MODULE testCode25;
 
 	TYPE Figure = RECORD x, y, width, height : INTEGER END;
 	VAR circle : RECORD (Figure) radius : INTEGER END;
@@ -11,4 +11,4 @@ BEGIN
 	WRITEINT(circle.x);
 	WRITEINT(circle.y);
 	WRITEINT(circle.radius);
-END Pattern.
+END testCode25.

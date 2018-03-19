@@ -1,4 +1,4 @@
-MODULE pswitch;
+MODULE testCode28;
 VAR a : INTEGER;
 BEGIN
 	a := -2;
@@ -9,4 +9,4 @@ BEGIN
 		CASE 3: WRITE("THREE"); BREAK;
 		ELSE : WRITE ("NONE");
 	END;
-END pswitch.
+END testCode28.

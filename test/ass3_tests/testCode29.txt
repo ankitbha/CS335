@@ -1,4 +1,4 @@
-MODULE fileio;
+MODULE testCode29;
 	CONST flname := "test.txt" : STRING;
 	VAR file : FILE ; abc : STRING;
 	
@@ -12,4 +12,4 @@ BEGIN
 		file = FOPEN(flname, 'a');
 		FAPPEND(file, "hey there");
 		FCLOSE(file);
-END Pattern.
+END testCode29.

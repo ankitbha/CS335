@@ -1,5 +1,5 @@
 (*change qualident*)
-MODULE pset;
+MODULE testCode27;
 VAR a : SET ; b : INTEGER;
 BEGIN
 	ADD(a,1);
@@ -14,4 +14,4 @@ BEGIN
 		WRITEBOOL(FALSE);
 	END;
 	
-END pset.
+END testCode27.
