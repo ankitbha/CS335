@@ -48,15 +48,16 @@ if __name__ == "__main__":
 			div.rule{
 				margin: 10px auto;
 				padding: 10px;
-				background-color: pink;
+				background-color: gold;
 				width: 80%;
 				word-wrap: break-word;
 			}
 			div.main{
-				background-color: rgba(200,200,200,0.8);
+				background-color: LightSkyBlue;
 				padding: 10px;
 			}
 			div.tab{
+				background-color: LightSkyBlue;
 				margin-left: 10px;
 			}
 		</style>
@@ -115,7 +116,7 @@ if __name__ == "__main__":
 					# print(word2)
 					code = '<br></br><div class = "rule"><font>' + var1.group(1) + '</font></div>'
 					htmlCode += code
-					code = '<br></br><div class = "tab"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
+					code = '<br></br><div class = "tab"><font>' + converttostr(word1) + '</font><font face="ariel" color="red"><b>' + converttostr(words[kindex]) + '</font></b><font>' + converttostr(word2) + '</font></div>'
 					htmlCode += code
 					counter = 1
 
@@ -138,9 +139,9 @@ if __name__ == "__main__":
 							word1 = words[:kindex]
 							word2 = words[kindex+1:]
 							if(counter%2 == 0):
-								code = '<br></br><div class="main"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
+								code = '<br></br><div class="main"><font>' + converttostr(word1) + '</font><font color="red"><b>' + converttostr(words[kindex]) + '</font></b><font>' + converttostr(word2) + '</font></div>'
 							else:
-								code = '<br></br><div class="tab"><font>' + converttostr(word1) + '</font><font color="red">' + converttostr(words[kindex]) + '</font><font>' + converttostr(word2) + '</font></div>'
+								code = '<br></br><div class="tab"><font>' + converttostr(word1) + '</font><font color="red"><b>' + converttostr(words[kindex]) + '</font></b><font>' + converttostr(word2) + '</font></div>'
 							htmlCode += code
 
 						else:

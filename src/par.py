@@ -162,7 +162,7 @@ class Parser(object):
 		'''
 			designator2 : designator2 DOT identdef
 						| designator2 LSB expList RSB
-						| designator LRB qualident RRB
+						| designator2 LRB qualident RRB
 						| empty
 		'''
 
