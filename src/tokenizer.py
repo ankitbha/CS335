@@ -96,10 +96,14 @@ class tokenizer(object):
 
 		t_VINTEGER = r'-?[0-9]+'
 		t_VREAL = r'-?[0-9]+\.[0-9]+'
-		t_VBOOLEAN = r'TRUE|FALSE'
+#		t_VBOOLEAN = r'TRUE|FALSE'
 		t_VSTRING = r'\"([^\\]|(\\.))*?\"'
 		t_VCHAR = r'(L)?\'(.|\n)\''
 		tokens = ['ASSIGN', 'LT' , 'GT' , 'PLUS' , 'MINUS' , 'MULTIPLY' , 'DIVIDE' , 'MODULUS' , 'OR' , 'NOT', 'AND' , 'EQUAL' ,  'NEQUAL' , 'DOT' , 'COMMA' , 'SCOLON' , 'LSB' , 'RSB' , 'LRB' , 'RRB' , 'LCB' , 'RCB' , 'LTEQ', 'GTEQ', 'IDENT', 'VINTEGER', 'VREAL', 'VSTRING', 'VBOOLEAN', 'VCHAR' , 'COLON' , 'AT' ] + list(reserved.values())
+
+		def t_VBOOLEAN(self, t):
+				r'TRUE|FALSE'
+				return t
 
 		def t_IDENT(self, t):
 				r'[a-zA-Z]([a-zA-Z0-9])*'
