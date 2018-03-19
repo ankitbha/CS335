@@ -369,8 +369,8 @@ class Parser(object):
 
 	def p_setStatement(self, p):
 		'''
-			setStatement : qualident DOT KEY_ADD LRB expression RRB
-						 | qualident DOT KEY_DEL LRB expression RRB
+			setStatement : KEY_ADD LRB qualident COMMA expression RRB
+						 | KEY_DEL LRB qualident COMMA expression RRB
 
 		'''
 

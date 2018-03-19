@@ -8,5 +8,5 @@ BEGIN
 		CASE 2: WRITE("TWO"); BREAK;
 		CASE 3: WRITE("THREE"); BREAK;
 		ELSE : WRITE ("NONE");
-	END
+	END;
 END pswitch.

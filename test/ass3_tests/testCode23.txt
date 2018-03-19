@@ -7,7 +7,7 @@ MODULE Pattern;
 			RETURN 1;
 		ELSE
 			RETURN fib(n-1) + fib(n-2);
-		END
+		END;
 	END fib;
 
 BEGIN
