@@ -18,6 +18,7 @@ reserved = {
 	'END' : 'KEY_END',                                 # end block
 	'EXIT' : 'KEY_EXIT',                               # end program
 	'FCLOSE' : 'KEY_FCLOSE',                           # close file
+	'FILE' : 'KEY_FILE',
 	'FOPEN' : 'KEY_FOPEN',                             # open file
 	'FOR' : 'KEY_FOR',                                 # for loop
 	'FAPPEND' : 'KEY_FAPPEND',                         # file write

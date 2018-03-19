@@ -1,5 +1,7 @@
 MODULE fileio;
 	CONST flname := "test.txt" : STRING;
+	VAR file : FILE ; abc : STRING;
+	
 BEGIN
 		file = FOPEN(flname, 'r');
 		abc = FREAD(file, 10);
