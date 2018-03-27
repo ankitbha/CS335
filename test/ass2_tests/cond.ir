@@ -1,14 +1,13 @@
-1, call, main
-2, =, a, 2
-3, +, b, a, 4
-4, ifgoto, <=, b, 7, 8
-5, *, c, b, a
-6, ifgoto, <=, c, 10, 12
-7, goto, 14
-8, ifgoto, >=, a, 2, 10
-9, goto, 14
-10, printint, c
-11, goto, 14
-12, printint, c
-13, goto, 14
-14, return
+1, =, a, 2
+2, +, bh, a, 4
+3, ifgoto, <=, bh, 7, 7
+4, *, c, bh, a
+5, ifgoto, <=, c, 10, 11
+6, goto, 13
+7, ifgoto, >=, a, 2, 9
+8, goto, 13
+9, printint, c
+10, goto, 13
+11, printint, c
+12, goto, 13
+13, return
