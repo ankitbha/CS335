@@ -1,0 +1,15 @@
+1, =, res, 0
+2, =, i, 0
+3, goto, 14
+4, =, x, 0
+5, goto, 12
+6, =, k, 0
+7, goto, 10
+8, +, res, res, 1
+9, +, k, k, 1
+10, ifgoto, <=, k, 9, 8
+11, +, x, x, 1
+12, ifgoto, <=, x, 9, 6
+13, +, i, i, 1
+14, ifgoto, <=, i, 9, 4
+15, printint, res
