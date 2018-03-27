@@ -1,11 +1,9 @@
-1, call, main
-2, label, main
-3, =, t, 2
-4, =, b, 5
-5, writearray, a, 2, t
-6, readarray, a, 2, ll
-7, printint, ll
-8, writearray, a, 2, b
-9, readarray, a, 2, ll
-10, printint, ll
-11, return
+1, =, t, 2
+2, =, x, 5
+3, writearray, a, 2, t
+4, readarray, a, 2, y
+5, printint, y
+6, writearray, a, 2, x
+7, readarray, a, 2, y
+8, printint, y
+9, return

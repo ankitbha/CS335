@@ -500,17 +500,17 @@ def translate(line):
 		index = line[3]
 		res = line[4]
 		addr = addrDesc[res]
+		arr = getReg(array,lineno)
+		acode = acode + "\tla " + arr + ", " + array.lexeme + "\n"
 		if(addr=="MEM"):
 			addr=getReg(res,lineno)
 		if(isInt(index)):
-			acode = acode + "\tlw " + addr + ", " + str(4*int(index)) + "(" + array.lexeme() + ")\n"
+			acode = acode + "\tlw " + addr + ", " + str(4*int(index)) + "(" + arr + ")\n"
 
 		else:
 			addri = addrDesc[index]
 			if(addri=="MEM"):
 				addri=getReg(index,lineno)
-			arr = getReg(array,lineno)
-			acode = acode + "\tla " + arr + ", " + array.lexeme + "\n"
 			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
 			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
 			acode = acode + "\tadd " + arrdi + ", " + arr + "," + addri + "\n"
@@ -519,37 +519,40 @@ def translate(line):
 	if op=="writearray":
 		#3, write, a, var, var
 		#4, la, reg, label
-		arrray = line[2]
+		array = line[2]
 		index = line[3]
 		res = line[4]
 		arr = getReg(array,lineno)
+		acode = acode + "\tla " + arr + ", " + array.lexeme + "\n"
+		temparr = getReg(symTable["_temp"],lineno)
+		acode = acode + "\tla " + temparr + ", " + array.lexeme + "\n"
 		if (not isInt(res)):
 			rres = getReg(res,lineno)
 			if(isInt(index)):
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				# rres = getReg("number",lineno)
-				acode = acode + "\tsw " + rres + ", " + arr + "\n"
+				acode = acode + "\tsw " + rres + ", 0(" + temparr + ")\n"
 			else:
 				rindex = getReg(index,lineno)
 				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
-				acode = acode + "\tadd " + arr + ", " + arr + ", " + rindex + "\n"
-				acode = acode + "\tsw " + rres + ", " + arr + "\n"
+				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
+				acode = acode + "\tsw " + rres + ", 0(" + temparr + ")\n"
 		else:
 			if(isInt(index)):
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
-				acode = acode + "\taddi " + arr + ", " +  arr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
+				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				# rres = getReg("number",lineno)
-				acode = acode + "\tli " + arr + ", " + res + "\n"
+				acode = acode + "\tli " + res + ", 0(" + temparr + ")\n"
 			else:
 				rindex = getReg(index,lineno)
 				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
-				acode = acode + "\tadd " + arr + ", " + arr + ", " + rindex + "\n"
-				acode = acode + "\tli " +  arr +  ", " + res + "\n"
+				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
+				acode = acode + "\tli " +  res +  ", 0(" + temparr + ")\n"
 
 mathop = ['+', '-', '*', '/', '%']
 addrDesc = {}
@@ -630,6 +633,10 @@ def main():
 		symTable[v] = SymClass(v,'array_int')
 		symList.append(symTable[v])
 
+
+
+	symTable["_temp"] = SymClass("_temp", 'int')
+	symList.append(symTable["_temp"])
 # set the variables in IR to point to symTable dictionary's entries
 
 	for line in incode:
@@ -735,7 +742,7 @@ def main():
 	for var in variables:
 		acode += var+":  "+".space 4\n"
 	for var in arrayz:
-		acode += var+":  "+".word 0:100\n"
+		acode += var+":  "+".space 400\n"
 
 	acode += ".text\n"
 	acode += ".globl main\n\n"
