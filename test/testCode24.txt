@@ -1,9 +1,0 @@
-(*program to test short circuit code*)
-MODULE Pattern;
-BEGIN
-	IF (4 > 1) | (3 / 0 = 4) THEN
-		WRITEINT(1);
-	ELSE
-		WRITEINT(0);
-	END;
-END Pattern.

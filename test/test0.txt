@@ -1,8 +1,0 @@
-MODULE Pattern;
-VAR test : INTEGER ;
-BEGIN
-	a := 1;
-	b := 1;
-	test := a+b;
-	WRITEINT(test);
-END Pattern.

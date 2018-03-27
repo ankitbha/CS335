@@ -549,7 +549,7 @@ def translate(line):
 				rindex = getReg(index,lineno)
 				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
 				acode = acode + "\tadd " + arr + ", " + arr + ", " + rindex + "\n"
-				acode = acode + "\tli " +  arr +  ", " + res + "\n"		
+				acode = acode + "\tli " +  arr +  ", " + res + "\n"
 
 mathop = ['+', '-', '*', '/', '%']
 addrDesc = {}
@@ -594,6 +594,7 @@ def main():
 
 	for line in incodestr:
 		incode.append(line.strip().split(', '))
+	#print(incode)
 
 # populate variables list
 
@@ -681,7 +682,7 @@ def main():
 		basicblocks[instruction1] = incode[instruction1-1:instruction2]
 	#print(basicblocks)
 
-# populate the nextUseTable
+# fill the nextUseTable
 	#print(nextUseTable)
 	for l, block in basicblocks.items():
 		tempTab = {}
@@ -713,10 +714,21 @@ def main():
 			elif ins[1] == 'scanint':
 				if ins[2] in symList:
 					tempTab[ins[2]] = (0,math.inf)
+			elif ins[1] == 'readarray':
+				if ins[2] in symList:
+					tempTab[ins[2]] = (1,int(ins[0]))
+				if ins[3] in symList:
+					tempTab[ins[3]] = (1,int(ins[0]))
+				if ins[4] in symList:
+					tempTab[ins[4]] = (1,int(ins[0]))
+			elif ins[1] == 'writearray':
+				if ins[2] in symList:
+					tempTab[ins[2]] = (1,int(ins[0]))
+				if ins[3] in symList:
+					tempTab[ins[3]] = (1,int(ins[0]))
+				if ins[4] in symList:
+					tempTab[ins[4]] = (1,int(ins[0]))
 			#addMore
-
-# keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint']
-# relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 
 #	acode = ""
 	acode += ".data\n"
