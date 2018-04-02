@@ -1,0 +1,22 @@
+(* program to find bigger of two numbers*)
+MODULE testCode1;
+
+VAR a, b, test : INTEGER ;
+
+PROCEDURE bigger(a, b: INTEGER) : INTEGER;
+	BEGIN
+		IF  ( a > b ) THEN
+			RETURN a ;
+		ELSEIF (a = b) THEN
+			RETURN 0 ;
+		ELSE
+			RETURN b ;
+		END ;
+	END bigger;
+
+BEGIN
+	a := 1;
+	b := 1;
+	test := bigger(a,b);
+	WRITEINT(test);
+END testCode1.

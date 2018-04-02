@@ -6,6 +6,55 @@ import lex
 import yacc
 from tokenizer import tokenizer
 
+# ----------------------------------------- type part -------------------------------------
+
+class Typeclass(object):
+	def __init__(self):
+        pass
+
+    def type_cast_implicit(self, type1, type2):
+    	if((type1 == 'REAL' and type2 == 'INTEGER') or (type1 == 'INTEGER' and type2 == 'REAL')):
+    		return 'REAL'     
+    	return None	
+
+    def get_new_object(self, obj1, obj2, token):
+    	type_list = accepted_types[token]
+    	type1, value1 = obj1['type'], obj1['place']	
+    	if(obj2 != None):
+    		type2, value2 = obj2['type'], obj2['place']
+    		if type1 in type_list and type2 in type_list:
+    			if (type1 == type2):
+    				if(type_list[-1] == None):
+    					return {'type' : type1, 'value1' : value1, 'value2' : value2}
+    				else:
+    					return {'type' : type_list[-1], 'value1' : value1, 'value2' : value2}
+
+    			else:
+    				type3 = self.type_cast_implicit(type1, type2)
+    				if type3 != None:
+    					return {'type' : type3, 'value1' : value1, 'value2' : value2}
+    				else:
+    					raise TypeError("Types are incompatible")	
+    		else:
+    			raise TypeError("Type is invalid")			
+
+    	else:
+    		if type1 in type_list:
+    			return obj1	
+
+    		raise TypeError("Invalid Type")	
+
+    		# see the variable names--------------------------------
+
+    def returnTypeCheck(self, Type, Table):
+        if Table.category == SymTab.Category.Function:
+            if Table.attr['type'] != Type:
+                return False
+            return True
+        else:
+            return self.returnTypeCheck(Type, Table.parent)		
+# ----------------------------------------------------------------------------------------
+
 class Parser(object):
 
 	tokens = tokenizer.tokens
@@ -117,7 +166,7 @@ class Parser(object):
 				   | LRB expression RRB
 				   | NOT factor
 				   | KEY_ABS factor
-				   | vartype
+				   | varType
 				   | setType
 				   | KEY_CHR LRB factor RRB
 				   | KEY_ORD LRB factor RRB
@@ -504,4 +553,20 @@ if __name__=="__main__":
 	parser = Parserrr()
 	filename = sys.argv[1]
 
+
+	accepted_types = {
+	  	  'MULTIPLY': ('int', 'real', None)
+        , 'PLUS': ('int', 'real', None)
+        , 'MINUS': ('int', 'real', None)
+        , 'DIVIDE': ('int', 'real', None)  
+        , 'LT': ('int', 'boolean')
+        , 'LTEQ': ('int', 'boolean')
+        , 'GT': ('int', 'boolean')
+        , 'GTEQ': ('int', 'boolean')
+        , 'EQUAL': ('int', 'real', 'boolean')
+        , 'NEQUAL': ('int', 'real', 'boolean')
+        , 'AND': ('boolean', 'boolean')
+        , 'OR': ('boolean', 'boolean')
+        , 'NOT' : ('boolean', 'boolean')
+	}
 	result = parser.parse_file(filename, debug = True)
