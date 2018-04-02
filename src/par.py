@@ -6,55 +6,6 @@ import lex
 import yacc
 from tokenizer import tokenizer
 
-# ----------------------------------------- type part -------------------------------------
-
-class Typeclass(object):
-	def __init__(self):
-        pass
-
-    def type_cast_implicit(self, type1, type2):
-    	if((type1 == 'REAL' and type2 == 'INTEGER') or (type1 == 'INTEGER' and type2 == 'REAL')):
-    		return 'REAL'     
-    	return None	
-
-    def get_new_object(self, obj1, obj2, token):
-    	type_list = accepted_types[token]
-    	type1, value1 = obj1['type'], obj1['place']	
-    	if(obj2 != None):
-    		type2, value2 = obj2['type'], obj2['place']
-    		if type1 in type_list and type2 in type_list:
-    			if (type1 == type2):
-    				if(type_list[-1] == None):
-    					return {'type' : type1, 'value1' : value1, 'value2' : value2}
-    				else:
-    					return {'type' : type_list[-1], 'value1' : value1, 'value2' : value2}
-
-    			else:
-    				type3 = self.type_cast_implicit(type1, type2)
-    				if type3 != None:
-    					return {'type' : type3, 'value1' : value1, 'value2' : value2}
-    				else:
-    					raise TypeError("Types are incompatible")	
-    		else:
-    			raise TypeError("Type is invalid")			
-
-    	else:
-    		if type1 in type_list:
-    			return obj1	
-
-    		raise TypeError("Invalid Type")	
-
-    		# see the variable names--------------------------------
-
-    def returnTypeCheck(self, Type, Table):
-        if Table.category == SymTab.Category.Function:
-            if Table.attr['type'] != Type:
-                return False
-            return True
-        else:
-            return self.returnTypeCheck(Type, Table.parent)		
-# ----------------------------------------------------------------------------------------
-
 class Parser(object):
 
 	tokens = tokenizer.tokens
@@ -78,6 +29,10 @@ class Parser(object):
 		'''
 			module : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT
 		'''
+		# print(p[0])
+		p[0] = {}
+		p[0]['code'] = p[6]['code'] + p[4]['code']
+		print(p[0]['code'])
 
 	def p_declarationSequence(self, p):
 		'''
@@ -87,6 +42,16 @@ class Parser(object):
 								| declarationSequence procss
 								| empty
 		'''
+
+		if(p[1]==None):
+			p[0]={}
+			p[0]['code']=''
+			# print("##########")
+		else:
+			# do nothing for now. Thing will be handled in conss typss etc
+			p[0]={}
+			p[0]['code']=''
+
 
 	def p_conss(self, p):
 		'''
@@ -117,17 +82,28 @@ class Parser(object):
 			statementSequence : statementSequence statement SCOLON
 							  | empty
 		'''
+		p[0]={}
+		if(str(p.slice[1])=="empty"):
+			p[0]['code'] = ''
+		else:
+			# print("#######################")
+			# print(p[2])
+			p[0]['code'] = p[1]['code'] + p[2]['code'] 
 
 	def p_constantDeclaration(self, p):
 		'''
 			constantDeclaration : IDENT ASSIGN expression COLON type
 		'''
 
+		# add to sym table
+
 	def p_expression(self, p):
 		'''
 			expression : simpleExpression
 					   | simpleExpression relation simpleExpression
 		'''
+		p[0] = {}
+		p[0]['place'] = 'abc'
 
 	def p_simpleExpression(self, p):
 		'''
@@ -209,6 +185,8 @@ class Parser(object):
 		'''
 			designator : qualident designator2
 		'''
+		p[0] = {}
+		p[0]['place'] = p[1]['place']
 
 	def p_designator2(self, p):
 		'''
@@ -222,12 +200,16 @@ class Parser(object):
 			qualident : identdef
 					  | identdef DOT qualident
 		'''
+		p[0] = {}
+		p[0]['place'] = p[1]['place']
 
 	def p_identdef(self, p):
 		'''
 			identdef : IDENT
 					 | AT IDENT
 		'''
+		p[0] = {}
+		p[0]['place'] = p.slice[1].value
 
 	def p_expList(self, p):
 		'''
@@ -272,6 +254,7 @@ class Parser(object):
 		'''
 			typeDeclaration : IDENT EQUAL type
 		'''
+		# handle in symbol table
 
 	def p_type(self, p):
 		'''
@@ -360,12 +343,16 @@ class Parser(object):
 		'''
 			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT
 		'''
+		p[0] = {}
+		p[0]['code'] = p[1]['code'] + p[3]['code']
 
 	def p_procedureHeading(self, p):
 		'''
 			procedureHeading : KEY_PROCEDURE IDENT formalParameters COLON type
 							 | KEY_PROCEDURE IDENT formalParameters
 		'''
+		# p[0]={}
+		# p[0]['code'] = 
 
 	def p_formalParameters(self, p):
 		'''
@@ -415,11 +402,17 @@ class Parser(object):
 					  | memoryalloc
 					  | setStatement
 		'''
+		p[0]={}
+		if(str(p.slice[1])=='assignment' or str(p.slice[1]) == 'ioStatement'):
+			print("statament")
+			p[0]['code'] = p[1]['code']
 
 	def p_assignment(self, p):
 		'''
 			assignment : designator ASSIGN expression
 		'''
+		p[0] = {}
+		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place']
 
 	def p_setStatement(self, p):
 		'''
@@ -499,6 +492,11 @@ class Parser(object):
 						| KEY_READCHAR LRB expression RRB
 						| KEY_READBOOL LRB expression RRB
 		'''
+		p[0] = {}
+		if(p[1]=='WRITEINT'):
+			print("######################")
+			p[0]['code'] = 'printint, ' + p[3]['place']
+
 
 	def p_fileStatement(self, p):
 		'''
@@ -553,20 +551,4 @@ if __name__=="__main__":
 	parser = Parserrr()
 	filename = sys.argv[1]
 
-
-	accepted_types = {
-	  	  'MULTIPLY': ('int', 'real', None)
-        , 'PLUS': ('int', 'real', None)
-        , 'MINUS': ('int', 'real', None)
-        , 'DIVIDE': ('int', 'real', None)  
-        , 'LT': ('int', 'boolean')
-        , 'LTEQ': ('int', 'boolean')
-        , 'GT': ('int', 'boolean')
-        , 'GTEQ': ('int', 'boolean')
-        , 'EQUAL': ('int', 'real', 'boolean')
-        , 'NEQUAL': ('int', 'real', 'boolean')
-        , 'AND': ('boolean', 'boolean')
-        , 'OR': ('boolean', 'boolean')
-        , 'NOT' : ('boolean', 'boolean')
-	}
 	result = parser.parse_file(filename, debug = True)
