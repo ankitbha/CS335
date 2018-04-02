@@ -117,13 +117,8 @@ class Parser(object):
 				   | LRB expression RRB
 				   | NOT factor
 				   | KEY_ABS factor
-				   | KEY_INTEGER
-				   | KEY_BOOLEAN
-				   | KEY_CHAR
-				   | KEY_STRING
-				   | KEY_REAL
-				   | KEY_SET
-				   | KEY_FILE
+				   | vartype
+				   | setType
 				   | KEY_CHR LRB factor RRB
 				   | KEY_ORD LRB factor RRB
 		'''
@@ -236,6 +231,7 @@ class Parser(object):
 				 | arrayType
 				 | recordType
 				 | pointerType
+				 | setType
 		'''
 
 	def p_varType(self, p):
@@ -245,7 +241,6 @@ class Parser(object):
 					| KEY_CHAR
 					| KEY_STRING
 					| KEY_REAL
-					| KEY_SET
 					| KEY_FILE
 		'''
 
@@ -253,6 +248,13 @@ class Parser(object):
 		'''
 			arrayType : KEY_ARRAY length comass KEY_OF type
 		'''
+
+
+	def p_setType(self, p):
+		'''
+			setType : KEY_SET
+		'''
+
 
 	def p_comass(self, p):
 		'''
