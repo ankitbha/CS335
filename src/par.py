@@ -117,7 +117,7 @@ class Parser(object):
 				   | LRB expression RRB
 				   | NOT factor
 				   | KEY_ABS factor
-				   | vartype
+				   | varType
 				   | setType
 				   | KEY_CHR LRB factor RRB
 				   | KEY_ORD LRB factor RRB
