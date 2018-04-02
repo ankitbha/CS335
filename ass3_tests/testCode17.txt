@@ -1,0 +1,34 @@
+(* Program for a 3 level code *)
+MODULE testCode17;
+	
+VAR x : INTEGER;
+
+PROCEDURE func(x : INTEGER);
+
+	VAR y: INTEGER;
+
+	PROCEDURE prod(x, y :INTEGER) : INTEGER ;
+	BEGIN
+			RETURN x*y;
+	END prod;
+
+BEGIN 
+	IF x < 0 THEN
+		x := -1*x;
+	END;
+	y:=1;
+	WHILE TRUE BEGIN
+		WRITEINT(prod(x, y));
+		y := y +1 ;
+		IF y = 10 THEN
+			BREAK;
+		ELSE 
+			CONTINUE;
+		END;
+	END;
+END func;
+
+BEGIN
+	x:=7;
+	func(x);
+END testCode17. 

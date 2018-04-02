@@ -29,6 +29,10 @@ class Parser(object):
 		'''
 			module : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT
 		'''
+		# print(p[0])
+		p[0] = {}
+		p[0]['code'] = p[6]['code'] + p[4]['code']
+		print(p[0]['code'])
 
 	def p_declarationSequence(self, p):
 		'''
@@ -38,6 +42,16 @@ class Parser(object):
 								| declarationSequence procss
 								| empty
 		'''
+
+		if(p[1]==None):
+			p[0]={}
+			p[0]['code']=''
+			# print("##########")
+		else:
+			# do nothing for now. Thing will be handled in conss typss etc
+			p[0]={}
+			p[0]['code']=''
+
 
 	def p_conss(self, p):
 		'''
@@ -68,17 +82,28 @@ class Parser(object):
 			statementSequence : statementSequence statement SCOLON
 							  | empty
 		'''
+		p[0]={}
+		if(str(p.slice[1])=="empty"):
+			p[0]['code'] = ''
+		else:
+			# print("#######################")
+			# print(p[2])
+			p[0]['code'] = p[1]['code'] + p[2]['code'] 
 
 	def p_constantDeclaration(self, p):
 		'''
 			constantDeclaration : IDENT ASSIGN expression COLON type
 		'''
 
+		# add to sym table
+
 	def p_expression(self, p):
 		'''
 			expression : simpleExpression
 					   | simpleExpression relation simpleExpression
 		'''
+		p[0] = {}
+		p[0]['place'] = 'abc'
 
 	def p_simpleExpression(self, p):
 		'''
@@ -160,6 +185,8 @@ class Parser(object):
 		'''
 			designator : qualident designator2
 		'''
+		p[0] = {}
+		p[0]['place'] = p[1]['place']
 
 	def p_designator2(self, p):
 		'''
@@ -173,12 +200,16 @@ class Parser(object):
 			qualident : identdef
 					  | identdef DOT qualident
 		'''
+		p[0] = {}
+		p[0]['place'] = p[1]['place']
 
 	def p_identdef(self, p):
 		'''
 			identdef : IDENT
 					 | AT IDENT
 		'''
+		p[0] = {}
+		p[0]['place'] = p.slice[1].value
 
 	def p_expList(self, p):
 		'''
@@ -223,6 +254,7 @@ class Parser(object):
 		'''
 			typeDeclaration : IDENT EQUAL type
 		'''
+		# handle in symbol table
 
 	def p_type(self, p):
 		'''
@@ -311,12 +343,16 @@ class Parser(object):
 		'''
 			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT
 		'''
+		p[0] = {}
+		p[0]['code'] = p[1]['code'] + p[3]['code']
 
 	def p_procedureHeading(self, p):
 		'''
 			procedureHeading : KEY_PROCEDURE IDENT formalParameters COLON type
 							 | KEY_PROCEDURE IDENT formalParameters
 		'''
+		# p[0]={}
+		# p[0]['code'] = 
 
 	def p_formalParameters(self, p):
 		'''
@@ -366,11 +402,17 @@ class Parser(object):
 					  | memoryalloc
 					  | setStatement
 		'''
+		p[0]={}
+		if(str(p.slice[1])=='assignment' or str(p.slice[1]) == 'ioStatement'):
+			print("statament")
+			p[0]['code'] = p[1]['code']
 
 	def p_assignment(self, p):
 		'''
 			assignment : designator ASSIGN expression
 		'''
+		p[0] = {}
+		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place']
 
 	def p_setStatement(self, p):
 		'''
@@ -450,6 +492,11 @@ class Parser(object):
 						| KEY_READCHAR LRB expression RRB
 						| KEY_READBOOL LRB expression RRB
 		'''
+		p[0] = {}
+		if(p[1]=='WRITEINT'):
+			print("######################")
+			p[0]['code'] = 'printint, ' + p[3]['place']
+
 
 	def p_fileStatement(self, p):
 		'''

@@ -1,0 +1,11 @@
+(*program to test linked list : NOT WORKING*)
+MODULE testCode11;
+
+TYPE link = POINTER TO list ;
+TYPE list = RECORD index : INTEGER; next : link END;
+TYPE a = POINTER TO list;
+VAR rec : a;
+
+BEGIN
+	NEW(rec);
+END testCode11. 
