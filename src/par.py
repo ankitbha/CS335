@@ -5,21 +5,22 @@ import sys
 import lex
 import yacc
 from tokenizer import tokenizer
+import symtable
 
 # ----------------------------------------- type part -------------------------------------
- 
+
 class Typeclass(object):
 	def __init__(self):
         pass
- 
+
     def type_cast_implicit(self, type1, type2):
      	if((type1 == 'REAL' and type2 == 'INTEGER') or (type1 == 'INTEGER' and type2 == 'REAL')):
-     		return 'REAL'     
-     	return None	
- 
+     		return 'REAL'
+     	return None
+
     def get_new_object(self, obj1, obj2, token):
      	type_list = accepted_types[token]
-     	type1, value1 = obj1['type'], obj1['place']	
+     	type1, value1 = obj1['type'], obj1['place']
      	if(obj2 != None):
      		type2, value2 = obj2['type'], obj2['place']
      		if type1 in type_list and type2 in type_list:
@@ -28,36 +29,36 @@ class Typeclass(object):
      					return {'type' : type1, 'value1' : value1, 'value2' : value2}
      				else:
      					return {'type' : type_list[-1], 'value1' : value1, 'value2' : value2}
- 
+
      			else:
      				type3 = self.type_cast_implicit(type1, type2)
      				if type3 != None:
      					return {'type' : type3, 'value1' : value1, 'value2' : value2}
      				else:
-     					raise TypeError("Types are incompatible")	
+     					raise TypeError("Types are incompatible")
      		else:
-     			raise TypeError("Type is invalid")			      
- 
+     			raise TypeError("Type is invalid")
+
      	else:
      		if type1 in type_list:
-     			return obj1	
- 
-     		raise TypeError("Invalid Type")	
- 
+     			return obj1
+
+     		raise TypeError("Invalid Type")
+
      		# see the variable names--------------------------------
- 
+
     def returnTypeCheck(self, Type, Table):
         if Table.category == SymTab.Category.Function:
             if Table.attr['type'] != Type:
                 return False
             return True
         else:
-            return self.returnTypeCheck(Type, Table.parent)		
+            return self.returnTypeCheck(Type, Table.parent)
  # ---------------------------------------------------------------------------------------
 
 
 
-class Parser(object):
+class Parser(Typeclass):
 
 	tokens = tokenizer.tokens
 
@@ -75,6 +76,7 @@ class Parser(object):
 
 	def __init__(self, lexer):
 		self.lexer = lex.lex(module=tokenizer())
+		self.tunnelTab = symtable.tunnelTable()
 
 	def p_module(self, p):
 		'''
@@ -139,7 +141,7 @@ class Parser(object):
 		else:
 			# print("#######################")
 			# print(p[2])
-			p[0]['code'] = p[1]['code'] + p[2]['code'] 
+			p[0]['code'] = p[1]['code'] + p[2]['code']
 
 	def p_constantDeclaration(self, p):
 		'''
@@ -160,8 +162,8 @@ class Parser(object):
 			p[0]['type'] = p[1]['type']
 			p[0]['place'] = p[1]['place']
 		else:
-			
-			
+
+
 			# get new temporary
 			# temp_var = SymTab.newTemp(newobj['type'])
 
@@ -426,7 +428,7 @@ class Parser(object):
 							 | KEY_PROCEDURE IDENT formalParameters
 		'''
 		# p[0]={}
-		# p[0]['code'] = 
+		# p[0]['code'] =
 
 	def p_formalParameters(self, p):
 		'''
@@ -629,7 +631,7 @@ if __name__=="__main__":
    	      'MULTIPLY': ('INTEGER', 'REAL', None)
         , 'PLUS': ('INTEGER', 'REAL', None)
         , 'MINUS': ('INTEGER', 'REAL', None)
-        , 'DIVIDE': ('INTEGER', 'REAL', None)  
+        , 'DIVIDE': ('INTEGER', 'REAL', None)
         , 'LT': ('INTEGER', 'BOOLEAN')
         , 'LTEQ': ('INTEGER', 'BOOLEAN')
         , 'GT': ('INTEGER', 'BOOLEAN')

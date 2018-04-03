@@ -5,18 +5,18 @@ typeSizeAllocation({'int': 4, 'char': 1, 'bool': 1, 'real': 8})
 typeSizeAllocation({'file': None, 'str': None})
 
 class SymTabEntry(object):
-    def __init__(self, lex, kind, vtype, size=None):
+    def __init__(self, lex, vtype, kind, size=None):
         self.lex = lex
         self.kind = kind
         self.vtype = vtype
         self.size = size
 
-    def updEntry(self, attr, newAttr):
-        self.attr = newAttr
+    def updEntry(self, addOns, updAddOns):
+        self.addOns = updAddOns
 
 class SymTab(object):
 
-	def __init__(self, div, parent=None, addOns):
+	def __init__(self, div, addOns, parent):
         self.parent = parent
         self.addOns = addOns
 		self.div = div
@@ -28,7 +28,7 @@ class SymTab(object):
             size = typeSizeAllocation[ltype]
         else:
             size = None
-        self.varsHere[lex] = SymTabEntry(lex, kind, vtype, size)
+        self.varsHere[lex] = SymTabEntry(lex, vtype, kind, size)
         return self.varsHere[lex]
 
     def queryEnt(self, lex):
@@ -38,13 +38,8 @@ class SymTab(object):
 
 class tunnelTable(object):
     def __init__(self):
-        self.rootTable = SymTab("program", None, {})
+        self.rootTable = SymTab("program", {}, None)
 		self.currTable = self.rootTable
-        self.labelCount = 1
-
-    def newLabel(self):
-        self.labelCount += 1
-        return "L" + str(self.labelCount - 1)
 
     def queryEnt(self, lex):
         iterTable = self.currTable
@@ -62,10 +57,23 @@ class tunnelTable(object):
         return self.currTable.addEntry(lex, vtype, kind)
 
     def startScope(self, div, addOns):
-        freshTable = SymTab(div, self.currentTable, addOns)
+        freshTable = SymTab(div, addOns, self.currentTable)
         self.currentTable.children[addOns['id']] = freshTable
         self.currentTable = freshTable
         return self.currentTable
 
     def endScope(self):
         self.currentTable = self.currentTable.parent
+
+class tempLabel(object):
+    def __init__(self):
+        self.tempCount = 0
+        self.labelCount = 1
+
+    def genNewTemp(self, vtype, kind):
+        self.tempCount += 1
+        return SymTabEntry("t"+str(self.tempCount-1), vtype, kind)
+
+    def genNewLabel(self):
+        self.labelCount += 1
+        return "L" + str(self.labelCount-1)
