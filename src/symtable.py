@@ -16,6 +16,12 @@ class SymTabEntry(object):
     def updEntry(self, addOns, updAddOns):
         self.addOns = updAddOns
 
+    def __repr__(self):
+        return "kind: {}, type: {}".format(self.kind, self.vtype)
+
+    def __str__(self):
+        return self.lex
+
 class SymTab(object):
 
 	def __init__(self, div, addOns, parent):
@@ -24,6 +30,7 @@ class SymTab(object):
 		self.div = div
         self.varsHere = {}
         self.children = {}
+        self.loopLabs = {'pre': None, 'loop': None, 'suf': None}
 
 	def addEntry(self, lex, vtype, kind):
         if vtype in typeSizeAllocation.keys():
@@ -37,6 +44,19 @@ class SymTab(object):
         if lex in self.varsHere:
             return self.varsHere[lexeme]
         return None
+
+    def printMe(self):
+    ## print attributes
+    if len(self.addOns) > 0:
+        print("## Attributes ##")
+        for k,v in self.addOns.items():
+            print(k + " -> " + str(v))
+    ## print vars
+    if len(self.varsHere) > 0:
+        print("## Variables ##")
+        for k,v in self.varsHere.items():
+            print(k + " -> " + repr(v))
+
 
 class tunnelTable(object):
     def __init__(self):
