@@ -439,7 +439,7 @@ class Parser(Typeclass):
 			procedureHeading : KEY_PROCEDURE IDENT tPtype formalParameters COLON type
 							 | KEY_PROCEDURE IDENT tPtype formalParameters
 		'''
-		
+
 		p[0]={}
 		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n'
 		self.tunnelTab.currTable.addOns['type'] = p.slice[5].value
@@ -502,8 +502,8 @@ class Parser(Typeclass):
 					  | KEY_RETURN
 					  | ioStatement
 					  | fileStatement
-					  | KEY_BREAK
-					  | KEY_CONTINUE
+					  | breakStatement
+					  | continueStatement
 					  | empty
 					  | memoryalloc
 					  | setStatement
@@ -518,7 +518,7 @@ class Parser(Typeclass):
 				# expression????
 			else:
 				self.tunnelTab.rtypeCheck(None)
-				p[0]['code'] = 'goto, ' + '\n' # some label 
+				p[0]['code'] = 'goto, ' + '\n' # some label
 		if(str(p.slice[1])=='procedureCall'):
 			p[0]['code'] = p[1]['code']
 
@@ -536,6 +536,21 @@ class Parser(Typeclass):
 						 | KEY_DEL LRB qualident COMMA expression RRB
 
 		'''
+
+	def p_breakStatement(self, p):
+		'''
+			breakStatement : KEY_BREAK
+		'''
+		breakCode = "goto, " + self.tunnelTab.currTable.loopLabs['suf'] + "\n"
+		p[0]['code'] = breakCode
+
+	def p_continueStatement(self, p):
+		'''
+			continueStatement : KEY_CONTINUE
+		'''
+		contCode = "goto, " + self.tunnelTab.currTable.loopLabs['loop'] + "\n"
+		p[0]['code'] = contCode
+
 
 	def p_memoryalloc(self, p):
 		'''
@@ -557,7 +572,7 @@ class Parser(Typeclass):
 						| KEY_IF expression KEY_THEN statementSequence ifss KEY_END
 		'''
 
-		
+
 
 	def p_ifss(self, p):
 		'''
@@ -586,17 +601,59 @@ class Parser(Typeclass):
 		'''
 			whileStatement : KEY_WHILE markerWhile expression KEY_BEGIN statementSequence KEY_END
 		'''
+		#if (p[4]['type']!='BOOLEAN'):
+		#	raise TypeError("Error at line number %d, while condition must be a boolean expression \n" %(p.lexer.lineno,))
+		#TODO uncomment the above type checking call when done
+		whileCode = self.tunnelTab.currTable.loopLabs['loop'] + ":" + "\n"
+		whileCode += p[3]['code']
+		whileCode += 'ifgoto, ==, ' + p[3]['place'] + ', false,' +  self.tunnelTab.currTable.loopLabs['suf'] + "\n"
+		whileCode += p[5]['code']
+		whileCode += 'goto, ' + self.tunnelTab.currTable.loopLabs['loop'] + "\n"
+		whileCode += self.tunnelTab.currTable.loopLabs['suf'] + ":" + "\n"
+		p[0] = {'code': whileCode}
+		self.tunnelTab.endScope()
 
-	def p_markerWhile(self,p):
-		'''
-			markerWhile :
-		'''
-#        self.tunnelTab.startScope('bb', {'name':p[-1]})
+    def p_markerWhile(self,p):
+        '''
+            markerWhile :
+        '''
+        self.tunnelTab.startScope('bb', {'id': self.xtras.getNewId()})
+        loopLabel = self.xtras.getNewLabel()
+		preLabel = loopLabel
+        sufLabel =self.xtras.getNewLabel()
+		self.tunnelTab.currTable.loopLabs['pre'] = preLabel
+		self.tunnelTab.currTable.loopLabs['loop'] = loopLabel
+		self.tunnelTab.currTable.loopLabs['suf'] = sufLabel
 
 	def p_forStatement(self, p):
 		'''
-			forStatement : KEY_FOR LRB assignment SCOLON expression SCOLON assignment RRB KEY_BEGIN statementSequence KEY_END
+			forStatement : KEY_FOR markerFor LRB assignment SCOLON expression SCOLON assignment RRB KEY_BEGIN statementSequence KEY_END
 		'''
+		#TODO type checking of boolean in p[6]
+        forCode = p[4]['code']
+        forCode += self.tunnelTab.currTable.loopLabs['pre'] + ":\n"
+        forCode += p[6]['code']
+        forCode += "ifgoto, ==, " + p[6]['place'] + ", false, " + self.tunnelTab.currTable.loopLabs['suf'] + "\n"
+        forCode += p[11]['code']
+		forCode += self.tunnelTab.currTable.loopLabs['loop'] + ":\n"
+        forCode += p[8]['code']
+        forCode += "goto, " + self.tunnelTab.currTable.loopLabs['pre'] + "\n"
+        forCode += self.tunnelTab.currTable.loopLabs['suf'] + ":\n"
+    	p[0]['code'] = forCode
+        self.stManager.endScope()
+
+    def p_markerFor(self,p):
+        '''
+            markerFor :
+        '''
+        self.tunnelTab.startScope('bb', {'id': self.xtras.getNewId()})
+		preLabel = self.xtras.getNewLabel()
+		loopLabel = self.xtras.getNewLabel()
+        sufLabel =self.xtras.getNewLabel()
+		self.tunnelTab.currTable.loopLabs['pre'] = preLabel
+		self.tunnelTab.currTable.loopLabs['loop'] = loopLabel
+		self.tunnelTab.currTable.loopLabs['suf'] = sufLabel
+
 
 	def p_doWhileStatement(self, p):
 		'''
