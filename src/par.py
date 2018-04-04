@@ -10,49 +10,50 @@ from tokenizer import tokenizer
  
 class Typeclass(object):
 	def __init__(self):
-        pass
- 
-    def type_cast_implicit(self, type1, type2):
-     	if((type1 == 'REAL' and type2 == 'INTEGER') or (type1 == 'INTEGER' and type2 == 'REAL')):
-     		return 'REAL'     
-     	return None	
- 
-    def get_new_object(self, obj1, obj2, token):
-     	type_list = accepted_types[token]
-     	type1, value1 = obj1['type'], obj1['place']	
-     	if(obj2 != None):
-     		type2, value2 = obj2['type'], obj2['place']
-     		if type1 in type_list and type2 in type_list:
-     			if (type1 == type2):
-     				if(type_list[-1] == None):
-     					return {'type' : type1, 'value1' : value1, 'value2' : value2}
-     				else:
-     					return {'type' : type_list[-1], 'value1' : value1, 'value2' : value2}
- 
-     			else:
-     				type3 = self.type_cast_implicit(type1, type2)
-     				if type3 != None:
-     					return {'type' : type3, 'value1' : value1, 'value2' : value2}
-     				else:
-     					raise TypeError("Types are incompatible")	
-     		else:
-     			raise TypeError("Type is invalid")			      
- 
-     	else:
-     		if type1 in type_list:
-     			return obj1	
- 
-     		raise TypeError("Invalid Type")	
- 
-     		# see the variable names--------------------------------
- 
-    def returnTypeCheck(self, Type, Table):
-        if Table.category == SymTab.Category.Function:
-            if Table.attr['type'] != Type:
-                return False
-            return True
-        else:
-            return self.returnTypeCheck(Type, Table.parent)		
+		pass
+
+	def type_cast_implicit(self, type1, type2):
+		if((type1 == 'REAL' and type2 == 'INTEGER') or (type1 == 'INTEGER' and type2 == 'REAL')):
+			return 'REAL'
+		return None
+
+	def get_new_object(self, obj1, obj2, token):
+		type_list = accepted_types[token]
+		type1, value1 = obj1['type'], obj1['place']
+		if(obj2 != None):
+			type2, value2 = obj2['type'], obj2['place']
+			if type1 in type_list and type2 in type_list:
+				if (type1 == type2):
+					if(type_list[-1] == None):
+						return {'type' : type1, 'value1' : value1, 'value2' : value2}
+					else:
+						return {'type' : type_list[-1], 'value1' : value1, 'value2' : value2}
+
+				else:
+					type3 = self.type_cast_implicit(type1, type2)
+					if type3 != None:
+						return {'type' : type3, 'value1' : value1, 'value2' : value2}
+					else:
+						raise TypeError("Types are incompatible")
+			else:
+				raise TypeError("Type is invalid")
+
+		else:
+			if type1 in type_list:
+				return obj1
+
+			raise TypeError("Invalid Type")
+
+			# see the variable names--------------------------------
+
+	def returnTypeCheck(self, Type, Table):
+		if Table.category == SymTab.Category.Function:
+			if Table.attr['type'] != Type:
+				return False
+			return True
+		else:
+			return self.returnTypeCheck(Type, Table.parent)
+
  # ---------------------------------------------------------------------------------------
 
 
@@ -96,16 +97,11 @@ class Parser(object):
 								| declarationSequence procss
 								| empty
 		'''
-
-		if(p[1]==None):
-			p[0]={}
-			p[0]['code']=''
-			# print("##########")
-		else:
-			# do nothing for now. Thing will be handled in conss typss etc
-			p[0]={}
-			p[0]['code']=''
-
+		p[0]={}
+		p[0]['code']=''
+		if(len(p)!=2):
+			if(str(p.slice[2])=='procss'):
+				p[0]['code'] = p[2]['code']
 
 	def p_conss(self, p):
 		'''
@@ -130,6 +126,11 @@ class Parser(object):
 			procss : procss procedureDeclaration SCOLON
 				   | procedureDeclaration SCOLON
 		'''
+		p[0] = {}
+		if(len(p)==4):
+			p[0]['code'] = p[1]['code'] + p[2]['code']
+		else:
+			p[0]['code'] = p[1]['code']
 
 	def p_statementSequence(self, p):
 		'''
@@ -148,8 +149,9 @@ class Parser(object):
 		'''
 			constantDeclaration : IDENT ASSIGN expression COLON type
 		'''
-
-		# add to sym table
+		p[0]={}
+		p[0]['code'] = p[3]['code'] + "=, " + p.slice[1].value + ", " + p[3]['place'] + '\n'
+		self.tunnelTab.currTable.addEntry(p.slice[1].value, p.slice[5].value ,'const')
 
 	def p_expression(self, p):
 		'''
@@ -158,6 +160,7 @@ class Parser(object):
 		'''
 		p[0] = {}
 		p[0]['place'] = 'abc'
+
 		if(len(p)==2):
 			p[0]['code'] = p[1]['code']
 			p[0]['type'] = p[1]['type']
@@ -169,7 +172,9 @@ class Parser(object):
 			# temp_var = xtraNeeds.getNewTemp(Type, kind, etc)
 
 
-# i am ignoring IS and IN because not sure
+
+# # i am ignoring IS and IN because not sure
+
 
 
 			if((str(p.slice[2].value) != 'IN') and (str(p.slice[2].value) != 'IS')):
@@ -183,6 +188,7 @@ class Parser(object):
 					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + str(temp_var) ", FALSE"
 			p[0]['type'] = newobj['type']
 			p[0]['place'] = temp_var
+
 
 
 	def p_simpleExpression(self, p):
@@ -250,6 +256,7 @@ class Parser(object):
 			termss : termss mulOperator factor
 				   | empty
 		'''
+
 		p[0] = {}
 		dterm = {}
 		if(len(p)==4):
@@ -269,10 +276,6 @@ class Parser(object):
 			p[0]['type'] = dterm['type']		
 			p[0]['code'] = dterm['code']
 			p[0]['operator'] = dterm['operator']
-
-
-
-
 
 	def p_factor(self, p):
 		'''
@@ -364,7 +367,7 @@ class Parser(object):
 	def p_element(self, p):
 		'''
 			element : element COMMA element
-			        | expression
+					| expression
 		'''
 
 	def p_designator(self, p):
@@ -513,6 +516,12 @@ class Parser(object):
 			identList : identList COMMA IDENT
 					  | IDENT
 		'''
+		p[0] = []
+		if(len(p)==2):
+			p[0] = [p.slice[1].value]
+		else:
+			p[0] = p[1] + [p.slice[3].value]
+
 
 	def p_pointerType(self, p):
 		'''
@@ -524,21 +533,38 @@ class Parser(object):
 		'''
 			variableDeclaration : identList COLON type
 		'''
+		for var in p[1]:
+			self.tunnelTab.currTable.addEntry(var, p.slice[3].value ,'var')
+
 
 	def p_procedureDeclaration(self, p):
 		'''
-			procedureDeclaration : procedureHeading SCOLON procedureBody IDENT
+			procedureDeclaration : procedureHeading SCOLON  procedureBody IDENT
 		'''
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
+		# print(p[0]['code'])
+		# p[0]['type'] = p[1]['type']
 
 	def p_procedureHeading(self, p):
 		'''
-			procedureHeading : KEY_PROCEDURE IDENT formalParameters COLON type
-							 | KEY_PROCEDURE IDENT formalParameters
+			procedureHeading : KEY_PROCEDURE IDENT tPtype formalParameters COLON type
+							 | KEY_PROCEDURE IDENT tPtype formalParameters
 		'''
-		# p[0]={}
-		# p[0]['code'] = 
+		
+		p[0]={}
+		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n'
+		self.tunnelTab.currTable.addOns['type'] = p.slice[5].value
+
+	def p_tPtype(self,p):
+		'''
+			tPtype : empty
+		'''
+
+		p[0]={}
+		p[0]['id'] = p[-1]
+		self.tunnelTab.startScope('func',p[0])
+
 
 	def p_formalParameters(self, p):
 		'''
@@ -556,17 +582,25 @@ class Parser(object):
 		'''
 			fpSection : IDENT fps COLON type
 		'''
+		for var in p[2]+[p.slice[1].value]:
+			self.tunnelTab.currTable.addEntry(var,p.slice[4].value,'var')
+
 
 	def p_fps(self, p):
 		'''
 			fps : fps COMMA IDENT
 				| empty
 		'''
+		p[0] = []
+		if(len(p)!=2):
+			p[0] = p[1] + [p.slice[3].value]
 
 	def p_procedureBody(self, p):
 		'''
 			procedureBody : declarationSequence KEY_BEGIN statementSequence KEY_END
 		'''
+		p[0]={}
+		p[0]['code']=p[3]['code']
 
 	def p_statement(self, p):
 		'''
@@ -590,15 +624,25 @@ class Parser(object):
 		'''
 		p[0]={}
 		if(str(p.slice[1])=='assignment' or str(p.slice[1]) == 'ioStatement'):
-			print("statament")
+			# print("statament")
 			p[0]['code'] = p[1]['code']
+		if(str(p.slice[1])=='KEY_RETURN'):
+			if(len(p)==3):
+				self.tunnelTab.rtypeCheck(p.slice[2])
+				# expression????
+			else:
+				self.tunnelTab.rtypeCheck(None)
+				p[0]['code'] = 'goto, ' + '\n' # some label 
+		if(str(p.slice[1])=='procedureCall'):
+			p[0]['code'] = p[1]['code']
+
 
 	def p_assignment(self, p):
 		'''
 			assignment : designator ASSIGN expression
 		'''
 		p[0] = {}
-		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place']
+		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place']+ '\n'
 
 	def p_setStatement(self, p):
 		'''
@@ -616,14 +660,18 @@ class Parser(object):
 	def p_procedureCall(self, p):
 		'''
 			procedureCall : designator actualParameters
-						  | designator
 		'''
+		p[0]={}
+		p[0]['code'] = "call, " + p[1]['place']+ '\n'
+
 
 	def p_ifStatement(self, p):
 		'''
 			ifStatement : KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END
 						| KEY_IF expression KEY_THEN statementSequence ifss KEY_END
 		'''
+
+		
 
 	def p_ifss(self, p):
 		'''
@@ -653,10 +701,10 @@ class Parser(object):
 			whileStatement : KEY_WHILE markerWhile expression KEY_BEGIN statementSequence KEY_END
 		'''
 
-    def p_markerWhile(self,p):
-        '''
-            markerWhile :
-        '''
+	def p_markerWhile(self,p):
+		'''
+			markerWhile :
+		'''
 #        self.tunnelTab.startScope('bb', {'name':p[-1]})
 
 	def p_forStatement(self, p):
@@ -686,8 +734,8 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if(p[1]=='WRITEINT'):
-			print("######################")
-			p[0]['code'] = 'printint, ' + p[3]['place']
+			# print("######################")
+			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
 
 
 	def p_fileStatement(self, p):

@@ -1,6 +1,9 @@
-statament
-statament
-statament
-######################
-statament
-=, a, abc=, b, abc=, test, abcprintint, abc
+=, a, abc
+=, b, abc
+=, test, abc
+call, bigger
+printint, abc
+label, bigger
+=, a, abc
+=, b, abc
+
