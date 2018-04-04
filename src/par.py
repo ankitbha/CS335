@@ -5,10 +5,9 @@ import sys
 import lex
 import yacc
 from tokenizer import tokenizer
-import symtable
 
 # ----------------------------------------- type part -------------------------------------
-
+ 
 class Typeclass(object):
 	def __init__(self):
 		pass
@@ -54,11 +53,12 @@ class Typeclass(object):
 			return True
 		else:
 			return self.returnTypeCheck(Type, Table.parent)
+
  # ---------------------------------------------------------------------------------------
 
 
 
-class Parser(Typeclass):
+class Parser(object):
 
 	tokens = tokenizer.tokens
 
@@ -78,6 +78,7 @@ class Parser(Typeclass):
 		self.lexer = lex.lex(module=tokenizer())
 		self.tunnelTab = symtable.tunnelTable()
 		self.xtras = symtable.xtraNeeds()
+
 
 	def p_module(self, p):
 		'''
@@ -142,7 +143,7 @@ class Parser(Typeclass):
 		else:
 			# print("#######################")
 			# print(p[2])
-			p[0]['code'] = p[1]['code'] + p[2]['code']
+			p[0]['code'] = p[1]['code'] + p[2]['code'] 
 
 	def p_constantDeclaration(self, p):
 		'''
@@ -159,28 +160,35 @@ class Parser(Typeclass):
 		'''
 		p[0] = {}
 		p[0]['place'] = 'abc'
-# 		if(len(p)==2):
-# 			p[0]['code'] = p[1]['code']
-# 			p[0]['type'] = p[1]['type']
-# 			p[0]['place'] = p[1]['place']
-# 		else:
 
+		if(len(p)==2):
+			p[0]['code'] = p[1]['code']
+			p[0]['type'] = p[1]['type']
+			p[0]['place'] = p[1]['place']
+		else:
+			
+			
+			# get new temporary
+			# temp_var = xtraNeeds.getNewTemp(Type, kind, etc)
 
-# 			# get new temporary
-# 			# temp_var = SymTab.newTemp(newobj['type'])
 
 
 # # i am ignoring IS and IN because not sure
 
 
-# 			if((str(p.slice[2].value) != 'IN') and (str(p.slice[2].value) != 'IS')):
-# 				newobj = get_new_object(p[1], p[3], p.slice[2].type)
-# 				p[0]['code'] = p[1]['code'] +  p[3]['code'] + str(p.slice[2].value) + ", " + str(temp_var) ", " + str(newobj['value1']) + ", " + str(newobj['value2']) + "\n"
-# 			else:
-# 				# need to see this again..........
-# 				# p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + str(temp_var) ", " + str(newobj['value1']) + ", " + str(newobj['value2']) + "\n"
-# 			p[0]['type'] = newobj['type']
-# 			p[0]['place'] = temp_var
+
+			if((str(p.slice[2].value) != 'IN') and (str(p.slice[2].value) != 'IS')):
+				newobj = get_new_object(p[1], p[3], p.slice[2].type)
+				p[0]['code'] = p[1]['code'] +  p[3]['code'] + str(p.slice[2].value) + ", " + str(temp_var) ", " + str(newobj['value1']) + ", " + str(newobj['value2']) + "\n"
+			else:
+				# need to see this again..........
+				if(p[1]['type'] == str(p.slice[3].value)):
+					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + str(temp_var) ", TRUE" 
+				else:
+					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + str(temp_var) ", FALSE"
+			p[0]['type'] = newobj['type']
+			p[0]['place'] = temp_var
+
 
 
 	def p_simpleExpression(self, p):
@@ -189,23 +197,86 @@ class Parser(Typeclass):
 							 | term simpless
 							 | MINUS term simpless
 		'''
+		p[0] = {}
+		# temp_var = xtraNeeds.getNewTemp()
+		p[0]['place'] = temp_var
+		p[0]['type'] = p[-1]['type']
+		if(len(p)==3):
+			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
+		else:
+			if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
+				p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
+			else:
+				p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
+				p[0]['code'] += "=, " + p[0]['place'] + ", -" + p[0]['place'] + "\n"
+
 
 	def p_simpless(self, p):
 		'''
 			simpless : simpless addOperator term
 					 | empty
 		'''
+		p[0] = {}
+		dterm = {}
+		if(len(p)==4):
+			if(str(p.slice[1].value)!= 'empty'):
+				# temp_var = xtraNeeds.getNewTemp(Type, kind, etc) 
+				p[0]['type'] = p[1]['type']
+				# p[0]['place'] = get place from tempvar above
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+			else:
+				dterm['simpless'] = p[3]['place']
+				dterm['operator'] = p.slice[2].value
+				dterm['type'] = p[3]['type']
+				dterm['code'] = p[3]['code']
+
+		else:
+			p[0]['place'] = dterm['simpless']
+			p[0]['type'] = dterm['type']		
+			p[0]['code'] = dterm['code']
+			p[0]['operator'] = dterm['operator']
+
 
 	def p_term(self, p):
 		'''
 			term : factor termss
 		'''
+		p[0] = {}
+		# temp_var = xtraNeeds.getNewTemp()
+		p[0]['place'] = temp_var
+		p[0]['type'] = p[-1]['type']
+		p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
+
+
+
+
 
 	def p_termss(self, p):
 		'''
 			termss : termss mulOperator factor
 				   | empty
 		'''
+
+		p[0] = {}
+		dterm = {}
+		if(len(p)==4):
+			if(str(p.slice[1].value)!= 'empty'):
+				# temp_var = xtraNeeds.getNewTemp(Type, kind, etc) 
+				p[0]['type'] = p[1]['type']
+				# p[0]['place'] = get place from tempvar above
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+			else:
+				dterm['termss'] = p[3]['place']
+				dterm['operator'] = p.slice[2].value
+				dterm['type'] = p[3]['type']
+				dterm['code'] = p[3]['code']
+
+		else:
+			p[0]['place'] = dterm['termss']
+			p[0]['type'] = dterm['type']		
+			p[0]['code'] = dterm['code']
+			p[0]['operator'] = dterm['operator']
+
 	def p_factor(self, p):
 		'''
 			factor : number
@@ -224,33 +295,74 @@ class Parser(Typeclass):
 				   | KEY_CHR LRB factor RRB
 				   | KEY_ORD LRB factor RRB
 		'''
+		p[0] = {}
+
+
+
 
 	def p_number(self, p):
 		'''
 			number : VINTEGER
 				   | VREAL
 		'''
+		p[0] = {}
+		# temp_var = xtraNeeds.getNewTemp() --------- getting new entry for integer.
+		p[0]['place'] = temp_var
+		# Is this correct? --------------------------------------------------------------
+		p[0]['code'] = ''
+
+		if "." not in p.slice[1].value:
+			p[0]['type'] = 'INTEGER'
+		else:
+			p[0]['type'] = 'REAL'	
+
+
+		#  How do I check if p[1] is integer or real and is it necessary for type assignment --------------
+
 
 	def p_boolean(self, p):
 		'''
 			boolean : VBOOLEAN
 		'''
+		p[0] = {}
+		# temp_var = xtraNeeds.getNewTemp()
+		p[0]['place'] = temp_var
+		p[0]['code'] = ''
+		p[0]['type'] = 'BOOLEAN'
+
 
 	def p_char(self, p):
 		'''
 			char : VCHAR
 		'''
+		p[0] = {}
+		# temp_var = xtraNeeds.getNewTemp()
+		p[0]['place'] = temp_var
+		p[0]['code'] = ''
+		p[0]['type'] = 'CHAR'
+
 
 	def p_string(self, p):
 		'''
 			string : VSTRING
 		'''
+		p[0] = {}
+		# temp_var = xtraNeeds.getNewTemp()
+		p[0]['place'] = temp_var
+		p[0]['code'] = ''
+		p[0]['type'] = 'STRING'
+
+
+
+# ---------------------------------------------------------------------------
 
 	def p_set(self, p):
 		'''
 			set : LCB element RCB
 				| LCB RCB
 		'''
+# ----------------------------------------------------------------------------
+
 
 	def p_element(self, p):
 		'''
@@ -448,9 +560,11 @@ class Parser(Typeclass):
 		'''
 			tPtype : empty
 		'''
+
 		p[0]={}
 		p[0]['id'] = p[-1]
 		self.tunnelTab.startScope('func',p[0])
+
 
 	def p_formalParameters(self, p):
 		'''
@@ -735,21 +849,21 @@ if __name__=="__main__":
 	filename = sys.argv[1]
 
 	accepted_types = {
-		  'MULTIPLY': ('INTEGER', 'REAL', None)
-		, 'PLUS': ('INTEGER', 'REAL', None)
-		, 'MINUS': ('INTEGER', 'REAL', None)
-		, 'DIVIDE': ('INTEGER', 'REAL', None)
-		, 'LT': ('INTEGER', 'BOOLEAN')
-		, 'LTEQ': ('INTEGER', 'BOOLEAN')
-		, 'GT': ('INTEGER', 'BOOLEAN')
-		, 'GTEQ': ('INTEGER', 'BOOLEAN')
-		, 'EQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
-		, 'NEQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
-		, 'AND': ('BOOLEAN', 'BOOLEAN')
-		, 'OR': ('BOOLEAN', 'BOOLEAN')
-		, 'NOT' : ('BOOLEAN', 'BOOLEAN')
-		, 'IS' : ()
-		, 'IN' : ()
+   	      'MULTIPLY': ('INTEGER', 'REAL', None)
+        , 'PLUS': ('INTEGER', 'REAL', None)
+        , 'MINUS': ('INTEGER', 'REAL', None)
+        , 'DIVIDE': ('INTEGER', 'REAL', None)  
+        , 'LT': ('INTEGER', 'BOOLEAN')
+        , 'LTEQ': ('INTEGER', 'BOOLEAN')
+        , 'GT': ('INTEGER', 'BOOLEAN')
+        , 'GTEQ': ('INTEGER', 'BOOLEAN')
+        , 'EQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
+        , 'NEQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
+        , 'AND': ('BOOLEAN', 'BOOLEAN')
+        , 'OR': ('BOOLEAN', 'BOOLEAN')
+        , 'NOT' : ('BOOLEAN', 'BOOLEAN')
+        , 'IS' : ()
+        , 'IN' : ()
 	}
 
 	result = parser.parse_file(filename, debug = True)
