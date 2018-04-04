@@ -77,6 +77,7 @@ class Parser(Typeclass):
 	def __init__(self, lexer):
 		self.lexer = lex.lex(module=tokenizer())
 		self.tunnelTab = symtable.tunnelTable()
+		self.xtras = symtable.xtraNeeds()
 
 	def p_module(self, p):
 		'''
@@ -583,8 +584,14 @@ class Parser(Typeclass):
 
 	def p_whileStatement(self, p):
 		'''
-			whileStatement : KEY_WHILE expression KEY_BEGIN statementSequence KEY_END
+			whileStatement : KEY_WHILE markerWhile expression KEY_BEGIN statementSequence KEY_END
 		'''
+
+	def p_markerWhile(self,p):
+		'''
+			markerWhile :
+		'''
+#        self.tunnelTab.startScope('bb', {'name':p[-1]})
 
 	def p_forStatement(self, p):
 		'''

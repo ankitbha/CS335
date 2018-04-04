@@ -1,10 +1,11 @@
 import sys
 
 typeSizeAllocation = {}
-typeSizeAllocation.update({'int': 4, 'char': 1, 'bool': 1, 'real': 8})
-typeSizeAllocation.update({'file': None, 'str': None})
-# bb basiv block func function
-# kind include constant dec
+typeSizeAllocation.update({'INTEGER': 4, 'CHAR': 1, 'BOOLEAN': 1, 'REAL': 8})
+typeSizeAllocation.update({'FILE': None, 'STRING': None})
+
+divList = ['bb', 'func']
+
 class SymTabEntry(object):
 	def __init__(self, lex, vtype, kind, size=None):
 		self.lex = lex
@@ -66,15 +67,20 @@ class tunnelTable(object):
 	def endScope(self):
 		self.currTable = self.currTable.parent
 
-class tempLabel(object):
+class xtraNeeds(object):
 	def __init__(self):
 		self.tempCount = 0
 		self.labelCount = 1
+		self.idCount = 1
 
-	def genNewTemp(self, vtype, kind):
+	def getNewTemp(self, vtype, kind):
 		self.tempCount += 1
-		return SymTabEntry("t"+str(self.tempCount-1), vtype, kind)
+		return SymTabEntry("_t"+str(self.tempCount-1), vtype, kind)
 
-	def genNewLabel(self):
+	def getNewLabel(self):
 		self.labelCount += 1
 		return "L" + str(self.labelCount-1)
+
+	def getNewId(self):
+		self.idCount += 1
+		return "_id" + str(self.idCount-1)
