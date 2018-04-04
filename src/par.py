@@ -543,6 +543,7 @@ class Parser(object):
 		'''
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
+		self.tunnelTab.endScope()
 		# print(p[0]['code'])
 		# p[0]['type'] = p[1]['type']
 
@@ -685,14 +686,23 @@ class Parser(object):
 			ifStatement : KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END
 						| KEY_IF expression KEY_THEN statementSequence ifss KEY_END
 		'''
-
-
-
+	
 	def p_ifss(self, p):
 		'''
 			ifss : ifss KEY_ELSEIF expression KEY_THEN statementSequence
 				 | empty
 		'''
+		p[0]={}
+		if(len(p)==2):
+			p[0]['code'] = ''
+		else:
+			if p[3]['type'] != 'BOOLEAN':
+            	print("typeerror")
+			p[3]['true'] = xtras.getNewLabel()
+			p[3]['false'] = xtras.getNewLabel()
+			p[0]['code'] = p[1]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +  +'\n'
+
 
 	def p_switchStatement(self, p):
 		'''
