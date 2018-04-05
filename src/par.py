@@ -222,7 +222,7 @@ class Parser(object):
 			if(str(p.slice[1].value)!= 'empty'):
 				# temp_var = xtraNeeds.getNewTemp(Type, kind, etc) 
 				p[0]['type'] = p[1]['type']
-				# p[0]['place'] = get place from tempvar above
+				# p[0]['place'] = temp_var
 				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 			else:
 				dterm['simpless'] = p[3]['place']
