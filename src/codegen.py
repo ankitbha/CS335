@@ -123,6 +123,20 @@ def getReg(varObj, numLine):
 			addrDesc[varObj] = spillReg
 	return spillReg
 
+def empty_regdes(s):
+	global acode
+	global reg_norm
+	for reg in used_reg_norm:
+		used_reg_norm.remove(reg)
+		addrDesc[reg_norm[reg]] = 'MEM'
+		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
+		unused_reg_norm.append(reg)	
+	for reg in used_reg_float:
+		used_reg_float.remove(reg)
+		addrDesc[reg_float[reg]] = 'MEM'
+		acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lexeme + "\n"
+		unused_reg_float.append(reg)
+
 def isInt(s):
 	if (isinstance(s, SymClass)):
 		return False
