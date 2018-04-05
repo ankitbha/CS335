@@ -200,18 +200,33 @@ class Parser(object):
 							 | MINUS term simpless
 		'''
 		p[0] = {}
-		temp_var = self.xtras.getNewTemp(p[len(p)-1]['type'], 'SIMPLEVAR')
-		p[0]['place'] = temp_var
-		p[0]['type'] = p[len(p)-1]['type']
-		if(len(p)==3):
-			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
-		else:
-			if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
-				p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
-			else:
-				p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
-				p[0]['code'] += "=, " + p[0]['place'] + ", -" + p[0]['place'] + "\n"
 
+		if(p[len(p)-1]['empty']==True):
+			p[0]['type'] = p[len(p)-2]['type']
+			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+			p[0]['place'] = temp_var
+			
+			if(p.slice[1].value == '-'):
+				p[0]['code'] = p[2]['code'] + "-, " + p[0]['place']+ ", $zero, " + p[2]['place'] + '\n'
+			else:
+				if(p.slice[1].value == '+'):
+					p[0]['code'] = p[2]['code']
+				else:
+					p[0]['code'] = p[1]['code']
+		else:
+			p[0]['type'] = p[len(p)-1]['type']
+			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+			p[0]['place'] = temp_var
+			
+			if(len(p)==3):
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
+			else:
+				if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
+					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
+				else:
+					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
+					p[0]['code'] += "=, " + p[0]['place'] + ", -" + p[0]['place'] + "\n"
+					
 
 	def p_simpless(self, p):
 		'''
@@ -224,7 +239,7 @@ class Parser(object):
 			if(str(p.slice[1].value)!= 'empty'):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
-				p[0]['place'] = temp_var
+				p[0]['place'] = temp_var	
 				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 			else:
 				dterm['simpless'] = p[3]['place']
@@ -233,11 +248,13 @@ class Parser(object):
 				dterm['code'] = p[3]['code']
 
 		else:
-			p[0]['place'] = dterm['simpless']
-			p[0]['type'] = dterm['type']		
-			p[0]['code'] = dterm['code']
-			p[0]['operator'] = dterm['operator']
-
+			try:
+				p[0]['place'] = dterm['simpless']
+				p[0]['type'] = dterm['type']		
+				p[0]['code'] = dterm['code']
+				p[0]['operator'] = dterm['operator']
+			except KeyError:
+				p[0]['empty'] = True
 
 	def p_term(self, p):
 		'''
@@ -311,6 +328,8 @@ class Parser(object):
 			p[0]['place'] = p[1]['place']
 			p[0]['code'] = p[1]['code']
 			p[0]['type'] = p[1]['type']
+
+
 		
 		if(len(p)==3):
 			if(p.slice[1].value == 'ABS'):
@@ -439,7 +458,9 @@ class Parser(object):
 			designator : qualident designator2
 		'''
 		p[0] = {}
-		p[0]['place'] = p[1]['place']
+		p[0]['code'] = ''
+		p[0]['place'] = self.p[1]['place']
+
 
 	def p_designator2(self, p):
 		'''
@@ -742,7 +763,7 @@ class Parser(object):
 			assignment : designator ASSIGN expression
 		'''
 		p[0] = {}
-		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place']+ '\n'
+		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place'].lex + '\n'
 
 	def p_setStatement(self, p):
 		'''
