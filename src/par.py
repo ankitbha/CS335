@@ -296,8 +296,40 @@ class Parser(object):
 				   | KEY_ORD LRB factor RRB
 		'''
 		p[0] = {}
+		if(len(p)==2):
+			p[0]['place'] = p[1]['place']
+			p[0]['code'] = p[1]['code']
+			p[0]['type'] = p[1]['type']
+		
+		if(len(p)==3):
+			if(p.slice[1].value == 'ABS'):
+				if(p[2]['type'] in ['REAL', 'INTEGER']):
+					p[0]['type'] = p[2]['type']
+					p[0]['place'] = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					p[0]['code'] = p[2]['code'] + "abs, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
+				else:
+					print("error in use of ABS")
+			if(p.slice[1].value == '!'):
+				if(p[2]['type'] in ['BOOLEAN']):
+					p[0]['type'] = p[2]['type']
+					p[0]['place'] = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					p[0]['code'] = p[2]['code'] + "!, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
 
-
+		if(len(p)==5):
+			if(p.slice[1].value == "CHR"):
+				if(p[3]['type'] in ['INTEGER']):
+					p[0]['type'] = 'CHAR'
+					p[0]['place'] = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					p[0]['code'] = p[3]['code'] + "CHR, " + p[0]['place'] + ", " + p[3]['place'] + "\n"
+				else:
+					print("incorrect use of CHR")								
+			if(p.slice[1].value == "ORD"):		
+				if(p[3]['type'] in ['CHAR']):
+					p[0]['type'] = 'INTEGER'
+					p[0]['place'] = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					p[0]['code'] = p[3]['code'] + "ORD, " + p[0]['place'] + ", " + p[3]['place'] + "\n"
+				else:
+					print("incorrect use of ORD")		
 
 
 	def p_number(self, p):
@@ -361,14 +393,35 @@ class Parser(object):
 			set : LCB element RCB
 				| LCB RCB
 		'''
-# ----------------------------------------------------------------------------
-
+		p = {}
+		if(len(p)==3):
+			p[0]['code'] = ''
+			p[0]['place'] = xtras.getNewTemp('SET', 'SIMPLEVAR')
+			p[0]['type'] = 'SET'
+		else:
+			p[0]['type'] = 'SET'
+			p[0]['place'] = xtras.getNewTemp('SET', 'SIMPLEVAR')
+			p[0]['code'] = p[2]['code'] + "SET, " + p[0]['place'] + ", " + p[2]['place'] + "\n"	
 
 	def p_element(self, p):
 		'''
 			element : element COMMA element
 					| expression
 		'''
+		p[0] = {}
+		if(len(p)==2):
+			p[0]['type'] = p[1]['type']
+			p[0]['place'] = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+			p[0]['code'] = p[1]['code'] + "=, " + p[0]['place'] + ", " + p[1]['place'] + "\n"
+		else:
+			if(p[1]['type'] == p[3]['type']):
+				p[0]['type'] = p[1]['type']
+			else:
+				p[0]['type'] = 'SET'
+			p[0]['code'] = p[1]['code'] + ", " + p[3]['code']			
+
+
+# -------------------------------------------------------------------------------
 
 	def p_designator(self, p):
 		'''
@@ -411,6 +464,13 @@ class Parser(object):
 			actualParameters : LRB expList RRB
 							 | LRB RRB
 		'''
+		p[0] = {}
+		if(len(p)==4):
+			p[0]['type'] = p[2]['type']
+			p[0]['place'] = p[2]['place']
+			p[0]['code'] = p[2]['code']
+		else:
+			p[0]['code'] = ''	
 
 	def p_mulOperator(self, p):
 		'''
@@ -419,6 +479,10 @@ class Parser(object):
 						| MODULUS
 						| AND
 		'''
+		p[0] = {}
+		p[0]['code'] = ''
+		p[0]['place'] = p.slice[1].value
+
 
 	def p_addOperator(self, p):
 		'''
@@ -426,6 +490,9 @@ class Parser(object):
 						| MINUS
 						| OR
 		'''
+		p[0] = {}
+		p[0]['code'] = ''
+		p[0]['place'] = p.slice[1].value
 
 	def p_relation(self, p):
 		'''
@@ -438,6 +505,9 @@ class Parser(object):
 					 | KEY_IN
 					 | KEY_IS
 		'''
+		p[0] = {}
+		p[0]['code'] = ''
+		p[0]['place'] = p.slice[1].value
 
 	def p_typeDeclaration(self, p):
 		'''
@@ -464,6 +534,10 @@ class Parser(object):
 					| KEY_REAL
 					| KEY_FILE
 		'''
+		p = {}
+		p[0]['code'] = ''
+		p[0]['place'] = p.slice[1].value
+		p[0]['type'] = p.slice[1].value
 
 	def p_arrayType(self, p):
 		'''
@@ -475,6 +549,10 @@ class Parser(object):
 		'''
 			setType : KEY_SET
 		'''
+		p = {}
+		p[0]['code'] = ''
+		p[0]['type'] = p.slice[1].value
+		p[0]['place'] = p.slice[1].value
 
 
 	def p_comass(self, p):
@@ -680,11 +758,17 @@ class Parser(object):
 		p[0]={}
 		p[0]['code'] = "call, " + p[1]['place']+ '\n'
 
+	def p_markerif(self,p):
+		'''
+			p_markerif : 	
+		'''
+		self.tunnelTab.startScope('bb', {'id': self.xtras.getNewId()})
+
 
 	def p_ifStatement(self, p):
 		'''
-			ifStatement : KEY_IF expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END
-						| KEY_IF expression KEY_THEN statementSequence ifss KEY_END
+			ifStatement : KEY_IF markerif expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END
+						| KEY_IF markerif expression KEY_THEN statementSequence ifss KEY_END
 		'''
 	
 	def p_ifss(self, p):
