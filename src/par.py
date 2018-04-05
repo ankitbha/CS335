@@ -770,7 +770,25 @@ class Parser(object):
 			ifStatement : KEY_IF markerif expression KEY_THEN statementSequence ifss KEY_ELSE statementSequence KEY_END
 						| KEY_IF markerif expression KEY_THEN statementSequence ifss KEY_END
 		'''
+		p[0] = {}
+		if(len(p)==8):
+			if p[3]['type'] != 'BOOLEAN':
+            	print("typeerror")
+            p[3]['true'] = xtras.getNewLabel()
+			p[3]['false'] = xtras.getNewLabel()
+			p[0]['code'] = "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n' + p[6]['code'] + '\n'
+		else:
+			if p[3]['type'] != 'BOOLEAN':
+            	print("typeerror")
+            p[3]['true'] = xtras.getNewLabel()
+			p[3]['false'] = xtras.getNewLabel()
+			p[0]['code'] = "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n' + p[6]['code'] + '\n' + p[3]['false'] + '\n' + p[8]['code'] + '\n'
 	
+
+
+
 	def p_ifss(self, p):
 		'''
 			ifss : ifss KEY_ELSEIF expression KEY_THEN statementSequence
@@ -785,7 +803,7 @@ class Parser(object):
 			p[3]['true'] = xtras.getNewLabel()
 			p[3]['false'] = xtras.getNewLabel()
 			p[0]['code'] = p[1]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
-			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +  +'\n'
+			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n'
 
 
 	def p_switchStatement(self, p):
