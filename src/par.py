@@ -568,9 +568,15 @@ class Parser(object):
 
 	def p_recordType(self, p):
 		'''
-			recordType : KEY_RECORD fieldListSequence KEY_END
-					   | KEY_RECORD LRB baseType RRB fieldListSequence KEY_END
+			recordType : KEY_RECORD mrecord fieldListSequence KEY_END
+					   | KEY_RECORD mrecord LRB baseType RRB fieldListSequence KEY_END
 		'''
+
+	def p_mrecord(self,p):
+		'''
+			mrecord : empty
+		'''
+		self.tunnelTab.currTable.addEntry(p.slice[-1].value , 'RECORD', 'var')
 
 	def p_baseType(self, p):
 		'''
@@ -588,6 +594,10 @@ class Parser(object):
 			fieldList : identList COLON type
 					  | empty
 		'''
+		if(len(p)!=2):
+			for var in p[1]:
+				self.tunnelTab.currTable.queryEnt()
+
 
 	def p_identList(self, p):
 		'''
@@ -808,20 +818,60 @@ class Parser(object):
 
 	def p_switchStatement(self, p):
 		'''
-			switchStatement : KEY_SWITCH expression KEY_BEGIN case casess KEY_ELSE COLON statementSequence KEY_END
-							| KEY_SWITCH expression KEY_BEGIN case casess KEY_END
+			switchStatement : KEY_SWITCH expression mswitch KEY_BEGIN case casess KEY_ELSE COLON statementSequence KEY_END
+							| KEY_SWITCH expression mswitch KEY_BEGIN case casess KEY_END
 		'''
+		p[0]={}
+		p[0]['next'] = self.xtras.getNewLabel()
+		p[0]['test'] = self.xtras.getNewLabel()
+		p[0]['code'] = p[2]['code'] + 'goto, test \n' + p[5]['label'] + '\n' + p[5]['scode'] + 'goto, ' + p[0]['next'] + '\n'
+		for case in p[6]:
+			p[0]['code'] = p[0]['code'] + case['label'] + '\n' + case['scode'] + 'goto, ' + p[0]['next'] + '\n'
+		if(len(p)==11):
+			p[0]['else'] = self.xtras.getNewLabel()
+			p[0]['code'] = p[0]['code'] + p[0]['else'] + '\n' + p[9]['code'] + 'goto, ' + p[0]['next'] + '\n'
+
+		p[0]['code'] = p[0]['code'] + p[0]['test'] + '\n'
+		p[0]['code'] = p[0]['code'] + p[5]['ecode'] + 'ifgoto, =, ' +  p[2]['place'] + ', ' + p[5]['place'] + ', ' + p[5]['label'] + '\n'
+		for case in p[6]:
+			p[0]['code'] = p[0]['code'] + case['ecode'] + 'ifgoto, =, ' +  p[2]['place'] + ', ' + case['place'] + ', ' + case['label'] + '\n'
+		if(len(p)==11):
+			p[0]['code'] = p[0]['code'] + 'goto, ' + p[0]['else'] + '\n'
+		p[0]['code'] = p[0]['code'] + p[0]['next'] + '\n'
+
+
+
+
+
+
+
+	def p_mswitch(self, p):
+		'''
+			mswitch : empty
+		'''
+		p[0]={}
+		p[0]['var'] = p[-1]['place']
 
 	def p_casess(self, p):
 		'''
 			casess : case casess
 				   | empty
 		'''
+		p[0]=[]
+		if(len(p)!=2):
+			p[0] = p[0] + [p[1]] 
+		else:
+			p[0]= []
 
 	def p_case(self, p):
 		'''
 			case : KEY_CASE expression COLON statementSequence
 		'''
+		p[0]={}
+		p[0]['label'] = self.xtras.getNewLabel()
+		p[0]['ecode'] = p[2]['code'] 
+		p[0]['scode'] = p[4]['code']
+		p[0]['place'] = p[2]['place']
 
 	def p_whileStatement(self, p):
 		'''
@@ -902,9 +952,35 @@ class Parser(object):
 						| KEY_READBOOL LRB expression RRB
 		'''
 		p[0] = {}
-		if(p[1]=='WRITEINT'):
-			# print("######################")
+		if(str(p.slice[1])=='KEY_WRITE'):
+			p[0]['code'] = 'print, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITEINT'):
 			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITEREAL'):
+			p[0]['code'] = 'printreal, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITECHAR'):
+			p[0]['code'] = 'printchar, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITEBOOL'):
+			p[0]['code'] = 'printbool, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITELN' and len(p)==5):
+			p[0]['code'] = 'println, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITELN'):
+			p[0]['code'] = 'println\n'
+		elif(str(p.slice[1])=='KEY_READ'):
+			p[0]['code'] = 'read, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITEINT'):
+			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITEREAL'):
+			p[0]['code'] = 'printreal, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITECHAR'):
+			p[0]['code'] = 'printchar, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITEBOOL'):
+			p[0]['code'] = 'printbool, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITELN' and len(p)==5):
+			p[0]['code'] = 'println, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_WRITELN'):
+			p[0]['code'] = 'println\n'
+
 
 
 	def p_fileStatement(self, p):
