@@ -219,12 +219,15 @@ class Parser(object):
 			p[0]['place'] = temp_var
 			
 			if(len(p)==3):
-				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
+				newobj = get_new_object(p[1], p[2], p[2]['operator'])
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 			else:
 				if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
-					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
+					newobj = get_new_object(p[2], p[3], p[3]['operator'])
+					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 				else:
-					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + p[3]['place'] + "\n"
+					newobj = get_new_object(p[2], p[3], p[3]['operator'])
+					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 					p[0]['code'] += "=, " + p[0]['place'] + ", -" + p[0]['place'] + "\n"
 					
 
@@ -239,8 +242,9 @@ class Parser(object):
 			if(str(p.slice[1].value)!= 'empty'):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
-				p[0]['place'] = temp_var	
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+				p[0]['place'] = temp_var
+				newobj = get_new_object(p[1], p[3], p.slice[2].value)	
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 			else:
 				dterm['simpless'] = p[3]['place']
 				dterm['operator'] = p.slice[2].value
@@ -266,7 +270,8 @@ class Parser(object):
 			p[0]['code'] = p[1]['code']
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
-			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
+			newobj = get_new_object(p[1], p[2], p[2]['operator'])
+			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 				
 		temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
 		p[0]['place'] = temp_var
@@ -288,7 +293,8 @@ class Parser(object):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
 				p[0]['place'] = temp_var
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+				newobj = get_new_object(p[1], p[3], p.slice[2].value)
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 			else:
 				dterm['termss'] = p[3]['place']
 				dterm['operator'] = p.slice[2].value
