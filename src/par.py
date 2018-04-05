@@ -169,7 +169,7 @@ class Parser(object):
 			
 			
 			# get new temporary
-			# temp_var = xtraNeeds.getNewTemp(Type, kind, etc)
+			temp_var = xtras.getNewTemp('BOOLEAN', 'SIMPLEVAR')
 
 
 
@@ -198,9 +198,9 @@ class Parser(object):
 							 | MINUS term simpless
 		'''
 		p[0] = {}
-		# temp_var = xtraNeeds.getNewTemp()
+		temp_var = xtras.getNewTemp(p[len(p)-1]['type'], 'SIMPLEVAR')
 		p[0]['place'] = temp_var
-		p[0]['type'] = p[-1]['type']
+		p[0]['type'] = p[len(p)-1]['type']
 		if(len(p)==3):
 			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
 		else:
@@ -220,9 +220,9 @@ class Parser(object):
 		dterm = {}
 		if(len(p)==4):
 			if(str(p.slice[1].value)!= 'empty'):
-				# temp_var = xtraNeeds.getNewTemp(Type, kind, etc) 
+				temp_var = xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
-				# p[0]['place'] = temp_var
+				p[0]['place'] = temp_var
 				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 			else:
 				dterm['simpless'] = p[3]['place']
@@ -242,9 +242,9 @@ class Parser(object):
 			term : factor termss
 		'''
 		p[0] = {}
-		# temp_var = xtraNeeds.getNewTemp()
+		temp_var = xtras.getNewTemp(p[len(p)-1]['type'], 'SIMPLEVAR')
 		p[0]['place'] = temp_var
-		p[0]['type'] = p[-1]['type']
+		p[0]['type'] = p[len(p)-1]['type']
 		p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + p[2]['place'] + "\n"
 
 
@@ -261,9 +261,9 @@ class Parser(object):
 		dterm = {}
 		if(len(p)==4):
 			if(str(p.slice[1].value)!= 'empty'):
-				# temp_var = xtraNeeds.getNewTemp(Type, kind, etc) 
+				temp_var = xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
-				# p[0]['place'] = get place from tempvar above
+				p[0]['place'] = temp_var
 				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 			else:
 				dterm['termss'] = p[3]['place']
@@ -338,8 +338,7 @@ class Parser(object):
 				   | VREAL
 		'''
 		p[0] = {}
-		# temp_var = xtraNeeds.getNewTemp() --------- getting new entry for integer.
-		p[0]['place'] = temp_var
+
 		# Is this correct? --------------------------------------------------------------
 		p[0]['code'] = ''
 
@@ -348,7 +347,8 @@ class Parser(object):
 		else:
 			p[0]['type'] = 'REAL'	
 
-
+		temp_var = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+		p[0]['place'] = temp_var
 		#  How do I check if p[1] is integer or real and is it necessary for type assignment --------------
 
 
@@ -357,33 +357,33 @@ class Parser(object):
 			boolean : VBOOLEAN
 		'''
 		p[0] = {}
-		# temp_var = xtraNeeds.getNewTemp()
-		p[0]['place'] = temp_var
+
 		p[0]['code'] = ''
 		p[0]['type'] = 'BOOLEAN'
-
+		temp_var = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+		p[0]['place'] = temp_var
 
 	def p_char(self, p):
 		'''
 			char : VCHAR
 		'''
 		p[0] = {}
-		# temp_var = xtraNeeds.getNewTemp()
-		p[0]['place'] = temp_var
+
 		p[0]['code'] = ''
 		p[0]['type'] = 'CHAR'
-
+		temp_var = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+		p[0]['place'] = temp_var
 
 	def p_string(self, p):
 		'''
 			string : VSTRING
 		'''
 		p[0] = {}
-		# temp_var = xtraNeeds.getNewTemp()
-		p[0]['place'] = temp_var
+
 		p[0]['code'] = ''
 		p[0]['type'] = 'STRING'
-
+		temp_var = xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+		p[0]['place'] = temp_var
 
 
 # ---------------------------------------------------------------------------
