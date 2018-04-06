@@ -107,10 +107,11 @@ class Parser(object):
 		'''
 		p[0]={}
 		p[0]['code']=''
+		p[0]['code2']=''
 		if(len(p)!=2):
 			if(str(p.slice[2])=='procss'):
 				p[0]['code'] = p[2]['code']
-			else:
+			if(str(p.slice[2])=='conss'):
 				p[0]['code2'] = p[len(p)-1]['code']	
 
 	def p_conss(self, p):
@@ -118,6 +119,11 @@ class Parser(object):
 			conss : conss constantDeclaration SCOLON
 				  | constantDeclaration SCOLON
 		'''
+		p[0]={}
+		if(len(p)==3):
+			p[0]['code'] = p[1]['code']
+		else:
+			p[0]['code'] = p[0]['code'] + p[1]['code']
 
 	def p_typess(self, p):
 		'''
@@ -203,7 +209,7 @@ class Parser(object):
 			p[0]['place'] = p[len(p)-2]['place']
 			
 			if(p.slice[1].value == '-'):
-				p[0]['code'] = p[2]['code'] + "-, " + p[0]['place']+ ", $zero, " + p[2]['place'] + '\n'
+				p[0]['code'] = p[2]['code'] + "-, " + p[0]['place']+ ", 0, " + p[2]['place'] + '\n'
 			else:
 				if(p.slice[1].value == '+'):
 					p[0]['code'] = p[2]['code']

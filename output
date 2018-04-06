@@ -1,6 +1,20 @@
-=, a, 1
-=, b, 1
-+, _t0, a, b
-=, test, _t0
-printint, test
++, _t0, 2, 3
+=, i, _t0
+printint, i
+*, _t1, i, 2
+-, i, 0, i
+-, _t2, _t1, i
+=, j, _t2
+printint, j
++, _t3, j, 2.3
+=, r, _t3
+printreal, r
+=, b, FALSE
+printint, b
+<, _t4, 3, 4
+=, c, _t4
+printint, c
+|, _t5, TRUE, FALSE
+=, b, _t5
+printint, b
 
