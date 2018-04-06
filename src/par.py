@@ -251,7 +251,6 @@ class Parser(object):
 		p[0]['empty'] = False
 		
 		if(len(p)==4):
-<<<<<<< Updated upstream
 			if(str(p.slice[1].value)!= 'empty'):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				temp_var = temp_var.lex

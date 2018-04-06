@@ -17,8 +17,8 @@ class SymTabEntry(object):
 		self.addOns = updAddOns
 
 #TODO remove the following two functions
-    def __repr__(self):
-        return "kind: {}, type: {}".format(self.kind, self.vtype)
+	def __repr__(self):
+		return "kind: {}, type: {}".format(self.kind, self.vtype)
 
 	def __str__(self):
 		return self.lex
@@ -47,17 +47,17 @@ class SymTab(object):
 		return None
 
 #TODO remove the following function
-    def printMe(self):
+	def printMe(self):
     ## print attributes
-    if len(self.addOns) > 0:
-        print("## Attributes ##")
-        for k,v in self.addOns.items():
-            print(k + " -> " + str(v))
-    ## print vars
-    if len(self.varsHere) > 0:
-        print("## Variables ##")
-        for k,v in self.varsHere.items():
-            print(k + " -> " + repr(v))
+	    if len(self.addOns) > 0:
+	        print("## Attributes ##")
+	        for k,v in self.addOns.items():
+	            print(k + " -> " + str(v))
+	    ## print vars
+	    if len(self.varsHere) > 0:
+	        print("## Variables ##")
+	        for k,v in self.varsHere.items():
+	            print(k + " -> " + repr(v))
 
 
 class tunnelTable(object):
