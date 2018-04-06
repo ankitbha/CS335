@@ -13,10 +13,11 @@ class SymTabEntry(object):
 		self.vtype = vtype
 		self.size = size
 
-	def updEntry(self, addOns, updAddOns):
-		self.addOns = updAddOns
+	#TODO write correct following function
+	#def updEntry(self, addOns, updAddOns):
+		#self.addOns = updAddOns
+		#TODO remove the following two functions
 
-#TODO remove the following two functions
     def __repr__(self):
         return "kind: {}, type: {}".format(self.kind, self.vtype)
 
