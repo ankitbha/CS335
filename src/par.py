@@ -11,6 +11,7 @@ import symtable
 
 dterm = {}
 sterm = {} 
+flag = 0
 
 class Typeclass(object):
 	def __init__(self):
@@ -91,7 +92,8 @@ class Parser(object):
 		'''
 		# print(p[0])
 		p[0] = {}
-		p[0]['code'] = p[6]['code'] + p[4]['code']
+		
+		p[0]['code'] = p[4]['code2'] + p[6]['code'] + p[4]['code'] 
 		print(p[0]['code'])
 
 	def p_declarationSequence(self, p):
@@ -108,6 +110,8 @@ class Parser(object):
 		if(len(p)!=2):
 			if(str(p.slice[2])=='procss'):
 				p[0]['code'] = p[2]['code']
+			else:
+				p[0]['code2'] = p[len(p)-1]['code']	
 
 	def p_conss(self, p):
 		'''
