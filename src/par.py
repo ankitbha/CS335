@@ -1064,15 +1064,15 @@ class Parser(object):
 			p[0]['code'] = p[3]['code'] + 'println, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type =='KEY_WRITELN':
 			p[0]['code'] = 'println\n'
-		elif p.slice[1].type =='KEY_READ':
+		elif p.slice[1].type == 'KEY_READ':
 			p[0]['code'] = 'read, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_READINT'):
+		elif p.slice[1].type == 'KEY_READINT':
 			p[0]['code'] = 'readint, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_READREAL'):
+		elif p.slice[1].type  == 'KEY_READREAL':
 			p[0]['code'] = 'readreal, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_READCHAR'):
+		elif p.slice[1].type  == 'KEY_READCHAR':
 			p[0]['code'] = 'readchar, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_READBOOL'):
+		elif p.slice[1] == 'KEY_READBOOL':
 			p[0]['code'] = 'readbool, ' + p[3]['place'] + '\n'
 
 

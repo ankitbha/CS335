@@ -1,6 +1,13 @@
-*, _t0, 2, a
-*, _t1, 5, b
-+, _t2, _t0, _t1
-*, _t3, _t2, 1
-declarray, c, _t3
+###############
+readchar, a
+print, "Value is: "
+printchar, a
+println
+print, "Order is: "
+ORD, _t0, a
+printint, _t0
+=, b, 50
+print, "Char for b is: "
+CHR, _t1, b
+printchar, _t1
 
