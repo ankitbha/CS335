@@ -168,7 +168,7 @@ class Parser(object):
 		'''
 		p[0]={}
 		p[0]['code'] = p[3]['code'] + "=, " + p.slice[1].value + ", " + p[3]['place'] + '\n'
-		self.tunnelTab.currTable.addEntry(p.slice[1].value, p.slice[5].value ,'const')
+		self.tunnelTab.currTable.addEntry(p.slice[1].value, p[5]['type'] ,'const')
 
 	def p_expression(self, p):
 		'''
@@ -597,7 +597,9 @@ class Parser(object):
 					| KEY_REAL
 					| KEY_FILE
 		'''
-		p[0] = p.slice[1].value
+		p[0] = {}
+		p[0]['type'] = p.slice[1].value
+
 	def p_arrayType(self, p):
 		'''
 			arrayType : KEY_ARRAY length comass KEY_OF type
@@ -673,9 +675,9 @@ class Parser(object):
 			fieldList : identList COLON type
 					  | empty
 		'''
-		if(len(p)!=2):
-			for var in p[1]:
-				self.tunnelTab.currTable.queryEnt()
+		# if(len(p)!=2):
+		# 	for var in p[1]:
+		# 		self.tunnelTab.currTable.queryEnt()
 
 
 	def p_identList(self, p):
@@ -730,7 +732,7 @@ class Parser(object):
 
 		p[0]={}
 		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n'
-		self.tunnelTab.currTable.addOns['type'] = p.slice[5].value
+		self.tunnelTab.currTable.addOns['type'] = p[6]['type']
 
 	def p_tPtype(self,p):
 		'''
@@ -759,7 +761,7 @@ class Parser(object):
 			fpSection : IDENT fps COLON type
 		'''
 		for var in p[2]+[p.slice[1].value]:
-			self.tunnelTab.currTable.addEntry(var,p.slice[4].value,'var')
+			self.tunnelTab.currTable.addEntry(var,p[4]['type'],'var')
 
 
 	def p_fps(self, p):
