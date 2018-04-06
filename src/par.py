@@ -100,6 +100,7 @@ class Parser(object):
 								| declarationSequence KEY_TYPE typess
 								| declarationSequence KEY_VAR varss
 								| declarationSequence procss
+								| declarationSequence ioStatement
 								| empty
 		'''
 		p[0]={}
@@ -244,6 +245,7 @@ class Parser(object):
 		p[0]['empty'] = False
 		
 		if(len(p)==4):
+<<<<<<< Updated upstream
 			if(str(p.slice[1].value)!= 'empty'):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
@@ -261,14 +263,17 @@ class Parser(object):
 					p[0]['type'] = p[1]['type']
 					p[0]['place'] = temp_var	
 					p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
-		else:
-			try:
-				p[0]['place'] = dterm['simpless']
-				p[0]['type'] = dterm['type']		
-				p[0]['code'] = dterm['code']
-				p[0]['operator'] = dterm['operator']
-			except KeyError:
-				p[0]['empty'] = True
+
+			if(p[1]['empty']==True):
+				dterm['simpless'] = p[3]['place']
+				dterm['operator'] = p.slice[2].value
+				dterm['type'] = p[3]['type']
+				dterm['code'] = p[3]['code']
+			else:
+				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
+				p[0]['type'] = p[1]['type']
+				p[0]['place'] = temp_var	
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 
 	def p_term(self, p):
 		'''
@@ -513,6 +518,17 @@ class Parser(object):
 			expList : expList COMMA expression
 					| expression
 		'''
+		p[0]={}
+		p[0]['list'] = []
+		p[0]['type'] = []
+		if(len(p)==2):
+			p[0]['list'] = [p[1]['place']]
+			p[0]['type'] = [p[1]['type']]
+			p[0]['code'] = p[1]['code'] + p[3]['code']
+		else:
+			p[0]['list'] = p[1] + [p[2]['place']]
+			p[0]['type'] = p[1] + [p[2]['type']]
+			p[0]['code'] = p[1]['code'] + p[3]['code']
 
 	def p_actualParameters(self, p):
 		'''
@@ -521,9 +537,10 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if(len(p)==4):
-			p[0]['type'] = p[2]['type']
 			p[0]['place'] = p[2]['place']
 			p[0]['code'] = p[2]['code']
+			for param in p[2]['list']:
+				p[0]['code'] = p[0]['code'] + "param, " + p[2]['place'] + "\n" 
 		else:
 			p[0]['code'] = ''	
 
@@ -821,6 +838,7 @@ class Parser(object):
 			procedureCall : designator actualParameters
 		'''
 		p[0]={}
+
 		p[0]['code'] = "call, " + p[1]['place']+ '\n'
 
 	def p_markerif(self,p):
