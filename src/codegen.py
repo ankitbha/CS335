@@ -123,19 +123,34 @@ def getReg(varObj, numLine):
 			addrDesc[varObj] = spillReg
 	return spillReg
 
-def empty_regdes(s):
+def flushRegDesc():
 	global acode
 	global reg_norm
 	for reg in used_reg_norm:
 		used_reg_norm.remove(reg)
-		addrDesc[reg_norm[reg]] = 'MEM'
-		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
+		# addrDesc[reg_norm[reg]] = 'MEM'
+		# acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
 		unused_reg_norm.append(reg)	
 	for reg in used_reg_float:
 		used_reg_float.remove(reg)
+		# addrDesc[reg_float[reg]] = 'MEM'
+		# acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lexeme + "\n"
+		unused_reg_float.append(reg)
+
+def flushAddrDesc():
+	global acode
+	global reg_norm
+	for reg in used_reg_norm:
+		# used_reg_norm.remove(reg)
+		addrDesc[reg_norm[reg]] = 'MEM'
+		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
+		# unused_reg_norm.append(reg)	
+	for reg in used_reg_float:
+		# used_reg_float.remove(reg)
 		addrDesc[reg_float[reg]] = 'MEM'
 		acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lexeme + "\n"
-		unused_reg_float.append(reg)
+		# unused_reg_float.append(reg)
+
 
 def isInt(s):
 	if (isinstance(s, SymClass)):
@@ -763,8 +778,12 @@ def main():
 	acode += ".ent main\n"
 
 	for line in incode:
+
 		if(int(line[0]) in leaders):
+			flushRegDesc()
 			acode = acode + labels[int(line[0])] + ":\n"
+		if str(line[1]) in ['goto','ifgoto','call']:
+			flushAddrDesc()
 		translate(line)
 
 	acode = acode + "exit:\n\tli $v0, 10\n\tsyscall"

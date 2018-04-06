@@ -36,7 +36,7 @@ class SymTab(object):
 
 	def addEntry(self, lex, vtype, kind):
 		if vtype in typeSizeAllocation.keys():
-			size = typeSizeAllocation[ltype]
+			size = typeSizeAllocation[vtype]
 		else:
 			size = None
 		self.varsHere[lex] = SymTabEntry(lex, vtype, kind, size)
@@ -48,18 +48,17 @@ class SymTab(object):
 		return None
 
 #TODO remove the following function
-    def printMe(self):
-    ## print attributes
-    if len(self.addOns) > 0:
-        print("## Attributes ##")
-        for k,v in self.addOns.items():
-            print(k + " -> " + str(v))
-    ## print vars
-    if len(self.varsHere) > 0:
-        print("## Variables ##")
-        for k,v in self.varsHere.items():
-            print(k + " -> " + repr(v))
-
+	def printMe(self):
+	## print attributes
+		if len(self.addOns) > 0:
+			print("## Attributes ##")
+			for k,v in self.addOns.items():
+				print(k + " -> " + str(v))
+	## print vars
+		if len(self.varsHere) > 0:
+			print("## Variables ##")
+			for k,v in self.varsHere.items():
+				print(k + " -> " + repr(v))
 
 class tunnelTable(object):
 	def __init__(self):

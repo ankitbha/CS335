@@ -11,6 +11,7 @@ import symtable
 
 dterm = {}
 sterm = {}
+flag = 0
 
 class Typeclass(object):
 	def __init__(self):
@@ -91,7 +92,8 @@ class Parser(object):
 		'''
 		# print(p[0])
 		p[0] = {}
-		p[0]['code'] = p[6]['code'] + p[4]['code']
+
+		p[0]['code'] = p[4]['code2'] + p[6]['code'] + p[4]['code']
 		print(p[0]['code'])
 
 	def p_declarationSequence(self, p):
@@ -100,19 +102,28 @@ class Parser(object):
 								| declarationSequence KEY_TYPE typess
 								| declarationSequence KEY_VAR varss
 								| declarationSequence procss
+								| declarationSequence ioStatement
 								| empty
 		'''
 		p[0]={}
 		p[0]['code']=''
+		p[0]['code2']=''
 		if(len(p)!=2):
 			if(str(p.slice[2])=='procss'):
 				p[0]['code'] = p[2]['code']
+			if(str(p.slice[2])=='conss'):
+				p[0]['code2'] = p[len(p)-1]['code']
 
 	def p_conss(self, p):
 		'''
 			conss : conss constantDeclaration SCOLON
 				  | constantDeclaration SCOLON
 		'''
+		p[0]={}
+		if(len(p)==3):
+			p[0]['code'] = p[1]['code']
+		else:
+			p[0]['code'] = p[0]['code'] + p[1]['code']
 
 	def p_typess(self, p):
 		'''
@@ -148,6 +159,7 @@ class Parser(object):
 		else:
 			# print("#######################")
 			# print(p[2])
+			# print(p[2]['code'])
 			p[0]['code'] = p[1]['code'] + p[2]['code']
 
 	def p_constantDeclaration(self, p):
@@ -164,36 +176,23 @@ class Parser(object):
 					   | simpleExpression relation simpleExpression
 		'''
 		p[0] = {}
-		p[0]['place'] = 'abc'
 
 		if(len(p)==2):
 			p[0]['code'] = p[1]['code']
 			p[0]['type'] = p[1]['type']
 			p[0]['place'] = p[1]['place']
 		else:
-
-
-			# get new temporary
 			temp_var = self.xtras.getNewTemp('BOOLEAN', 'SIMPLEVAR')
 			temp_var = temp_var.lex
-
-
-
-# # i am ignoring IS and IN because not sure
-
-
-
-			if((str(p.slice[2].value) != 'IN') and (str(p.slice[2].value) != 'IS')):
-				# print(p.slice[2].value)
-				newobj = self.Typeclass.get_new_object(p[1], p[3], p.slice[2])
-				p[0]['code'] = p[1]['code'] +  p[3]['code'] + p.slice[2].value + ", " + temp_var+ ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
+			if((p.slice[2].value != 'IN') and (p.slice[2].value != 'IS')):
+				p[0]['code'] = p[1]['code'] +  p[3]['code'] + p.slice[2].value + ", " + temp_var+ ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 			else:
 				# need to see this again..........
 				if(p[1]['type'] == str(p.slice[3].value)):
 					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + temp_var + ", TRUE\n"
 				else:
 					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + temp_var + ", FALSE\n"
-			p[0]['type'] = newobj['type']
+			p[0]['type'] = 'BOOLEAN'
 			p[0]['place'] = temp_var
 
 
@@ -207,11 +206,10 @@ class Parser(object):
 		p[0] = {}
 		if(p[len(p)-1]['empty']==True):
 			p[0]['type'] = p[len(p)-2]['type']
-			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-			p[0]['place'] = temp_var
+			p[0]['place'] = p[len(p)-2]['place']
 
 			if(p.slice[1].value == '-'):
-				p[0]['code'] = p[2]['code'] + "-, " + p[0]['place']+ ", $zero, " + p[2]['place'] + '\n'
+				p[0]['code'] = p[2]['code'] + "-, " + p[0]['place']+ ", 0, " + p[2]['place'] + '\n'
 			else:
 				if(p.slice[1].value == '+'):
 					p[0]['code'] = p[2]['code']
@@ -220,19 +218,19 @@ class Parser(object):
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+			temp_var = temp_var.lex
 			p[0]['place'] = temp_var
-
 			if(len(p)==3):
-				newobj = get_new_object(p[1], p[2], p[2]['operator'])
-				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
 			else:
 				if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
-					newobj = get_new_object(p[2], p[3], p[3]['operator'])
-					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
+					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
+					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + ", " + p[3]['place'] + "\n"
 				else:
-					newobj = get_new_object(p[2], p[3], p[3]['operator'])
-					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
+					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
+					p[0]['code'] = p[2]['code'] + p[3]['code'] + p[3]['operator'] + ", " + p[0]['place'] + ", " + p[2]['place'] + ", " + p[3]['place'] + "\n"
 					p[0]['code'] += "=, " + p[0]['place'] + ", -" + p[0]['place'] + "\n"
+		# print("simpleexpr",p[0]['code'])
 
 
 	def p_simpless(self, p):
@@ -242,33 +240,21 @@ class Parser(object):
 		'''
 		p[0] = {}
 		p[0]['empty'] = False
-
 		if(len(p)==4):
-			if(str(p.slice[1].value)!= 'empty'):
-				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR')
-				p[0]['type'] = p[1]['type']
-				p[0]['place'] = temp_var
-				newobj = get_new_object(p[1], p[3], p.slice[2].value)
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
+			if(p[1]['empty']==True):
+					p[0]['place'] = p[3]['place']
+					p[0]['operator'] = p.slice[2].value
+					p[0]['type'] = p[3]['type']
+					p[0]['code'] = p[3]['code']
 			else:
-				if(p[1]['empty']==True):
-					dterm['simpless'] = p[3]['place']
-					dterm['operator'] = p.slice[2].value
-					dterm['type'] = p[3]['type']
-					dterm['code'] = p[3]['code']
-				else:
-					temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR')
-					p[0]['type'] = p[1]['type']
-					p[0]['place'] = temp_var
-					p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR')
+				p[0]['operator'] = p.slice[2].value
+				p[0]['type'] = p[1]['type']
+				p[0]['place'] = temp_var.lex
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 		else:
-			try:
-				p[0]['place'] = dterm['simpless']
-				p[0]['type'] = dterm['type']
-				p[0]['code'] = dterm['code']
-				p[0]['operator'] = dterm['operator']
-			except KeyError:
-				p[0]['empty'] = True
+			p[0]['empty'] = True
+		# print("")
 
 	def p_term(self, p):
 		'''
@@ -278,17 +264,16 @@ class Parser(object):
 		if(p[2]['empty']==True):
 			p[0]['type'] = p[1]['type']
 			p[0]['code'] = p[1]['code']
+			p[0]['place'] = p[1]['place']
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
-			newobj = get_new_object(p[1], p[2], p[2]['operator'])
-			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
+			# newobj = get_new_object(p[1], p[2], p[2]['operator'])
+			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+			temp_var = temp_var.lex
+			p[0]['place'] = temp_var
+			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
 
-		temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-		p[0]['place'] = temp_var
-
-
-
-
+		# print("check",p[0]['place'],p[0]['type'])
 
 	def p_termss(self, p):
 		'''
@@ -296,31 +281,23 @@ class Parser(object):
 				   | empty
 		'''
 
+
 		p[0] = {}
 		p[0]['empty'] = False
-		dterm = {}
 		if(len(p)==4):
-			if(str(p.slice[1].value)!= 'empty'):
+			if(p[1]['empty']==True):
+					p[0]['place'] = p[3]['place']
+					p[0]['operator'] = p.slice[2].value
+					p[0]['type'] = p[3]['type']
+					p[0]['code'] = p[3]['code']
+			else:
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR')
 				p[0]['type'] = p[1]['type']
-				p[0]['place'] = temp_var
-				newobj = get_new_object(p[1], p[3], p.slice[2].value)
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
-			else:
-				sterm['termss'] = p[3]['place']
-				sterm['operator'] = p.slice[2].value
-				sterm['type'] = p[3]['type']
-				sterm['code'] = p[3]['code']
-
+				p[0]['place'] = temp_var.lex
+				p[0]['operator'] = p.slice[2].value
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 		else:
-			try:
-				p[0]['place'] = sterm['termss']
-				p[0]['type'] = sterm['type']
-				p[0]['code'] = sterm['code']
-				p[0]['operator'] = sterm['operator']
-			except KeyError:
-				p[0]['empty'] = True
-
+			p[0]['empty'] = True
 
 	def p_factor(self, p):
 		'''
@@ -346,38 +323,49 @@ class Parser(object):
 			p[0]['code'] = p[1]['code']
 			p[0]['type'] = p[1]['type']
 
-
-
 		if(len(p)==3):
 			if(p.slice[1].value == 'ABS'):
 				if(p[2]['type'] in ['REAL', 'INTEGER']):
 					p[0]['type'] = p[2]['type']
-					p[0]['place'] = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = temp_var.lex
+					p[0]['place'] = temp_var
 					p[0]['code'] = p[2]['code'] + "abs, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
 				else:
 					print("error in use of ABS")
 			if(p.slice[1].value == '!'):
 				if(p[2]['type'] in ['BOOLEAN']):
 					p[0]['type'] = p[2]['type']
-					p[0]['place'] = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = temp_var.lex
+					p[0]['place'] = temp_var
 					p[0]['code'] = p[2]['code'] + "!, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
 
 		if(len(p)==5):
 			if(p.slice[1].value == "CHR"):
 				if(p[3]['type'] in ['INTEGER']):
 					p[0]['type'] = 'CHAR'
-					p[0]['place'] = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = temp_var.lex
+					p[0]['place'] = temp_var
 					p[0]['code'] = p[3]['code'] + "CHR, " + p[0]['place'] + ", " + p[3]['place'] + "\n"
 				else:
 					print("incorrect use of CHR")
 			if(p.slice[1].value == "ORD"):
 				if(p[3]['type'] in ['CHAR']):
 					p[0]['type'] = 'INTEGER'
-					p[0]['place'] = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+					temp_var = temp_var.lex
+					p[0]['place'] = temp_var
 					p[0]['code'] = p[3]['code'] + "ORD, " + p[0]['place'] + ", " + p[3]['place'] + "\n"
 				else:
 					print("incorrect use of ORD")
+		if(len(p)==4):
+			p[0]['type'] = p[2]['type']
+			p[0]['place'] = p[2]['place']
+			p[0]['code'] = p[2]['code']
 
+		# print("factor",p[0]['place'],p[0]['type'])
 
 	def p_number(self, p):
 		'''
@@ -385,19 +373,13 @@ class Parser(object):
 				   | VREAL
 		'''
 		p[0] = {}
-
-		# Is this correct? --------------------------------------------------------------
 		p[0]['code'] = ''
-
-		if "." not in p.slice[1].value:
+		if p.slice[1].type=="VINTEGER":
 			p[0]['type'] = 'INTEGER'
 		else:
 			p[0]['type'] = 'REAL'
 
-		temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-		p[0]['place'] = temp_var
-		#  How do I check if p[1] is integer or real and is it necessary for type assignment --------------
-
+		p[0]['place'] = p.slice[1].value
 
 	def p_boolean(self, p):
 		'''
@@ -407,8 +389,7 @@ class Parser(object):
 
 		p[0]['code'] = ''
 		p[0]['type'] = 'BOOLEAN'
-		temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-		p[0]['place'] = temp_var
+		p[0]['place'] = p.slice[1].value
 
 	def p_char(self, p):
 		'''
@@ -418,8 +399,7 @@ class Parser(object):
 
 		p[0]['code'] = ''
 		p[0]['type'] = 'CHAR'
-		temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-		p[0]['place'] = temp_var
+		p[0]['place'] = p.slice[1].value
 
 	def p_string(self, p):
 		'''
@@ -429,8 +409,7 @@ class Parser(object):
 
 		p[0]['code'] = ''
 		p[0]['type'] = 'STRING'
-		temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-		p[0]['place'] = temp_var
+		p[0]['place'] = p.slice[1].value
 
 
 # ---------------------------------------------------------------------------
@@ -443,11 +422,15 @@ class Parser(object):
 		p = {}
 		if(len(p)==3):
 			p[0]['code'] = ''
-			p[0]['place'] = self.xtras.getNewTemp('SET', 'SIMPLEVAR')
+			temp_var = self.xtras.getNewTemp('SET', 'SIMPLEVAR')
+			temp_var = temp_var.lex
+			p[0]['place'] = temp_var
 			p[0]['type'] = 'SET'
 		else:
 			p[0]['type'] = 'SET'
-			p[0]['place'] = self.xtras.getNewTemp('SET', 'SIMPLEVAR')
+			temp_var = self.xtras.getNewTemp('SET', 'SIMPLEVAR')
+			temp_var = temp_var.lex
+			p[0]['place'] = temp_var
 			p[0]['code'] = p[2]['code'] + "SET, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
 
 	def p_element(self, p):
@@ -458,7 +441,9 @@ class Parser(object):
 		p[0] = {}
 		if(len(p)==2):
 			p[0]['type'] = p[1]['type']
-			p[0]['place'] = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+			temp_var = self.xtras.getNewTemp('SET', 'SIMPLEVAR')
+			temp_var = temp_var.lex
+			p[0]['place'] = temp_var
 			p[0]['code'] = p[1]['code'] + "=, " + p[0]['place'] + ", " + p[1]['place'] + "\n"
 		else:
 			if(p[1]['type'] == p[3]['type']):
@@ -466,9 +451,6 @@ class Parser(object):
 			else:
 				p[0]['type'] = 'SET'
 			p[0]['code'] = p[1]['code'] + ", " + p[3]['code']
-
-
-# -------------------------------------------------------------------------------
 
 	def p_designator(self, p):
 		'''
@@ -507,12 +489,24 @@ class Parser(object):
 		p[0]['place'] = entry.lex
 		p[0]['code'] = ''
 		p[0]['type'] = entry.vtype
+		# print("searched entry ",p[0]['place'],p[0]['type'])
 
 	def p_expList(self, p):
 		'''
 			expList : expList COMMA expression
 					| expression
 		'''
+		p[0]={}
+		p[0]['list'] = []
+		p[0]['type'] = []
+		if(len(p)==2):
+			p[0]['list'] = [p[1]['place']]
+			p[0]['type'] = [p[1]['type']]
+			p[0]['code'] = p[1]['code'] + p[3]['code']
+		else:
+			p[0]['list'] = p[1] + [p[2]['place']]
+			p[0]['type'] = p[1] + [p[2]['type']]
+			p[0]['code'] = p[1]['code'] + p[3]['code']
 
 	def p_actualParameters(self, p):
 		'''
@@ -521,9 +515,10 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if(len(p)==4):
-			p[0]['type'] = p[2]['type']
 			p[0]['place'] = p[2]['place']
 			p[0]['code'] = p[2]['code']
+			for param in p[2]['list']:
+				p[0]['code'] = p[0]['code'] + "param, " + p[2]['place'] + "\n"
 		else:
 			p[0]['code'] = ''
 
@@ -534,9 +529,10 @@ class Parser(object):
 						| MODULUS
 						| AND
 		'''
-		p[0] = {}
-		p[0]['code'] = ''
-		p[0]['place'] = p.slice[1].value
+		p[0] = p.slice[1].value
+		# p[0] = {}
+		# p[0]['code'] = ''
+		# p[0]['place'] = p.slice[1].value
 
 
 	def p_addOperator(self, p):
@@ -545,9 +541,10 @@ class Parser(object):
 						| MINUS
 						| OR
 		'''
-		p[0] = {}
-		p[0]['code'] = ''
-		p[0]['place'] = p.slice[1].value
+		p[0] = p.slice[1].value
+		# p[0] = {}
+		# p[0]['code'] = ''
+		# p[0]['place'] = p.slice[1].value
 
 	def p_relation(self, p):
 		'''
@@ -560,9 +557,10 @@ class Parser(object):
 					 | KEY_IN
 					 | KEY_IS
 		'''
-		p[0] = {}
-		p[0]['code'] = ''
-		p[0]['place'] = p.slice[1].value
+		p[0] = p.slice[1].value
+		# p[0] = {}
+		# p[0]['code'] = ''
+		# p[0]['place'] = p.slice[1].value
 
 	def p_typeDeclaration(self, p):
 		'''
@@ -599,11 +597,7 @@ class Parser(object):
 					| KEY_REAL
 					| KEY_FILE
 		'''
-		p[0] = {}
-		p[0]['code'] = ''
-		p[0]['place'] = p.slice[1].value
-		p[0]['type'] = p.slice[1].value
-
+		p[0] = p.slice[1].value
 	def p_arrayType(self, p):
 		'''
 			arrayType : KEY_ARRAY length comass KEY_OF type
@@ -810,13 +804,19 @@ class Parser(object):
 			p[0]['code'] = p[1]['code']
 		if(str(p.slice[1])=='KEY_RETURN'):
 			if(len(p)==3):
+				p[0]['code'] = p[2]['code'] + 'return, ' + p[2]['place'] + '\n'
 				self.tunnelTab.rtypeCheck(p.slice[2])
 				# expression????
 			else:
 				self.tunnelTab.rtypeCheck(None)
-				p[0]['code'] = 'goto, ' + '\n' # some label
+				p[0]['code'] = 'return \n' # some label
 		if(str(p.slice[1])=='procedureCall'):
 			p[0]['code'] = p[1]['code']
+
+		if(str(p.slice[1])=='ifStatement'):
+			p[0]['code'] = p[1]['code']
+
+
 
 
 	def p_assignment(self, p):
@@ -824,7 +824,7 @@ class Parser(object):
 			assignment : designator ASSIGN expression
 		'''
 		p[0] = {}
-		p[0]['code'] = "=, " + p[1]['place'] + ", " + p[3]['place'].lex + '\n'
+		p[0]['code'] = p[3]['code'] + "=, " + p[1]['place'] + ", " + p[3]['place'] + '\n'
 
 	def p_setStatement(self, p):
 		'''
@@ -859,6 +859,7 @@ class Parser(object):
 			procedureCall : designator actualParameters
 		'''
 		p[0]={}
+
 		p[0]['code'] = "call, " + p[1]['place']+ '\n'
 
 	def p_markerif(self,p):
@@ -879,14 +880,14 @@ class Parser(object):
 				print("typeerror")
 			p[3]['true'] = self.xtras.getNewLabel()
 			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
 			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n' + p[6]['code'] + '\n'
 		else:
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
 			p[3]['true'] = self.xtras.getNewLabel()
 			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
 			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n' + p[6]['code'] + '\n' + p[3]['false'] + '\n' + p[8]['code'] + '\n'
 
 
@@ -1045,21 +1046,21 @@ class Parser(object):
 						| KEY_READBOOL LRB expression RRB
 		'''
 		p[0] = {}
-		if(str(p.slice[1])=='KEY_WRITE'):
+		if p.slice[1].type=='KEY_WRITE':
 			p[0]['code'] = 'print, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITEINT'):
+		elif p.slice[1].type == 'KEY_WRITEINT':
 			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITEREAL'):
+		elif p.slice[1].type == 'KEY_WRITEREAL':
 			p[0]['code'] = 'printreal, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITECHAR'):
+		elif p.slice[1].type == 'KEY_WRITECHAR':
 			p[0]['code'] = 'printchar, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITEBOOL'):
+		elif p.slice[1].type == 'KEY_WRITEBOOL':
 			p[0]['code'] = 'printbool, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITELN' and len(p)==5):
+		elif p.slice[1].type == 'KEY_WRITELN' and len(p)==5:
 			p[0]['code'] = 'println, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITELN'):
+		elif p.slice[1].type =='KEY_WRITELN':
 			p[0]['code'] = 'println\n'
-		elif(str(p.slice[1])=='KEY_READ'):
+		elif p.slice[1].type =='KEY_READ':
 			p[0]['code'] = 'read, ' + p[3]['place'] + '\n'
 		elif(str(p.slice[1])=='KEY_WRITEINT'):
 			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
