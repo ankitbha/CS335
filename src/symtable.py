@@ -20,8 +20,8 @@ class SymTabEntry(object):
     def __repr__(self):
         return "kind: {}, type: {}".format(self.kind, self.vtype)
 
-    def __str__(self):
-        return self.lex
+	def __str__(self):
+		return self.lex
 
 class SymTab(object):
 
@@ -29,9 +29,9 @@ class SymTab(object):
 		self.parent = parent
 		self.addOns = addOns
 		self.div = div
-        self.varsHere = {}
-        self.children = {}
-        self.loopLabs = {'pre': None, 'loop': None, 'suf': None}
+		self.varsHere = {}
+		self.children = {}
+		self.loopLabs = {'pre': None, 'loop': None, 'suf': None}
 
 	def addEntry(self, lex, vtype, kind):
 		if vtype in typeSizeAllocation.keys():
@@ -43,7 +43,7 @@ class SymTab(object):
 
 	def queryEnt(self, lex):
 		if lex in self.varsHere:
-			return self.varsHere[lexeme]
+			return self.varsHere[lex]
 		return None
 
 #TODO remove the following function
@@ -65,15 +65,19 @@ class tunnelTable(object):
 		self.rootTable = SymTab("program", {}, None)
 		self.currTable = self.rootTable
 
-	def queryEnt(self, lex):
-		iterTable = self.currTable
+	def queryEnt(self, lex, Table):
+		if(Table == None):
+			iterTable = self.currTable
+		else:
+			iterTable = Table
 		queryRes = iterTable.queryEnt(lex)
 		if queryRes == None:
-			parTable = iterTable.parent
-			if (table.parent == None):
+
+			if (iterTable.parent == None):
 				return None
 			else:
-				return self.queryEnt(lexeme, table.parent)
+				parTable = iterTable.parent
+				return self.queryEnt(lex, parTable)
 		else:
 			return queryRes
 
