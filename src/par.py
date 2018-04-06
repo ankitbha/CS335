@@ -211,6 +211,7 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if(p[len(p)-1]['empty']==True):
+
 			p[0]['type'] = p[len(p)-2]['type']
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
 			temp_var = temp_var.lex
@@ -224,6 +225,7 @@ class Parser(object):
 				else:
 					p[0]['code'] = p[1]['code']
 		else:
+			print(p[len(p)-1])
 			p[0]['type'] = p[len(p)-1]['type']
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
 			temp_var = temp_var.lex
@@ -249,38 +251,22 @@ class Parser(object):
 		'''
 		p[0] = {}
 		p[0]['empty'] = False
-		
 		if(len(p)==4):
-			if(str(p.slice[1].value)!= 'empty'):
-				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
-				temp_var = temp_var.lex
-				p[0]['type'] = p[1]['type']
-				p[0]['place'] = temp_var
-				# newobj = get_new_object(p[1], p[3], p.slice[2].value)	
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
-			else:
-				if(p[1]['empty']==True):
+			if(p[1]['empty']==True):
+				try:
 					dterm['simpless'] = p[3]['place']
 					dterm['operator'] = p.slice[2].value
 					dterm['type'] = p[3]['type']
 					dterm['code'] = p[3]['code']
-				else:
-					temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
-					temp_var = temp_var.lex
-					p[0]['type'] = p[1]['type']
-					p[0]['place'] = temp_var	
-					p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
-
-			if(p[1]['empty']==True):
-				dterm['simpless'] = p[3]['place']
-				dterm['operator'] = p.slice[2].value
-				dterm['type'] = p[3]['type']
-				dterm['code'] = p[3]['code']
+				except KeyError:
+					p[0]['empty'] = True 
 			else:
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
 				p[0]['place'] = temp_var	
 				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+		else:
+			p[0]['empty'] = True
 
 	def p_term(self, p):
 		'''

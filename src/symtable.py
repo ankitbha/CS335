@@ -48,17 +48,16 @@ class SymTab(object):
 
 #TODO remove the following function
 	def printMe(self):
-    ## print attributes
-	    if len(self.addOns) > 0:
-	        print("## Attributes ##")
-	        for k,v in self.addOns.items():
-	            print(k + " -> " + str(v))
-	    ## print vars
-	    if len(self.varsHere) > 0:
-	        print("## Variables ##")
-	        for k,v in self.varsHere.items():
-	            print(k + " -> " + repr(v))
-
+	## print attributes
+		if len(self.addOns) > 0:
+			print("## Attributes ##")
+			for k,v in self.addOns.items():
+				print(k + " -> " + str(v))
+	## print vars
+		if len(self.varsHere) > 0:
+			print("## Variables ##")
+			for k,v in self.varsHere.items():
+				print(k + " -> " + repr(v))
 
 class tunnelTable(object):
 	def __init__(self):
