@@ -13,8 +13,8 @@ class SymTabEntry(object):
 		self.vtype = vtype
 		self.size = size
 
-	def updEntry(self, addOns, updAddOns):
-		self.addOns = updAddOns
+	# def updEntry(self, addOns, updAddOns):
+	# 	self.addOns = updAddOns
 
 #TODO remove the following two functions
 	def __repr__(self):
@@ -35,7 +35,7 @@ class SymTab(object):
 
 	def addEntry(self, lex, vtype, kind):
 		if vtype in typeSizeAllocation.keys():
-			size = typeSizeAllocation[ltype]
+			size = typeSizeAllocation[vtype]
 		else:
 			size = None
 		self.varsHere[lex] = SymTabEntry(lex, vtype, kind, size)

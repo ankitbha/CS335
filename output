@@ -1,0 +1,6 @@
+=, a, 1
+=, b, 1
++, _t0, a, b
+=, test, _t0
+printint, test
+
