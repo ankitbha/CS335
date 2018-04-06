@@ -1,20 +1,6 @@
-+, _t0, 2, 3
-=, i, _t0
-printint, i
-*, _t1, i, 2
--, i, 0, i
--, _t2, _t1, i
-=, j, _t2
-printint, j
-+, _t3, j, 2.3
-=, r, _t3
-printreal, r
-=, b, FALSE
-printint, b
-<, _t4, 3, 4
-=, c, _t4
-printint, c
-|, _t5, TRUE, FALSE
-=, b, _t5
-printint, b
+*, _t0, 2, a
+*, _t1, 5, b
++, _t2, _t0, _t1
+*, _t3, _t2, 1
+declarray, c, _t3
 

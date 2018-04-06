@@ -111,7 +111,7 @@ class Parser(object):
 		if(len(p)!=2):
 			if(str(p.slice[2])=='procss'):
 				p[0]['code'] = p[2]['code']
-			if(str(p.slice[2])=='conss'):
+			if(str(p.slice[3])=='conss' or str(p.slice[3])=='varss' ):
 				p[0]['code2'] = p[len(p)-1]['code']
 
 	def p_conss(self, p):
@@ -136,6 +136,12 @@ class Parser(object):
 			varss : varss variableDeclaration SCOLON
 				  | variableDeclaration SCOLON
 		'''
+		p[0] = {}
+		if(len(p)==3):
+			p[0]['code'] = p[1]['code']
+			# print(p[1]['code'])
+		else:
+			p[0]['code'] = p[1]['code'] + p[2]['code']
 
 	def p_procss(self, p):
 		'''
@@ -581,12 +587,13 @@ class Parser(object):
 		#if ((p.slice[1]) == 'arrayType'):
 		p[0] = {}
 		p[0]['type'] = p[1]['type']
-		if str(p.slice[1] == 'arrayType'):
+		if str(p.slice[1]) == 'arrayType':
 			p[0]['code'] = p[1]['code']
 			p[0]['kind'] = 'array'
-		if str(p.slice[1] == 'varType'):
+			p[0]['place'] = p[1]['place']
+		if str(p.slice[1]) == 'varType':
 			p[0]['kind'] = 'simplevar'
-			p[0]['code'] =''
+			p[0]['code'] = ''
 
 	def p_varType(self, p):
 		'''
@@ -704,14 +711,16 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if (p[3]['kind'] == 'simplevar'):
-			p['code'] = ''
+			p[0]['code'] = ''
 			for var in p[1]:
 				self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'simplevar')
 		if (p[3]['kind'] == 'array'):
 			declCode = ''
 			for var in p[1]:
-				declCode += 'declarray, ' + var + ', ' + p[3][place] + '\n'
+				declCode += 'declarray, ' + var + ', ' + p[3]['place'] + '\n'
 				self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'array')
+			# print("#########")
+			# print(p[3]['code'] + declCode)
 			p[0]['code'] = p[3]['code'] + declCode
 
 	def p_procedureDeclaration(self, p):
@@ -877,23 +886,17 @@ class Parser(object):
 						| KEY_IF markerif expression KEY_THEN statementSequence ifss KEY_END
 		'''
 		p[0] = {}
+		p[3]['false'] = self.xtras.getNewLabel() + '\n'
 		if(len(p)==8):
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[3]['true'] = self.xtras.getNewLabel()
-			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
-			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n' + p[6]['code'] + '\n'
+			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false']
+			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + p[6]['code']
 		else:
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[3]['true'] = self.xtras.getNewLabel()
-			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
-			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n' + p[6]['code'] + '\n' + p[3]['false'] + '\n' + p[8]['code'] + '\n'
-
-
-
+			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false']
+			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + p[6]['code'] + p[8]['code']
 
 	def p_ifss(self, p):
 		'''
@@ -906,10 +909,9 @@ class Parser(object):
 		else:
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[3]['true'] = self.xtras.getNewLabel()
 			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = p[1]['code'] + "ifgoto, =, " + p[3]['place'] + ", FASLE, " + p[3]['false'] +'\n'
-			p[0]['code'] = p[0]['code'] + p[3]['true'] + "\n" + p[5]['code'] +'\n'
+			p[0]['code'] = p[1]['code'] + p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + '\n' 
 
 
 	def p_switchStatement(self, p):
@@ -1041,42 +1043,37 @@ class Parser(object):
 						| KEY_WRITEBOOL LRB expression RRB
 						| KEY_WRITELN LRB expression RRB
 						| KEY_WRITELN LRB RRB
-						| KEY_READ LRB expression RRB
-						| KEY_READINT LRB expression RRB
-						| KEY_READREAL LRB expression RRB
-						| KEY_READCHAR LRB expression RRB
-						| KEY_READBOOL LRB expression RRB
+						| KEY_READ LRB designator RRB
+						| KEY_READINT LRB designator RRB
+						| KEY_READREAL LRB designator RRB
+						| KEY_READCHAR LRB designator RRB
+						| KEY_READBOOL LRB designator RRB
 		'''
 		p[0] = {}
 		if p.slice[1].type=='KEY_WRITE':
-			p[0]['code'] = 'print, ' + p[3]['place'] + '\n'
+			p[0]['code'] = p[3]['code'] + 'print, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITEINT':
-			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
+			p[0]['code'] = p[3]['code'] + 'printint, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITEREAL':
-			p[0]['code'] = 'printreal, ' + p[3]['place'] + '\n'
+			p[0]['code'] = p[3]['code'] + 'printreal, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITECHAR':
-			p[0]['code'] = 'printchar, ' + p[3]['place'] + '\n'
+			p[0]['code'] = p[3]['code'] + 'printchar, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITEBOOL':
-			p[0]['code'] = 'printbool, ' + p[3]['place'] + '\n'
+			p[0]['code'] = p[3]['code'] + 'printbool, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITELN' and len(p)==5:
-			p[0]['code'] = 'println, ' + p[3]['place'] + '\n'
+			p[0]['code'] = p[3]['code'] + 'println, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type =='KEY_WRITELN':
 			p[0]['code'] = 'println\n'
 		elif p.slice[1].type =='KEY_READ':
 			p[0]['code'] = 'read, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITEINT'):
-			p[0]['code'] = 'printint, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITEREAL'):
-			p[0]['code'] = 'printreal, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITECHAR'):
-			p[0]['code'] = 'printchar, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITEBOOL'):
-			p[0]['code'] = 'printbool, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITELN' and len(p)==5):
-			p[0]['code'] = 'println, ' + p[3]['place'] + '\n'
-		elif(str(p.slice[1])=='KEY_WRITELN'):
-			p[0]['code'] = 'println\n'
-
+		elif(str(p.slice[1])=='KEY_READINT'):
+			p[0]['code'] = 'readint, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_READREAL'):
+			p[0]['code'] = 'readreal, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_READCHAR'):
+			p[0]['code'] = 'readchar, ' + p[3]['place'] + '\n'
+		elif(str(p.slice[1])=='KEY_READBOOL'):
+			p[0]['code'] = 'readbool, ' + p[3]['place'] + '\n'
 
 
 	def p_fileStatement(self, p):

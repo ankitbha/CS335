@@ -18,8 +18,8 @@ class SymTabEntry(object):
 		#self.addOns = updAddOns
 		#TODO remove the following two functions
 
-    def __repr__(self):
-        return "kind: {}, type: {}".format(self.kind, self.vtype)
+	def __repr__(self):
+		return "kind: {}, type: {}".format(self.kind, self.vtype)
 
 	def __str__(self):
 		return self.lex
