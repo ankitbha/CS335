@@ -16,6 +16,7 @@ class SymTabEntry(object):
 	def updEntry(self, addOns, updAddOns):
 		self.addOns = updAddOns
 
+#TODO remove the following two functions
     def __repr__(self):
         return "kind: {}, type: {}".format(self.kind, self.vtype)
 
@@ -45,6 +46,7 @@ class SymTab(object):
 			return self.varsHere[lexeme]
 		return None
 
+#TODO remove the following function
     def printMe(self):
     ## print attributes
     if len(self.addOns) > 0:
