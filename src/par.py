@@ -200,7 +200,6 @@ class Parser(object):
 							 | MINUS term simpless
 		'''
 		p[0] = {}
-
 		if(p[len(p)-1]['empty']==True):
 			p[0]['type'] = p[len(p)-2]['type']
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
@@ -237,8 +236,10 @@ class Parser(object):
 					 | empty
 		'''
 		p[0] = {}
+		p[0]['empty'] = False
 		dterm = {}
 		if(len(p)==4):
+<<<<<<< Updated upstream
 			if(str(p.slice[1].value)!= 'empty'):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
 				p[0]['type'] = p[1]['type']
@@ -246,11 +247,18 @@ class Parser(object):
 				newobj = get_new_object(p[1], p[3], p.slice[2].value)	
 				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + newobj['value1'] + ", " + newobj['value2'] + "\n"
 			else:
+=======
+			if(p[1]['empty']==True):
+>>>>>>> Stashed changes
 				dterm['simpless'] = p[3]['place']
 				dterm['operator'] = p.slice[2].value
 				dterm['type'] = p[3]['type']
 				dterm['code'] = p[3]['code']
-
+			else:
+				temp_var = self.xtras.getNewTemp(p[1]['type'], 'SIMPLEVAR') 
+				p[0]['type'] = p[1]['type']
+				p[0]['place'] = temp_var	
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
 		else:
 			try:
 				p[0]['place'] = dterm['simpless']
@@ -287,6 +295,7 @@ class Parser(object):
 		'''
 
 		p[0] = {}
+		p[0]['empty'] = False
 		dterm = {}
 		if(len(p)==4):
 			if(str(p.slice[1].value)!= 'empty'):
@@ -464,9 +473,9 @@ class Parser(object):
 			designator : qualident designator2
 		'''
 		p[0] = {}
-		p[0]['code'] = ''
-		p[0]['place'] = self.p[1]['place']
-
+		p[0]['place'] = p[1]['place']
+		p[0]['code'] = p[1]['code']
+		p[0]['type'] = p[1]['type']
 
 	def p_designator2(self, p):
 		'''
@@ -482,6 +491,9 @@ class Parser(object):
 		'''
 		p[0] = {}
 		p[0]['place'] = p[1]['place']
+		p[0]['code'] = p[1]['code']
+		p[0]['type'] = p[1]['type']
+
 
 	def p_identdef(self, p):
 		'''
@@ -489,7 +501,10 @@ class Parser(object):
 					 | AT IDENT
 		'''
 		p[0] = {}
-		p[0]['place'] = p.slice[1].value
+		entry = self.tunnelTab.currTable.queryEnt(p.slice[1].value)
+		p[0]['place'] = entry.lex
+		p[0]['code'] = ''
+		p[0]['type'] = entry.vtype
 
 	def p_expList(self, p):
 		'''

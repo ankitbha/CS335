@@ -42,7 +42,7 @@ class SymTab(object):
 
 	def queryEnt(self, lex):
 		if lex in self.varsHere:
-			return self.varsHere[lexeme]
+			return self.varsHere[lex]
 		return None
 
 	def printMe(self):
@@ -71,7 +71,7 @@ class tunnelTable(object):
 			if (table.parent == None):
 				return None
 			else:
-				return self.queryEnt(lexeme, table.parent)
+				return self.queryEnt(lex, table.parent)
 		else:
 			return queryRes
 

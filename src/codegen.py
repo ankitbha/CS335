@@ -406,7 +406,7 @@ def translate(line):
 				acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
 		elif not isInt(num1) and isInt(num2):
-			#bge Rsrc1, Src2, label
+			# bge Rsrc1, Src2, label
 
 			addr1 = addrDesc[num1]
 			if(addr1 == "MEM"):
