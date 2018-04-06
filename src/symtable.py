@@ -63,15 +63,19 @@ class tunnelTable(object):
 		self.rootTable = SymTab("program", {}, None)
 		self.currTable = self.rootTable
 
-	def queryEnt(self, lex):
-		iterTable = self.currTable
+	def queryEnt(self, lex, Table):
+		if(Table == None):
+			iterTable = self.currTable
+		else:
+			iterTable = Table	
 		queryRes = iterTable.queryEnt(lex)
 		if queryRes == None:
-			parTable = iterTable.parent
-			if (table.parent == None):
+			
+			if (iterTable.parent == None):
 				return None
 			else:
-				return self.queryEnt(lex, table.parent)
+				parTable = iterTable.parent
+				return self.queryEnt(lex, parTable)
 		else:
 			return queryRes
 
