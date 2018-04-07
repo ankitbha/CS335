@@ -1,11 +1,18 @@
-*, _t0, 3, b
-+, _t1, c, 4
+*, _t0, a, a
+*, _t1, b, c
 *, _t2, 1, _t1
-*, _t3, _t0, _t2
-declarray, a, _t3
-*, _t4, 1, b
-+, _t5, 0, _t4
-*, _t6, _t0, c
-+, _t7, _t5, _t6
-writearray, a, _t7, 100
+*, _t3, c, a
+*, _t4, _t2, _t3
+*, _t5, _t0, _t4
+declarray, arr, _t5
++, _t6, d, e
+-, _t7, e, d
++, _t8, f, a
+*, _t9, _t6, _t1
+*, _t10, _t9, _t3
++, _t11, 0, _t10
+*, _t12, _t7, _t3
++, _t13, _t11, _t12
++, _t14, _t13, _t8
+writearray, arr, _t14, 100
 

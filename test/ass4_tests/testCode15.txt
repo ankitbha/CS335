@@ -1,9 +1,9 @@
 (* Program to test pass by reference of an Array *)
 MODULE testCode15;
 
-VAR b,c : INTEGER;
-VAR a : ARRAY 3*b,c+4  OF INTEGER;
+VAR a,b,c,d,e,f : INTEGER;
+VAR arr : ARRAY a*a,b*c,c*a OF INTEGER;
 
 BEGIN
-	a[b,c] := 100;
+	arr[d+e, e-d, f+a] := 100;
 END testCode15.

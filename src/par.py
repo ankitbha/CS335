@@ -474,16 +474,24 @@ class Parser(object):
 			placistt = arrayent.placist
 			offs = p[2]['place']
 			offscode = ''
-			finalplace = '0'
-			for i in range(0, len(placistt)-1):
-				temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
-				templace = temp.lex
-				temp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
-				templace2 = temp2.lex
-				offscode += '*, ' + templace + ', ' + placistt[i] + ', ' + offs[i] +'\n'
-				offscode += '+, ' + templace2 + ', ' + finalplace + ', ' + templace +'\n'
-				finalplace = templace2
-			p[0]['offset'] = finalplace
+			ffplace = '0'
+			for i in range(0, len(placistt)):
+				finalplace =offs[i]
+				for j in range(i+1, len(placistt)):
+					# temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
+					# templace = temp.lex
+					temp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
+					templace2 = temp2.lex
+					offscode += '*, ' + templace2 + ', ' + finalplace + ', ' + placistt[j] +'\n'
+					finalplace = templace2
+				# ttemp = self.xtras.getNewTemp('INTEGER', 'simplevar')
+				# ttemplace = ttemp.lex
+				ttemp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
+				ttemplace2 = ttemp2.lex
+				offscode += '+, ' + ttemplace2 + ', ' + ffplace + ', ' + finalplace +'\n'
+				ffplace = ttemplace2
+
+			p[0]['offset'] = ffplace
 			p[0]['code'] = p[1]['code'] + p[2]['code'] + offscode
 			p[0]['type'] = arrayent.vtype
 			p[0]['kind'] = 'array'
@@ -651,7 +659,7 @@ class Parser(object):
 		p[0]['code'] = p[2]['code'] + p[3]['code'] + sizCode
 		p[0]['type'] = p[5]['type']
 		p[0]['placist'] = []
-		p[0]['placist'].append('1')
+		#p[0]['placist'].append('1')
 		p[0]['placist'].append(p[2]['place'])
 		for pl in p[3]['placist']:
 			p[0]['placist'].append(pl)
