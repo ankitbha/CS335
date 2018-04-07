@@ -1,18 +1,11 @@
-=, a, 1
-=, b, 1
-param, a
-param, b
-call, bigger_t2
-=, test, _t2
-printint, test
-label, bigger
->, _t0, a, b
-ifgoto, =, _t0, false, L2
-return, a
-L2
-=, _t1, a, b
-ifgoto, =, _t1, false, L1
-return, 0
-L1
-return, b
+readint, a
+readint, b
+readint, c
+readint, d
+readint, e
+readint, f
+*, _t0, e, f
+-, _t1, a, _t0
+-, _t2, _t1, d
+=, l, _t2
 

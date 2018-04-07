@@ -5,12 +5,10 @@ VAR a,b,c,d,e,f,l : INTEGER;
 READINT(a);
 READINT(b);
 READINT(c);
-VAR arr : ARRAY a*a,b*c,c*a OF INTEGER;
 
 BEGIN
 READINT(d);
 READINT(e);
 READINT(f);
-	arr[d+e, e-d, f+a] := 100;
 	l := a - e*f -d;
 END testCode15.

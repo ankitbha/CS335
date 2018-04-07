@@ -12,6 +12,7 @@ import symtable
 dterm = {}
 sterm = {}
 flag = 0
+flagg = 0
 
 class Typeclass(object):
 	def __init__(self):
@@ -207,29 +208,29 @@ class Parser(object):
 
 	def p_simpleExpression(self, p):
 		'''
-			simpleExpression : PLUS term simpless
-							 | term simpless
-							 | MINUS term simpless
+			simpleExpression : PLUS simpless term
+							 | simpless term
+							 | MINUS simpless term
 		'''
 		p[0] = {}
-		if(p[len(p)-1]['empty']==True):
-			p[0]['type'] = p[len(p)-2]['type']
-			p[0]['place'] = p[len(p)-2]['place']
+		if(p[len(p)-2]['empty']==True):
+			p[0]['type'] = p[len(p)-1]['type']
+			p[0]['place'] = p[len(p)-1]['place']
 
 			if(p.slice[1].value == '-'):
-				p[0]['code'] = p[2]['code'] + "-, " + p[0]['place']+ ", 0, " + p[2]['place'] + '\n'
+				p[0]['code'] = p[3]['code'] + "-, " + p[0]['place']+ ", 0, " + p[3]['place'] + '\n'
 			else:
 				if(p.slice[1].value == '+'):
-					p[0]['code'] = p[2]['code']
+					p[0]['code'] = p[3]['code']
 				else:
-					p[0]['code'] = p[1]['code']
+					p[0]['code'] = p[2]['code']
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
 			temp_var = temp_var.lex
 			p[0]['place'] = temp_var
 			if(len(p)==3):
-				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[1]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
 			else:
 				if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
 					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
@@ -243,49 +244,63 @@ class Parser(object):
 
 	def p_simpless(self, p):
 		'''
-			simpless : simpless addOperator term
+			simpless : simpless term addOperator
 					 | empty
 		'''
+		global flagg
 		p[0] = {}
 		p[0]['empty'] = False
 		if(len(p)==4):
 			if(p[1]['empty']==True):
-					p[0]['place'] = p[3]['place']
-					p[0]['operator'] = p.slice[2].value
-					p[0]['type'] = p[3]['type']
-					p[0]['code'] = p[3]['code']
+					p[0]['place'] = p[2]['place']
+					p[0]['operator'] = p.slice[3].value
+					p[0]['type'] = p[2]['type']
+					p[0]['code'] = p[2]['code']
 			else:
-				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
-				p[0]['operator'] = p.slice[2].value
-				p[0]['type'] = p[1]['type']
+
+				temp_var = self.xtras.getNewTemp(p[2]['type'], 'simplevar')
+				p[0]['operator'] = p.slice[3].value
+				p[0]['type'] = p[2]['type']
+				if (flagg==1 and p[0]['type'] != 'BOOLEAN'):
+					if p.slice[3].value == "+":
+						p[0]['operator'] = "-"
+					if p.slice[3].value == "-":
+						p[0]['operator'] = "+"
+				else:
+					p[0]['operator'] = p.slice[3].value			
+				if(p[0]['operator'] == "-"):
+					flagg = 1
+				else:
+					flagg = 0	
+				
 				p[0]['place'] = temp_var.lex
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + p[0]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
 		else:
 			p[0]['empty'] = True
 		# print("")
 
 	def p_term(self, p):
 		'''
-			term : factor termss
+			term : termss factor
 		'''
 		p[0] = {}
-		if(p[2]['empty']==True):
-			p[0]['type'] = p[1]['type']
-			p[0]['code'] = p[1]['code']
-			p[0]['place'] = p[1]['place']
+		if(p[1]['empty']==True):
+			p[0]['type'] = p[2]['type']
+			p[0]['code'] = p[2]['code']
+			p[0]['place'] = p[2]['place']
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
 			# newobj = get_new_object(p[1], p[2], p[2]['operator'])
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
 			temp_var = temp_var.lex
 			p[0]['place'] = temp_var
-			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[2]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
+			p[0]['code'] = p[1]['code'] + p[2]['code'] + p[1]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
 
 		# print("check",p[0]['place'],p[0]['type'])
 
 	def p_termss(self, p):
 		'''
-			termss : termss mulOperator factor
+			termss : termss factor mulOperator
 				   | empty
 		'''
 
@@ -294,16 +309,16 @@ class Parser(object):
 		p[0]['empty'] = False
 		if(len(p)==4):
 			if(p[1]['empty']==True):
-					p[0]['place'] = p[3]['place']
-					p[0]['operator'] = p.slice[2].value
-					p[0]['type'] = p[3]['type']
-					p[0]['code'] = p[3]['code']
+					p[0]['place'] = p[2]['place']
+					p[0]['operator'] = p.slice[3].value
+					p[0]['type'] = p[2]['type']
+					p[0]['code'] = p[2]['code']
 			else:
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
-				p[0]['type'] = p[1]['type']
+				p[0]['type'] = p[2]['type']
 				p[0]['place'] = temp_var.lex
-				p[0]['operator'] = p.slice[2].value
-				p[0]['code'] = p[1]['code'] + p[3]['code'] + str(p.slice[2].value) + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[3]['place'] + "\n"
+				p[0]['operator'] = p.slice[3].value
+				p[0]['code'] = p[1]['code'] + p[3]['code'] + p[0]['operator'] + ", " + p[0]['place'] + ", " + p[1]['place'] + ", " + p[2]['place'] + "\n"
 		else:
 			p[0]['empty'] = True
 
