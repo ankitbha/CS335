@@ -1,0 +1,31 @@
+(* Test of Multi dimensional Array *)
+MODULE testCode20;
+
+VAR a : ARRAY 3 OF ARRAY 3 OF INTEGER;
+VAR i, j : INTEGER;
+
+BEGIN
+	i:=0;
+	j:=0;
+	
+	WHILE i<3 BEGIN
+		WHILE j<3 BEGIN
+			a[i,j] := j;
+			j:=j+1;
+		END;
+	i:=i+1;
+	j:=0;
+	END;
+	
+	i:=0;
+	j:=0;
+	
+	WHILE i<3 BEGIN
+		WHILE j<3 BEGIN
+			WRITEINT(a[i,j]);
+			j:=j+1;
+		END;
+	i:=i+1;
+	j:=0;
+	END;
+END testCode20.
