@@ -5,6 +5,7 @@ import math
 import copy
 import inspect
 #import symtable
+import random
 
 class SymClass(object):
 	def __init__(self, lexeme, typ):
@@ -41,6 +42,8 @@ def check_reg(self, varName):
 def getReg(varObj, numLine):
 	global acode
 	global reg_norm
+	global used_reg_norm
+	global unused_reg_norm
 	if varObj.typ in ["float", "double"]:
 		for i in reg_float.keys():
 			if (reg_float[i]==varObj):
@@ -100,21 +103,22 @@ def getReg(varObj, numLine):
 
 
 		else:
-			forNextUse=nextUseTable[numLine]
-			tempFarthest=None
+			spillReg = random.choice(used_reg_norm)
+			# forNextUse=nextUseTable[numLine]
+			# tempFarthest=None
 			#forNextUse should be a dictionary, so nextUseTable must also be a
 			#dictionary with keys as line numbers and value as another dictionary
 			#with key being variable names and values being nextUselineNo
-			for var in forNextUse.keys():
-				if (tempFarthest==None):
-					tempFarthest=var
-				elif (forNextUse[var]>forNextUse[tempFarthest]):
-					tempFarthest=var
-				else:
-					continue
-			for spillReg in reg_norm.keys():
-				if reg_norm[spillReg]==tempFarthest:
-					break
+			# for var in forNextUse.keys():
+			# 	if (tempFarthest==None):
+			# 		tempFarthest=var
+			# 	elif (forNextUse[var]>forNextUse[tempFarthest]):
+			# 		tempFarthest=var
+			# 	else:
+			# 		continue
+			# for spillReg in reg_norm.keys():
+			# 	if reg_norm[spillReg]==tempFarthest:
+			# 		break
 
 			acode = acode + "\t" + "sw " + spillReg + ", " + (reg_norm[spillReg]).lexeme + "\n"
 			acode = acode + "\t" + "lw " + spillReg + ", " + varObj.lexeme + "\n"
@@ -126,11 +130,19 @@ def getReg(varObj, numLine):
 def flushRegDesc():
 	global acode
 	global reg_norm
-	for reg in used_reg_norm:
-		used_reg_norm.remove(reg)
+	global used_reg_norm
+	global unused_reg_norm
+	used_reg_norm = []
+	unused_reg_norm = list(reg_norm.keys())
+	# for reg in used_reg_norm:
+	# 	used_reg_norm.remove(reg)
 		# addrDesc[reg_norm[reg]] = 'MEM'
 		# acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
-		unused_reg_norm.append(reg)	
+		# unused_reg_norm.append(reg)
+	
+			
+			
+			
 	for reg in used_reg_float:
 		used_reg_float.remove(reg)
 		# addrDesc[reg_float[reg]] = 'MEM'
@@ -140,6 +152,8 @@ def flushRegDesc():
 def flushAddrDesc():
 	global acode
 	global reg_norm
+	global used_reg_norm
+	global unused_reg_norm
 	for reg in used_reg_norm:
 		# used_reg_norm.remove(reg)
 		addrDesc[reg_norm[reg]] = 'MEM'
