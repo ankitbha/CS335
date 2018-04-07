@@ -123,7 +123,7 @@ class Parser(object):
 		if(len(p)==3):
 			p[0]['code'] = p[1]['code']
 		else:
-			p[0]['code'] = p[1]['code'] + p[2]['code']
+			p[0]['code'] = p[0]['code'] + p[1]['code']
 
 	def p_typess(self, p):
 		'''
