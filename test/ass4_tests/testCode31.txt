@@ -1,0 +1,18 @@
+(*Bubble sort program*)
+MODULE testCode22;
+VAR a ,b, t : INTEGER ; c : ARRAY 10 OF INTEGER;
+
+BEGIN
+a:=1;
+b:=0;
+FOR (a:=1 ; a<=10 ; a:=a+1)
+BEGIN
+WRITEINT(a);
+IF a=5 THEN
+a := 102;
+CONTINUE;
+END;
+b:=b+1;
+END;
+
+END testCode22.

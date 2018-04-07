@@ -195,9 +195,9 @@ class Parser(object):
 			else:
 				# need to see this again..........
 				if(p[1]['type'] == str(p.slice[3].value)):
-					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + temp_var + ", TRUE\n"
+					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + temp_var + ", true\n"
 				else:
-					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + temp_var + ", FALSE\n"
+					p[0]['code'] = p[1]['code'] + p[3]['code'] + "=, " + temp_var + ", false\n"
 			p[0]['type'] = 'BOOLEAN'
 			p[0]['place'] = temp_var
 
@@ -876,6 +876,10 @@ class Parser(object):
 			p[0]['code'] = p[1]['code']
 		if(str(p.slice[1])=='forStatement'):
 			p[0]['code'] = p[1]['code']
+		if(str(p.slice[1])=='breakStatement'):
+			p[0]['code'] = p[1]['code']
+		if(str(p.slice[1])=='continueStatement'):
+			p[0]['code'] = p[1]['code']
 
 
 
@@ -903,7 +907,7 @@ class Parser(object):
 			breakStatement : KEY_BREAK
 		'''
 		p[0] = {}
-		breakCode = "goto, " + self.tunnelTab.currTable.loopLabs['suf'] + "\n"
+		breakCode = "goto, " + self.tunnelTab.queryLabs('suf', self.tunnelTab.currTable) + "\n"
 		p[0]['code'] = breakCode
 
 	def p_continueStatement(self, p):
@@ -911,7 +915,7 @@ class Parser(object):
 			continueStatement : KEY_CONTINUE
 		'''
 		p[0] = {}
-		contCode = "goto, " + self.tunnelTab.currTable.loopLabs['loop'] + "\n"
+		contCode = "goto, " + self.tunnelTab.queryLabs('loop', self.tunnelTab.currTable) + "\n"
 		p[0]['code'] = contCode
 
 
@@ -946,12 +950,12 @@ class Parser(object):
 		if(len(p)==8):
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false']
+			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", false, " + p[3]['false']
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + p[6]['code']
 		else:
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false']
+			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", false, " + p[3]['false']
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + p[6]['code'] + p[8]['code']
 		self.tunnelTab.endScope()
 
@@ -967,7 +971,7 @@ class Parser(object):
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
 			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = p[1]['code'] + p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false'] +'\n'
+			p[0]['code'] = p[1]['code'] + p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", false, " + p[3]['false'] +'\n'
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + '\n'
 
 
@@ -1032,12 +1036,12 @@ class Parser(object):
 		#	raise TypeError("Error at line number %d, while condition must be a boolean expression \n" %(p.lexer.lineno,))
 		#TODO uncomment the above type checking call when done
 		# print("##########")
-		whileCode = self.tunnelTab.currTable.loopLabs['loop'] + ":" + "\n"
+		whileCode = self.tunnelTab.currTable.loopLabs['loop'] + "\n"
 		whileCode += p[3]['code']
 		whileCode += 'ifgoto, ==, ' + p[3]['place'] + ', false,' +  self.tunnelTab.currTable.loopLabs['suf'] + "\n"
 		whileCode += p[5]['code']
 		whileCode += 'goto, ' + self.tunnelTab.currTable.loopLabs['loop'] + "\n"
-		whileCode += self.tunnelTab.currTable.loopLabs['suf'] + ":" + "\n"
+		whileCode += self.tunnelTab.currTable.loopLabs['suf'] + "\n"
 		p[0] = {'code': whileCode}
 		# print(p[0]['code'])
 		self.tunnelTab.endScope()
@@ -1061,14 +1065,14 @@ class Parser(object):
 		#TODO type checking of boolean in p[6]
 		p[0] = {}
 		forCode = p[4]['code']
-		forCode += self.tunnelTab.currTable.loopLabs['pre'] + ":\n"
+		forCode += self.tunnelTab.currTable.loopLabs['pre'] + "\n"
 		forCode += p[6]['code']
 		forCode += "ifgoto, ==, " + p[6]['place'] + ", false, " + self.tunnelTab.currTable.loopLabs['suf'] + "\n"
 		forCode += p[11]['code']
-		forCode += self.tunnelTab.currTable.loopLabs['loop'] + ":\n"
+		forCode += self.tunnelTab.currTable.loopLabs['loop'] + "\n"
 		forCode += p[8]['code']
 		forCode += "goto, " + self.tunnelTab.currTable.loopLabs['pre'] + "\n"
-		forCode += self.tunnelTab.currTable.loopLabs['suf'] + ":\n"
+		forCode += self.tunnelTab.currTable.loopLabs['suf'] + "\n"
 		p[0]['code'] = forCode
 		self.tunnelTab.endScope()
 

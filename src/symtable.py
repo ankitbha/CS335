@@ -93,6 +93,21 @@ class tunnelTable(object):
 	def endScope(self):
 		self.currTable = self.currTable.parent
 
+	def queryLabs(self, labName, tab):
+		if(tab == None):
+			iterTable = self.currTable
+		else:
+			iterTable = tab
+		lab = iterTable.loopLabs[labName]
+		if lab == None:
+			if (iterTable.parent == None):
+				return None
+			else:
+				parTable = iterTable.parent
+				return self.queryLabs(labName, parTable)
+		else:
+			return lab
+
 class xtraNeeds(object):
 	def __init__(self):
 		self.tempCount = 0
