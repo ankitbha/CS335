@@ -49,6 +49,11 @@ class SymTab(object):
 			return self.varsHere[lex]
 		return None
 
+	# def queryProc(self,lex):
+	# 	for child in self.children:
+	# 		self.currTable.children[addOns['id']] = freshTable
+	# 	if lex
+
 #TODO remove the following function
 	def printMe(self):
 	## print attributes
@@ -81,6 +86,15 @@ class tunnelTable(object):
 				return self.queryEnt(lex, parTable)
 		else:
 			return queryRes
+	def queryProc(self,lex):
+		# print("###############")
+		# print(lex)
+		# print("###############")
+		try:
+			proc = self.rootTable.children[lex].addOns
+			return proc
+		except KeyError:
+			return None
 
 	def addEntry(self, lex, vtype, kind, placist=None):
 		return self.currTable.addEntry(lex, vtype, kind, placist)

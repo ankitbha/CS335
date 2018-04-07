@@ -1,4 +1,5 @@
-MODULE testCode1; 
+MODULE testCode1;
+
 VAR a, b, test : INTEGER ;
  
 PROCEDURE bigger(a, b: INTEGER) : INTEGER;
@@ -15,6 +16,6 @@ PROCEDURE bigger(a, b: INTEGER) : INTEGER;
  BEGIN
  	a := 1;
  	b := 1;
-	bigger(a,b);
+	test := bigger(a,b);
  	WRITEINT(test);
  END testCode1.

@@ -345,6 +345,14 @@ class Parser(object):
 				p[0]['type'] = p[1]['type']
 
 		if(len(p)==3):
+			if( str(p.slice[1]) == 'designator'):
+				proc = self.tunnelTab.queryProc(p[1]['place'])
+				p[0]['type'] = proc['type']
+				temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+				temp_var = temp_var.lex
+				p[0]['place'] = temp_var
+				p[0]['code'] = p[2]['code'] + 'call, ' + p[1]['place'] + p[0]['place'] + '\n'
+
 			if p[1]['kind'] == 'array':
 				p[0]['kind'] == 'array'
 			else:
@@ -552,9 +560,14 @@ class Parser(object):
 		'''
 		p[0] = {}
 		entry = self.tunnelTab.queryEnt(p.slice[1].value, None)
-		p[0]['place'] = entry.lex
-		p[0]['code'] = ''
-		p[0]['type'] = entry.vtype
+		if entry!=None:
+			p[0]['place'] = entry.lex
+			p[0]['code'] = ''
+			p[0]['type'] = entry.vtype
+		else:
+			p[0]['place'] = p.slice[1].value
+			p[0]['code'] = ''
+			p[0]['type'] = None
 		# print("searched entry ",p[0]['place'],p[0]['type'])
 
 	def p_expList(self, p):
@@ -583,8 +596,8 @@ class Parser(object):
 		if(len(p)==4):
 			p[0]['place'] = p[2]['place']
 			p[0]['code'] = p[2]['code']
-			for param in p[2]['list']:
-				p[0]['code'] = p[0]['code'] + "param, " + p[2]['place'] + "\n"
+			for param in p[2]['place']:
+				p[0]['code'] = p[0]['code'] + "param, " + param + "\n"
 		else:
 			p[0]['code'] = ''
 
@@ -809,7 +822,10 @@ class Parser(object):
 
 		p[0]={}
 		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n'
-		self.tunnelTab.currTable.addOns['type'] = p[6]['type']
+		if(len(p)==7):
+			self.tunnelTab.currTable.addOns['type'] = p[6]['type']
+		else:
+			self.tunnelTab.currTable.addOns['type'] = None
 
 	def p_mproc(self,p):
 		'''
@@ -950,8 +966,11 @@ class Parser(object):
 			procedureCall : designator actualParameters
 		'''
 		p[0]={}
-
-		p[0]['code'] = "call, " + p[1]['place']+ '\n'
+		proc = self.tunnelTab.queryProc(p[1]['place'])
+		p[0]['type'] = proc['type']
+		if(p[0]['type']!=None):
+			print("typeerror")
+		p[0]['code'] = p[2]['code'] + "call, " + p[1]['place']+ '\n'
 
 	def p_markerif(self,p):
 		'''
