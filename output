@@ -1,13 +1,14 @@
-###############
-readchar, a
-print, "Value is: "
-printchar, a
-println
-print, "Order is: "
-ORD, _t0, a
-printint, _t0
-=, b, 50
-print, "Char for b is: "
-CHR, _t1, b
-printchar, _t1
+=, a, 1
+=, b, 1
+printint, test
+label, bigger
+>, _t0, a, b
+ifgoto, =, _t0, FALSE, L2
+return, a
+L2
+=, _t1, a, b
+ifgoto, =, _t1, FALSE, L1
+return, 0
+L1
+return, b
 

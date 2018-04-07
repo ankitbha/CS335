@@ -1,0 +1,11 @@
+(*program to test IMPLICIT TYPE CAST *)
+MODULE testCode21;
+
+PROCEDURE func(a : REAL);
+BEGIN 
+	WRITEREAL(a);
+END func;
+
+BEGIN
+	func(3);
+END testCode21.

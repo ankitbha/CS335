@@ -1,0 +1,16 @@
+(*program to try kind of a dynamically created linked list *)
+
+MODULE testCode10;
+
+TYPE ulist = RECORD index : INTEGER END;
+TYPE list = RECORD index : INTEGER; next : POINTER TO ulist END;
+VAR rec : POINTER TO list ;
+
+BEGIN
+	NEW(rec);
+	@rec.index := 1;
+	NEW(@rec.next);
+	@rec.@next.index := 2;
+	WRITEINT(@rec.index);
+	WRITEINT(@rec.@next.index);
+END testCode10.

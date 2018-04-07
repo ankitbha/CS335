@@ -1,0 +1,11 @@
+MODULE testCode28;
+VAR a : INTEGER;
+BEGIN
+	SWITCH(ABS(a))
+	BEGIN
+		CASE 1: WRITE("ONE");
+		CASE 2: WRITE("TWO");
+		CASE 3: WRITE("THREE");
+		ELSE : WRITE ("NONE");
+	END;
+END testCode28.

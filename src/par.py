@@ -111,7 +111,7 @@ class Parser(object):
 		if(len(p)!=2):
 			if(str(p.slice[2])=='procss'):
 				p[0]['code'] = p[2]['code']
-			if(str(p.slice[3])=='conss' or str(p.slice[3])=='varss' ):
+			elif(str(p.slice[3])=='conss' or str(p.slice[3])=='varss' ):
 				p[0]['code2'] = p[len(p)-1]['code']
 
 	def p_conss(self, p):
@@ -735,19 +735,18 @@ class Parser(object):
 
 	def p_procedureHeading(self, p):
 		'''
-			procedureHeading : KEY_PROCEDURE IDENT tPtype formalParameters COLON type
-							 | KEY_PROCEDURE IDENT tPtype formalParameters
+			procedureHeading : KEY_PROCEDURE IDENT mproc formalParameters COLON type
+							 | KEY_PROCEDURE IDENT mproc formalParameters
 		'''
 
 		p[0]={}
 		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n'
 		self.tunnelTab.currTable.addOns['type'] = p[6]['type']
 
-	def p_tPtype(self,p):
+	def p_mproc(self,p):
 		'''
-			tPtype : empty
+			mproc : empty
 		'''
-
 		p[0]={}
 		p[0]['id'] = p[-1]
 		self.tunnelTab.startScope('func',p[0])
@@ -813,18 +812,21 @@ class Parser(object):
 		if(str(p.slice[1])=='assignment' or str(p.slice[1]) == 'ioStatement'):
 			# print("statament")
 			p[0]['code'] = p[1]['code']
-		if(str(p.slice[1])=='KEY_RETURN'):
+		if(p.slice[1].type=='KEY_RETURN'):
 			if(len(p)==3):
 				p[0]['code'] = p[2]['code'] + 'return, ' + p[2]['place'] + '\n'
-				self.tunnelTab.rtypeCheck(p.slice[2])
-				# expression????
 			else:
-				self.tunnelTab.rtypeCheck(None)
 				p[0]['code'] = 'return \n' # some label
 		if(str(p.slice[1])=='procedureCall'):
 			p[0]['code'] = p[1]['code']
 
 		if(str(p.slice[1])=='ifStatement'):
+			p[0]['code'] = p[1]['code']
+		if(str(p.slice[1])=='switchStatement'):
+			p[0]['code'] = p[1]['code']
+		if(str(p.slice[1])=='whileStatement'):
+			p[0]['code'] = p[1]['code']
+		if(str(p.slice[1])=='forStatement'):
 			p[0]['code'] = p[1]['code']
 
 
@@ -848,6 +850,7 @@ class Parser(object):
 		'''
 			breakStatement : KEY_BREAK
 		'''
+		p[0] = {}
 		breakCode = "goto, " + self.tunnelTab.currTable.loopLabs['suf'] + "\n"
 		p[0]['code'] = breakCode
 
@@ -855,6 +858,7 @@ class Parser(object):
 		'''
 			continueStatement : KEY_CONTINUE
 		'''
+		p[0] = {}
 		contCode = "goto, " + self.tunnelTab.currTable.loopLabs['loop'] + "\n"
 		p[0]['code'] = contCode
 
@@ -897,6 +901,7 @@ class Parser(object):
 				print("typeerror")
 			p[0]['code'] = p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false']
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + p[6]['code'] + p[8]['code']
+		self.tunnelTab.endScope()
 
 	def p_ifss(self, p):
 		'''
@@ -920,9 +925,10 @@ class Parser(object):
 							| KEY_SWITCH expression mswitch KEY_BEGIN case casess KEY_END
 		'''
 		p[0]={}
+		# print("##############")
 		p[0]['next'] = self.xtras.getNewLabel()
 		p[0]['test'] = self.xtras.getNewLabel()
-		p[0]['code'] = p[2]['code'] + 'goto, test \n' + p[5]['label'] + '\n' + p[5]['scode'] + 'goto, ' + p[0]['next'] + '\n'
+		p[0]['code'] = p[2]['code'] + 'goto, ' + p[0]['test'] + '\n' + p[5]['label'] + '\n' + p[5]['scode'] + 'goto, ' + p[0]['next'] + '\n'
 		for case in p[6]:
 			p[0]['code'] = p[0]['code'] + case['label'] + '\n' + case['scode'] + 'goto, ' + p[0]['next'] + '\n'
 		if(len(p)==11):
@@ -936,12 +942,7 @@ class Parser(object):
 		if(len(p)==11):
 			p[0]['code'] = p[0]['code'] + 'goto, ' + p[0]['else'] + '\n'
 		p[0]['code'] = p[0]['code'] + p[0]['next'] + '\n'
-
-
-
-
-
-
+		# print(p[0]['code'])
 
 	def p_mswitch(self, p):
 		'''
@@ -957,7 +958,7 @@ class Parser(object):
 		'''
 		p[0]=[]
 		if(len(p)!=2):
-			p[0] = p[0] + [p[1]]
+			p[0] = [p[1]] + p[2]
 		else:
 			p[0]= []
 
@@ -978,6 +979,7 @@ class Parser(object):
 		#if (p[4]['type']!='BOOLEAN'):
 		#	raise TypeError("Error at line number %d, while condition must be a boolean expression \n" %(p.lexer.lineno,))
 		#TODO uncomment the above type checking call when done
+		# print("##########")
 		whileCode = self.tunnelTab.currTable.loopLabs['loop'] + ":" + "\n"
 		whileCode += p[3]['code']
 		whileCode += 'ifgoto, ==, ' + p[3]['place'] + ', false,' +  self.tunnelTab.currTable.loopLabs['suf'] + "\n"
@@ -985,6 +987,7 @@ class Parser(object):
 		whileCode += 'goto, ' + self.tunnelTab.currTable.loopLabs['loop'] + "\n"
 		whileCode += self.tunnelTab.currTable.loopLabs['suf'] + ":" + "\n"
 		p[0] = {'code': whileCode}
+		# print(p[0]['code'])
 		self.tunnelTab.endScope()
 
 	def p_markerWhile(self,p):
@@ -1004,6 +1007,7 @@ class Parser(object):
 			forStatement : KEY_FOR markerFor LRB assignment SCOLON expression SCOLON assignment RRB KEY_BEGIN statementSequence KEY_END
 		'''
 		#TODO type checking of boolean in p[6]
+		p[0] = {}
 		forCode = p[4]['code']
 		forCode += self.tunnelTab.currTable.loopLabs['pre'] + ":\n"
 		forCode += p[6]['code']
@@ -1014,7 +1018,7 @@ class Parser(object):
 		forCode += "goto, " + self.tunnelTab.currTable.loopLabs['pre'] + "\n"
 		forCode += self.tunnelTab.currTable.loopLabs['suf'] + ":\n"
 		p[0]['code'] = forCode
-		self.stManager.endScope()
+		self.tunnelTab.endScope()
 
 	def p_markerFor(self,p):
 		'''

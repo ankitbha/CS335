@@ -1,0 +1,14 @@
+(*program to test records assignments as pointers : NOTE the user defined types *)
+
+MODULE testCode9;
+
+TYPE utype = RECORD x : INTEGER END;
+VAR rec1, rec2 : utype;
+
+BEGIN
+	rec1.x := 1;
+	rec2.x := 2;
+	rec2 := rec1;
+	WRITEINT(rec1.x);
+	WRITEINT(rec2.x);
+END testCode9. 
