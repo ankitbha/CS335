@@ -102,7 +102,7 @@ class Parser(object):
 								| declarationSequence KEY_TYPE typess
 								| declarationSequence KEY_VAR varss
 								| declarationSequence procss
-								| declarationSequence ioStatement
+								| declarationSequence ioStatement SCOLON
 								| empty
 		'''
 		p[0]={}
@@ -110,9 +110,11 @@ class Parser(object):
 		p[0]['code2']=''
 		if(len(p)!=2):
 			if(str(p.slice[2])=='procss'):
-				p[0]['code'] = p[2]['code']
+				p[0]['code'] = p[1]['code'] + p[2]['code']
 			elif(str(p.slice[3])=='conss' or str(p.slice[3])=='varss' ):
-				p[0]['code2'] = p[len(p)-1]['code']
+				p[0]['code2'] = p[1]['code2'] + p[len(p)-1]['code']
+			elif(str(p.slice[2])=='ioStatement'):
+				p[0]['code2'] = p[1]['code2'] + p[len(p)-2]['code']
 
 	def p_conss(self, p):
 		'''
@@ -324,28 +326,43 @@ class Parser(object):
 				   | KEY_ORD LRB factor RRB
 		'''
 		p[0] = {}
+		if ('kind' in p[1].keys()):
+			p[0]['kind'] = p[1]['kind']
+		else:
+			p[0]['kind'] = 'simplevar'
 		if(len(p)==2):
-			p[0]['place'] = p[1]['place']
-			p[0]['code'] = p[1]['code']
-			p[0]['type'] = p[1]['type']
+			if p[0]['kind'] == 'array':
+				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
+				temp_var = temp_var.lex
+				asscode = "readarray, " + p[1]['place'] + ", " + p[1]['offset'] + ", " + temp_var + '\n'
+				p[0]['code'] = p[1]['code'] + asscode
+				p[0]['place'] = temp_var
+				p[0]['type'] = p[1]['type']
+			else:
+				p[0]['place'] = p[1]['place']
+				p[0]['code'] = p[1]['code']
+				p[0]['type'] = p[1]['type']
 
 		if(len(p)==3):
-			if(p.slice[1].value == 'ABS'):
-				if(p[2]['type'] in ['REAL', 'INTEGER']):
-					p[0]['type'] = p[2]['type']
-					temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-					temp_var = temp_var.lex
-					p[0]['place'] = temp_var
-					p[0]['code'] = p[2]['code'] + "abs, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
-				else:
-					print("error in use of ABS")
-			if(p.slice[1].value == '!'):
-				if(p[2]['type'] in ['BOOLEAN']):
-					p[0]['type'] = p[2]['type']
-					temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
-					temp_var = temp_var.lex
-					p[0]['place'] = temp_var
-					p[0]['code'] = p[2]['code'] + "!, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
+			if p[1]['kind'] == 'array':
+				p[0]['kind'] == 'array'
+			else:
+				if(p.slice[1].value == 'ABS'):
+					if(p[2]['type'] in ['REAL', 'INTEGER']):
+						p[0]['type'] = p[2]['type']
+						temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+						temp_var = temp_var.lex
+						p[0]['place'] = temp_var
+						p[0]['code'] = p[2]['code'] + "abs, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
+					else:
+						print("error in use of ABS")
+				if(p.slice[1].value == '!'):
+					if(p[2]['type'] in ['BOOLEAN']):
+						p[0]['type'] = p[2]['type']
+						temp_var = self.xtras.getNewTemp(p[0]['type'], 'SIMPLEVAR')
+						temp_var = temp_var.lex
+						p[0]['place'] = temp_var
+						p[0]['code'] = p[2]['code'] + "!, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
 
 		if(len(p)==5):
 			if(p.slice[1].value == "CHR"):
@@ -512,6 +529,7 @@ class Parser(object):
 			p[0]['code'] = p[1]['code'] + p[3]['code']
 			p[0]['kind'] = 'array'
 			p[0]['place'] = p[3]['place']
+			# print("******************************************")
 		#TODO elif(len(p)==4):
 
 	def p_qualident(self, p):
@@ -523,6 +541,7 @@ class Parser(object):
 		p[0]['place'] = p[1]['place']
 		p[0]['code'] = p[1]['code']
 		p[0]['type'] = p[1]['type']
+		# print(p[1])
 
 
 	def p_identdef(self, p):

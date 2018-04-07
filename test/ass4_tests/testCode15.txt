@@ -1,9 +1,16 @@
 (* Program to test pass by reference of an Array *)
 MODULE testCode15;
 
-VAR a,b,c,d,e,f : INTEGER;
+VAR a,b,c,d,e,f,l : INTEGER;
+READINT(a);
+READINT(b);
+READINT(c);
 VAR arr : ARRAY a*a,b*c,c*a OF INTEGER;
 
 BEGIN
+READINT(d);
+READINT(e);
+READINT(f);
 	arr[d+e, e-d, f+a] := 100;
+	l := arr[d+e, e-d, f+a];
 END testCode15.

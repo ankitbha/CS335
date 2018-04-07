@@ -1,0 +1,9 @@
+(* Program to test pass by reference of an Array *)
+MODULE testCode15;
+
+VAR a,b,c,d,e,f : INTEGER;
+VAR arr : ARRAY 20 OF INTEGER;
+
+BEGIN
+	a := arr[10];
+END testCode15.

@@ -5,6 +5,7 @@ typeSizeAllocation.update({'INTEGER': 4, 'CHAR': 1, 'BOOLEAN': 1, 'REAL': 8})
 typeSizeAllocation.update({'FILE': None, 'STRING': None})
 
 divList = ['bb', 'func']
+kindList = ['simplevar', 'array', 'pointer', 'record']
 
 class SymTabEntry(object):
 	def __init__(self, lex, vtype, kind, size=None, placist=None):
