@@ -474,12 +474,15 @@ class Parser(object):
 			placistt = arrayent.placist
 			offs = p[2]['place']
 			offscode = ''
-			finalplace = ''
-			for i in len(placistt):
+			finalplace = '0'
+			for i in range(0, len(placistt)-1):
 				temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
 				templace = temp.lex
-				finalplace = templace
+				temp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
+				templace2 = temp2.lex
 				offscode += '*, ' + templace + ', ' + placistt[i] + ', ' + offs[i] +'\n'
+				offscode += '+, ' + templace2 + ', ' + finalplace + ', ' + templace +'\n'
+				finalplace = templace2
 			p[0]['offset'] = finalplace
 			p[0]['code'] = p[1]['code'] + p[2]['code'] + offscode
 			p[0]['type'] = arrayent.vtype
@@ -539,8 +542,8 @@ class Parser(object):
 			p[0]['type'] = [p[1]['type']]
 			p[0]['code'] = p[1]['code']
 		else:
-			p[0]['place'] = p[1] + [p[2]['place']]
-			p[0]['type'] = p[1] + [p[2]['type']]
+			p[0]['place'] = p[1]['place'] + [p[3]['place']]
+			p[0]['type'] = p[1]['type'] + [p[3]['type']]
 			p[0]['code'] = p[1]['code'] + p[3]['code']
 
 	def p_actualParameters(self, p):
@@ -648,6 +651,7 @@ class Parser(object):
 		p[0]['code'] = p[2]['code'] + p[3]['code'] + sizCode
 		p[0]['type'] = p[5]['type']
 		p[0]['placist'] = []
+		p[0]['placist'].append('1')
 		p[0]['placist'].append(p[2]['place'])
 		for pl in p[3]['placist']:
 			p[0]['placist'].append(pl)
@@ -873,7 +877,11 @@ class Parser(object):
 			assignment : designator ASSIGN expression
 		'''
 		p[0] = {}
-		p[0]['code'] = p[3]['code'] + "=, " + p[1]['place'] + ", " + p[3]['place'] + '\n'
+		if (p[1]['kind']=='simplevar'):
+			p[0]['code'] = p[3]['code'] + "=, " + p[1]['place'] + ", " + p[3]['place'] + '\n'
+		elif (p[1]['kind']=='array'):
+			asscode = "writearray, " + p[1]['place'] + ", " + p[1]['offset'] + ", " + p[3]['place'] + '\n'
+			p[0]['code'] = p[1]['code'] + p[3]['code'] + asscode
 
 	def p_setStatement(self, p):
 		'''
@@ -1110,10 +1118,9 @@ class Parser(object):
 		elif p.slice[1].type == 'KEY_READINT':
 			if (p[3]['kind']=='simplevar'):
 				p[0]['code'] = 'readint, ' + p[3]['place'] + '\n'
-			elif (p[3]['kind']=='array'):
-				temp = self.xtras.getNewTemp(p[3]['type'], 'simplevar')
-				recode = 'readarray, ' + p[3]['place'] + ', ' + p[3]['offset'] + ', ' + temp.lex + '\n'
-				p[0]['code'] = p[3]['code'] + recode
+			#elif (p[3]['kind']=='array'):
+				# recode = 'readarray, ' + p[3]['place'] + ', ' + p[3]['offset'] + '\n'
+				# p[0]['code'] = p[3]['code'] + recode
 		elif p.slice[1].type  == 'KEY_READREAL':
 			p[0]['code'] = 'readreal, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type  == 'KEY_READCHAR':
