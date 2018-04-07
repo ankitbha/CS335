@@ -1,22 +1,18 @@
-*, _t0, 10, 1
-declarray, c, _t0
-=, a, 1
-=, b, 0
-=, a, 1
-L1
-<=, _t1, a, 10
-ifgoto, ==, _t1, false, L3
-printint, a
-=, _t3, a, 5
-ifgoto, =, _t3, false, L4
-=, a, 102
-goto, L2
-L4
-+, _t4, b, 1
-=, b, _t4
-L2
-+, _t2, a, 1
-=, a, _t2
-goto, L1
-L3
+*, _t0, a, a
+*, _t1, b, c
+*, _t2, 1, _t1
+*, _t3, c, a
+*, _t4, _t2, _t3
+*, _t5, _t0, _t4
+declarray, arr, _t5
++, _t6, d, e
+-, _t7, e, d
++, _t8, f, a
+*, _t9, _t6, _t1
+*, _t10, _t9, _t3
++, _t11, 0, _t10
+*, _t12, _t7, _t3
++, _t13, _t11, _t12
++, _t14, _t13, _t8
+writearray, arr, _t14, 100
 
