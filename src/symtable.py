@@ -7,11 +7,12 @@ typeSizeAllocation.update({'FILE': None, 'STRING': None})
 divList = ['bb', 'func']
 
 class SymTabEntry(object):
-	def __init__(self, lex, vtype, kind, size=None):
+	def __init__(self, lex, vtype, kind, size=None, placist=None):
 		self.lex = lex
 		self.kind = kind
 		self.vtype = vtype
 		self.size = size
+		self.placist = placist
 
 	#TODO write correct following function
 	#def updEntry(self, addOns, updAddOns):
@@ -34,12 +35,12 @@ class SymTab(object):
 		self.children = {}
 		self.loopLabs = {'pre': None, 'loop': None, 'suf': None}
 
-	def addEntry(self, lex, vtype, kind):
+	def addEntry(self, lex, vtype, kind, placist=None):
 		if vtype in typeSizeAllocation.keys():
 			size = typeSizeAllocation[vtype]
 		else:
 			size = None
-		self.varsHere[lex] = SymTabEntry(lex, vtype, kind, size)
+		self.varsHere[lex] = SymTabEntry(lex, vtype, kind, size, placist)
 		return self.varsHere[lex]
 
 	def queryEnt(self, lex):
@@ -72,7 +73,6 @@ class tunnelTable(object):
 			iterTable = Table
 		queryRes = iterTable.queryEnt(lex)
 		if queryRes == None:
-
 			if (iterTable.parent == None):
 				return None
 			else:
@@ -81,8 +81,8 @@ class tunnelTable(object):
 		else:
 			return queryRes
 
-	def addEntry(self, lex, vtype, kind):
-		return self.currTable.addEntry(lex, vtype, kind)
+	def addEntry(self, lex, vtype, kind, placist=None):
+		return self.currTable.addEntry(lex, vtype, kind, placist)
 
 	def startScope(self, div, addOns):
 		freshTable = SymTab(div, addOns, self.currTable)

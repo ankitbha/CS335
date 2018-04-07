@@ -463,9 +463,29 @@ class Parser(object):
 			designator : qualident designator2
 		'''
 		p[0] = {}
-		p[0]['place'] = p[1]['place']
-		p[0]['code'] = p[1]['code']
-		p[0]['type'] = p[1]['type']
+		if ( p[2]['kind']=='simplevar' ):
+			p[0]['place'] = p[1]['place']
+			p[0]['code'] = p[1]['code']
+			p[0]['type'] = p[1]['type']
+			p[0]['kind'] = 'simplevar'
+		elif ( p[2]['kind'] == 'array' ):
+			arrayName = p[1]['place']
+			arrayent = self.tunnelTab.queryEnt(arrayName, None)
+			placistt = arrayent.placist
+			offs = p[2]['place']
+			offscode = ''
+			finalplace = ''
+			for i in len(placistt):
+				temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
+				templace = temp.lex
+				finalplace = templace
+				offscode += '*, ' + templace + ', ' + placistt[i] + ', ' + offs[i] +'\n'
+			p[0]['offset'] = finalplace
+			p[0]['code'] = p[1]['code'] + p[2]['code'] + offscode
+			p[0]['type'] = arrayent.vtype
+			p[0]['kind'] = 'array'
+			p[0]['place'] = arrayName
+
 
 	def p_designator2(self, p):
 		'''
@@ -473,6 +493,15 @@ class Parser(object):
 						| designator2 LSB expList RSB
 						| empty
 		'''
+		p[0]={}
+		if (len(p)==2):
+			p[0]['code'] = ''
+			p[0]['kind'] = 'simplevar'
+		elif (len(p)==5):
+			p[0]['code'] = p[1]['code'] + p[3]['code']
+			p[0]['kind'] = 'array'
+			p[0]['place'] = p[3]['place']
+		#TODO elif(len(p)==4):
 
 	def p_qualident(self, p):
 		'''
@@ -503,14 +532,14 @@ class Parser(object):
 					| expression
 		'''
 		p[0]={}
-		p[0]['list'] = []
+		p[0]['place'] = []
 		p[0]['type'] = []
 		if(len(p)==2):
-			p[0]['list'] = [p[1]['place']]
+			p[0]['place'] = [p[1]['place']]
 			p[0]['type'] = [p[1]['type']]
-			p[0]['code'] = p[1]['code'] + p[3]['code']
+			p[0]['code'] = p[1]['code']
 		else:
-			p[0]['list'] = p[1] + [p[2]['place']]
+			p[0]['place'] = p[1] + [p[2]['place']]
 			p[0]['type'] = p[1] + [p[2]['type']]
 			p[0]['code'] = p[1]['code'] + p[3]['code']
 
@@ -591,6 +620,7 @@ class Parser(object):
 			p[0]['code'] = p[1]['code']
 			p[0]['kind'] = 'array'
 			p[0]['place'] = p[1]['place']
+			p[0]['placist'] = p[1]['placist']
 		if str(p.slice[1]) == 'varType':
 			p[0]['kind'] = 'simplevar'
 			p[0]['code'] = ''
@@ -617,7 +647,10 @@ class Parser(object):
 		sizCode = '*, ' + p[0]['place'] + ', ' + p[2]['place'] + ', ' + p[3]['place'] +'\n'
 		p[0]['code'] = p[2]['code'] + p[3]['code'] + sizCode
 		p[0]['type'] = p[5]['type']
-
+		p[0]['placist'] = []
+		p[0]['placist'].append(p[2]['place'])
+		for pl in p[3]['placist']:
+			p[0]['placist'].append(pl)
 
 	def p_setType(self, p):
 		'''
@@ -634,16 +667,19 @@ class Parser(object):
 			comass : comass COMMA length
 				   | empty
 		'''
+		p[0] = {}
+		p[0]['placist'] = []
 		if (str(p.slice[1]) == 'empty'):
-			p[0] = {}
 			p[0]['code'] = ''
 			p[0]['place'] = '1'
 		else:
-			p[0] = {}
 			temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
 			p[0]['place'] = temp.lex
 			comCode = '*, ' + p[0]['place'] + ', ' + p[1]['place'] + ', ' + p[3]['place'] +'\n'
 			p[0]['code'] = p[1]['code'] + p[3]['code'] + comCode
+			for pl in p[1]['placist']:
+				p[0]['placist'].append(pl)
+			p[0]['placist'].append(p[3]['place'])
 
 	def p_length(self, p):
 		'''
@@ -718,7 +754,7 @@ class Parser(object):
 			declCode = ''
 			for var in p[1]:
 				declCode += 'declarray, ' + var + ', ' + p[3]['place'] + '\n'
-				self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'array')
+				self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'array', p[3]['placist'])
 			# print("#########")
 			# print(p[3]['code'] + declCode)
 			p[0]['code'] = p[3]['code'] + declCode
@@ -911,7 +947,7 @@ class Parser(object):
 				print("typeerror")
 			p[3]['false'] = self.xtras.getNewLabel()
 			p[0]['code'] = p[1]['code'] + p[3]['code'] + "ifgoto, =, " + p[3]['place'] + ", FALSE, " + p[3]['false'] +'\n'
-			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + '\n' 
+			p[0]['code'] = p[0]['code'] + p[5]['code'] + p[3]['false'] + '\n'
 
 
 	def p_switchStatement(self, p):
@@ -1053,6 +1089,7 @@ class Parser(object):
 		if p.slice[1].type=='KEY_WRITE':
 			p[0]['code'] = p[3]['code'] + 'print, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITEINT':
+
 			p[0]['code'] = p[3]['code'] + 'printint, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_WRITEREAL':
 			p[0]['code'] = p[3]['code'] + 'printreal, ' + p[3]['place'] + '\n'
@@ -1067,7 +1104,12 @@ class Parser(object):
 		elif p.slice[1].type == 'KEY_READ':
 			p[0]['code'] = 'read, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type == 'KEY_READINT':
-			p[0]['code'] = 'readint, ' + p[3]['place'] + '\n'
+			if (p[3]['kind']=='simplevar'):
+				p[0]['code'] = 'readint, ' + p[3]['place'] + '\n'
+			elif (p[3]['kind']=='array'):
+				temp = self.xtras.getNewTemp(p[3]['type'], 'simplevar')
+				recode = 'readarray, ' + p[3]['place'] + ', ' + p[3]['offset'] + ', ' + temp.lex + '\n'
+				p[0]['code'] = p[3]['code'] + recode
 		elif p.slice[1].type  == 'KEY_READREAL':
 			p[0]['code'] = 'readreal, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type  == 'KEY_READCHAR':
