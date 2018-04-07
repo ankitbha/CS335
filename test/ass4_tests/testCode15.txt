@@ -12,5 +12,5 @@ READINT(d);
 READINT(e);
 READINT(f);
 	arr[d+e, e-d, f+a] := 100;
-	l := arr[d+e, e-d, f+a];
+	l := arr[d+e, e-d, f+a] +(-a) + e*f +(-d);
 END testCode15.

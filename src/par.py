@@ -326,10 +326,11 @@ class Parser(object):
 				   | KEY_ORD LRB factor RRB
 		'''
 		p[0] = {}
-		if ('kind' in p[1].keys()):
-			p[0]['kind'] = p[1]['kind']
-		else:
-			p[0]['kind'] = 'simplevar'
+		if (type(p[1]) == dict):
+			if ('kind' in p[1].keys()):
+				p[0]['kind'] = p[1]['kind']
+			else:
+				p[0]['kind'] = 'simplevar'
 		if(len(p)==2):
 			if p[0]['kind'] == 'array':
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
@@ -442,7 +443,7 @@ class Parser(object):
 			set : LCB element RCB
 				| LCB RCB
 		'''
-		p = {}
+		p[0] = {}
 		if(len(p)==3):
 			p[0]['code'] = ''
 			temp_var = self.xtras.getNewTemp('SET', 'SIMPLEVAR')
