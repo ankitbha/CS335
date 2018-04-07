@@ -521,9 +521,24 @@ def translate(line):
 		acode = acode +"\tli $v0, 5\n"
 		acode = acode +"\tsyscall\n"
 		acode = acode +"\tmove, "+ addr1 + " ,$v0" + "\n"
+	
+# --------------------------------------------------------------------------------------------------------
+
 	if op=="call":
+		# num, call, func
 		l=line[2]
+		# acode = acode + "\tadd $s8, $zero, $sp \n"
 		acode = acode + "\tjal " + l +"\n"
+	
+	if op == "param":
+		# num, param, a 
+		arg = line[2]
+		pass
+		
+
+
+
+
 	if op=="return":
 		if(ex==False):
 			acode = acode + "\tj exit\n"
@@ -536,6 +551,11 @@ def translate(line):
 					acode = acode + "\tlw $v0, " + ans.lexeme +"\n"
 				acode = acode + "\tmove $v0, " + addr1 +"\n"
 			acode = acode + "\tjr $ra\n"
+
+
+# ------------------------------------------------------------------------------------------------------------
+
+
 	if op=="readarray":
 		#3, readarray, a, var, var
 		#4, la, reg, label
