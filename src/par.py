@@ -94,7 +94,7 @@ class Parser(object):
 		# print(p[0])
 		p[0] = {}
 
-		p[0]['code'] = p[4]['code2'] + p[6]['code'] + p[4]['code']
+		p[0]['code'] = p[4]['code2'] + p[6]['code'] + 'return \n' + p[4]['code']
 		print(p[0]['code'])
 
 	def p_declarationSequence(self, p):
@@ -366,27 +366,27 @@ class Parser(object):
 				temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
 				temp_var = temp_var.lex
 				p[0]['place'] = temp_var
-				p[0]['code'] = p[2]['code'] + 'call, ' + p[1]['place'] + p[0]['place'] + '\n'
+				p[0]['code'] = p[2]['code'] + 'call, ' + p[1]['place'] + ', ' + p[0]['place'] + '\n'
 
-			if p[1]['kind'] == 'array':
+			elif(p.slice[1].value == 'ABS'):
+				if(p[2]['type'] in ['REAL', 'INTEGER']):
+					p[0]['type'] = p[2]['type']
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+					temp_var = temp_var.lex
+					p[0]['place'] = temp_var
+					p[0]['code'] = p[2]['code'] + "abs, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
+				else:
+					print("error in use of ABS")
+			elif(p.slice[1].value == '!'):
+				if(p[2]['type'] in ['BOOLEAN']):
+					p[0]['type'] = p[2]['type']
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+					temp_var = temp_var.lex
+					p[0]['place'] = temp_var
+					p[0]['code'] = p[2]['code'] + "!, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
+			elif p[1]['kind'] == 'array':
 				p[0]['kind'] == 'array'
-			else:
-				if(p.slice[1].value == 'ABS'):
-					if(p[2]['type'] in ['REAL', 'INTEGER']):
-						p[0]['type'] = p[2]['type']
-						temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
-						temp_var = temp_var.lex
-						p[0]['place'] = temp_var
-						p[0]['code'] = p[2]['code'] + "abs, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
-					else:
-						print("error in use of ABS")
-				if(p.slice[1].value == '!'):
-					if(p[2]['type'] in ['BOOLEAN']):
-						p[0]['type'] = p[2]['type']
-						temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
-						temp_var = temp_var.lex
-						p[0]['place'] = temp_var
-						p[0]['code'] = p[2]['code'] + "!, " + p[0]['place'] + ", " + p[2]['place'] + "\n"
+			
 
 		if(len(p)==5):
 			if(p.slice[1].value == "CHR"):
@@ -836,7 +836,7 @@ class Parser(object):
 		'''
 
 		p[0]={}
-		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n'
+		p[0]['code'] = 'label, ' + p.slice[2].value+ '\n' + p[4]['code']
 		if(len(p)==7):
 			self.tunnelTab.currTable.addOns['type'] = p[6]['type']
 		else:
@@ -856,19 +856,32 @@ class Parser(object):
 			formalParameters : LRB fpSection formalss RRB
 							 | LRB RRB
 		'''
+		p[0]={}
+		if(len(p)==3):
+			p[0]['code'] =''
+		else:
+			p[0]['code'] = p[3]['code'] + p[2]['code']
 
 	def p_formalss(self, p):
 		'''
 			formalss : formalss SCOLON fpSection
 					 | empty
 		'''
+		p[0] = {}
+		if(len(p)==2):
+			p[0]['code'] = ''
+		else:
+			p[0]['code'] = p[3]['code'] + p[1]['code']
 
 	def p_fpSection(self, p):
 		'''
 			fpSection : IDENT fps COLON type
 		'''
-		for var in p[2]+[p.slice[1].value]:
+		p[0] = {}
+		p[0]['code'] = ''
+		for var in [p.slice[1].value]+p[2]:
 			self.tunnelTab.currTable.addEntry(var,p[4]['type'],'var')
+			p[0]['code'] = 'gparam, ' + var + '\n' + p[0]['code']
 
 
 	def p_fps(self, p):
@@ -909,7 +922,6 @@ class Parser(object):
 		'''
 		p[0]={}
 		if(str(p.slice[1])=='assignment' or str(p.slice[1]) == 'ioStatement'):
-			# print("statament")
 			p[0]['code'] = p[1]['code']
 		if(p.slice[1].type=='KEY_RETURN'):
 			if(len(p)==3):
@@ -1184,9 +1196,9 @@ class Parser(object):
 		elif p.slice[1].type == 'KEY_READINT':
 			if (p[3]['kind']=='simplevar'):
 				p[0]['code'] = 'readint, ' + p[3]['place'] + '\n'
-			#elif (p[3]['kind']=='array'):
-				# recode = 'readarray, ' + p[3]['place'] + ', ' + p[3]['offset'] + '\n'
-				# p[0]['code'] = p[3]['code'] + recode
+			elif (p[3]['kind']=='array'):
+				recode = 'readarray, ' + p[3]['place'] + ', ' + p[3]['offset'] + '\n'
+				p[0]['code'] = p[3]['code'] + recode
 		elif p.slice[1].type  == 'KEY_READREAL':
 			p[0]['code'] = 'readreal, ' + p[3]['place'] + '\n'
 		elif p.slice[1].type  == 'KEY_READCHAR':
