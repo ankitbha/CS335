@@ -1,9 +1,11 @@
-=, a, abc
-=, b, abc
-=, test, abc
-call, bigger
-printint, abc
-label, bigger
-=, a, abc
-=, b, abc
-
+['readint', a]
+['readint', b]
+['readint', c]
+['readint', d]
+['readint', e]
+['readint', f]
+['*', _t0, e, f]
+['-', _t1, a, _t0]
+['-', _t2, _t1, d]
+['=', l, _t2]
+['return']

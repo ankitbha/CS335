@@ -21,8 +21,8 @@ class SymTabEntry(object):
 		#TODO remove the following two functions
 
 	def __repr__(self):
-		# return "{}".format(self.lex)
-		return "lex: {}, kind: {}, type: {}".format(self.lex, self.kind, self.vtype)
+		return "{}".format(self.lex)
+		# return "lex: {}, kind: {}, type: {}, p: {}".format(self.lex, self.kind, self.vtype,self.placist)
 
 	def __str__(self):
 		return self.lex
@@ -58,6 +58,8 @@ class SymTab(object):
 #TODO remove the following function
 	def printMe(self):
 	## print attributes
+		# print(self.addOns)
+		# print(self.addOns['id'])
 		if len(self.addOns) > 0:
 			print("## Attributes ##")
 			for k,v in self.addOns.items():
@@ -67,10 +69,11 @@ class SymTab(object):
 			print("## Variables ##")
 			for k,v in self.varsHere.items():
 				print(k + " -> " + repr(v))
+			# print("########")
 
 class tunnelTable(object):
 	def __init__(self):
-		self.rootTable = SymTab("program", {}, None)
+		self.rootTable = SymTab("program", {'id': "main"}, None)
 		self.currTable = self.rootTable
 
 	def queryEnt(self, lex, Table):
@@ -87,6 +90,20 @@ class tunnelTable(object):
 				return self.queryEnt(lex, parTable)
 		else:
 			return queryRes
+
+	def printfull(self, Table):
+		if(Table == None):
+			iterTable = self.currTable
+		else:
+			iterTable = Table
+		queryRes = iterTable.printMe()
+		if (iterTable.parent == None):
+			return
+		else:
+			parTable = iterTable.parent
+			self.printfull(parTable)
+			return
+
 	def queryProc(self,lex):
 		# print("###############")
 		# print(lex)
@@ -102,6 +119,9 @@ class tunnelTable(object):
 
 	def startScope(self, div, addOns):
 		freshTable = SymTab(div, addOns, self.currTable)
+		# print("#######")
+		# print(addOns)
+		# print("#######")
 		self.currTable.children[addOns['id']] = freshTable
 		self.currTable = freshTable
 		return self.currTable
