@@ -608,6 +608,7 @@ class Parser(object):
 		if(len(p)==4):
 			p[0]['place'] = p[2]['place']
 			p[0]['code'] = p[2]['code']
+			p[2]['place'].reverse()
 			for param in p[2]['place']:
 				p[0]['code'] = p[0]['code'] + [["param" , param ]]
 		else:

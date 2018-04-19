@@ -4,7 +4,7 @@ import sys
 import math
 import copy
 import inspect
-import symtable
+# import symtable
 import random
 import par
 import re
@@ -16,6 +16,7 @@ class SymClass(object):
 
 #class CodeGen:
 # def reg_init():
+ret = None
 ex=False
 vreg = {"$v0":None, "$v1":None}
 areg = {"$a0":None, "$a1":None, "$a2":None, "$a3":None}
@@ -206,6 +207,7 @@ def translate(line):
 	global acode
 	global labels
 	global ex
+	global ret
 	#print(acode)
 	#acode = acode + "# Generated Code \n"
 	lineno = int(line[0])
@@ -549,11 +551,15 @@ def translate(line):
 		# num, call, func
 		# acode = 
 		l=line[2]
-		acode = acode + "\taddi $sp, $sp, -8\n"
-		acode = acode + "\tsw $fp, -4($sp)\n"
-		acode = acode + "\tsw $ra, 0($sp)\n"
-		acode = acode + "\tsub $sp, $sp, 4\n"
-		acode = acode + "\tjal " + l +"\n"
+		if(len(line==4)):
+			ret = line[3]
+		else:
+			ret = None
+		acode = acode + "\taddi $sp, $sp, -12\n"
+		acode = acode + "\tsw $fp, -8($sp)\n"
+		acode = acode + "\tsw $ra, -4($sp)\n"
+		acode = acode + "\tmove $fp, $sp\n"
+		acode = acode + "\tjal " + l.lex +"\n"
 
 	if op == "param":
 		# param, exp
@@ -563,19 +569,43 @@ def translate(line):
 			addr1 = getReg(ans,lineno) 
 		arg = line[2]
 		acode = acode + "\tsub $sp, $sp, 4\n"
-		acode = acode + "\tsw " + addr1 +", $sp\n"
+		acode = acode + "\tsw " + addr1 +", 0($sp)\n"
 
+	if op == "gparam":
+		# param, exp
+		ans = line[2]
+		addr1 = addrDesc[ans]
+		if(addr1 == "MEM"):
+			addr1 = getReg(ans,lineno)
+		acode = acode + "\tlw " + addr1 + ", " + str((-ans.offset-8)) +"($sp)\n"
+
+	if op == "declarray":
+		arr = line[2]
+		size = line[3]
+		if(isInt(size)):
+			acode = acode + "\tli $a0, " + size + "\n"
+		else:
+			addr1 = addrDesc[ans]
+			if(addr1 == "MEM"):
+				addr1 = getReg(ans,lineno)
+			acode = acode + "\tli $a0, " + addr1 + "\n"
+		acode = acode + "li $v0, 9\n"
+		acode = acode + "syscall\n"
 	if op=="return":
 		if(ex==False):
 			acode = acode + "\tj exit\n"
 			ex=True
 		else:
 			if(len(line)==3):
+				if(ret==None):
+					print("Error")
 				ans=line[2]
-				addr1 = addrDesc[ans]
+				addr1 = addrDesc[ret]
 				if(addr1 == "MEM"):
-					addr1 = getReg(ans,lineno)
-				tempr = getReg(symTable["_temp"],lineno)
+					addr1 = getReg(ret,lineno)
+				addr2 = addrDesc[ans]
+				if(addr2 == "MEM"):
+					addr2 = getReg(ans,lineno)
 				acode = acode + "\tmove " + tempr + ", $sp\n"
 				acode = acode + "\tjr $ra\n"
 
