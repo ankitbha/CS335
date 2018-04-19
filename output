@@ -1,59 +1,9 @@
-*, _t0, 10, 1
-declarray, c, _t0
-=, a, 1
-L1
-<=, _t1, a, 10
-ifgoto, ==, _t1, false,L2
-+, _t2, 0, a
-readarray, c, _t2
-+, _t3, a, 1
-=, a, _t3
-goto, L1
-L2
-=, a, 1
-L3
-<=, _t4, a, 9
-ifgoto, ==, _t4, false,L4
-+, _t5, a, 1
-=, b, _t5
-L5
-<=, _t6, b, 10
-ifgoto, ==, _t6, false,L6
-+, _t7, 0, a
-readarray, c, _t7, _t8
-+, _t9, 0, b
-readarray, c, _t9, _t10
->, _t11, _t8, _t10
-ifgoto, =, _t11, false, L7
-+, _t12, 0, a
-readarray, c, _t12, _t13
-=, t, _t13
-+, _t14, 0, a
-+, _t15, 0, b
-readarray, c, _t15, _t16
-writearray, c, _t14, _t16
-+, _t17, 0, b
-writearray, c, _t17, t
-L7
-+, _t18, b, 1
-=, b, _t18
-goto, L5
-L6
-+, _t19, a, 1
-=, a, _t19
-goto, L3
-L4
-=, a, 1
-L8
-<=, _t20, a, 10
-ifgoto, ==, _t20, false, L10
-+, _t22, 0, a
-readarray, c, _t22, _t23
-printint, _t23
-L9
-+, _t21, a, 1
-=, a, _t21
-goto, L8
-L10
-return 
-
+a
+## Attributes ##
+id -> _id1
+a
+## Attributes ##
+id -> _id1
+None
+## Attributes ##
+id -> _id1

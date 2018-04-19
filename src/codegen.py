@@ -139,10 +139,10 @@ def flushRegDesc():
 		# addrDesc[reg_norm[reg]] = 'MEM'
 		# acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
 		# unused_reg_norm.append(reg)
-	
-			
-			
-			
+
+
+
+
 	for reg in used_reg_float:
 		used_reg_float.remove(reg)
 		# addrDesc[reg_float[reg]] = 'MEM'
@@ -158,7 +158,7 @@ def flushAddrDesc():
 		# used_reg_norm.remove(reg)
 		addrDesc[reg_norm[reg]] = 'MEM'
 		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
-		# unused_reg_norm.append(reg)	
+		# unused_reg_norm.append(reg)
 	for reg in used_reg_float:
 		# used_reg_float.remove(reg)
 		addrDesc[reg_float[reg]] = 'MEM'
@@ -521,7 +521,7 @@ def translate(line):
 		acode = acode +"\tli $v0, 5\n"
 		acode = acode +"\tsyscall\n"
 		acode = acode +"\tmove, "+ addr1 + " ,$v0" + "\n"
-	
+
 # --------------------------------------------------------------------------------------------------------
 
 	if op=="call":
@@ -529,12 +529,12 @@ def translate(line):
 		l=line[2]
 		# acode = acode + "\tadd $s8, $zero, $sp \n"
 		acode = acode + "\tjal " + l +"\n"
-	
+
 	if op == "param":
-		# num, param, a 
+		# num, param, a
 		arg = line[2]
 		pass
-		
+
 
 
 
@@ -826,7 +826,7 @@ def main():
 if __name__ == "__main__":
 	main()
 
-# .data  
+# .data
 # fin: .asciiz "maze1.dat"      # filename for input
 # buffer: .asciiz ""
 
@@ -837,16 +837,16 @@ if __name__ == "__main__":
 # li   $a1, 0        # Open for reading
 # li   $a2, 0
 # syscall            # open a file (file descriptor returned in $v0)
-# move $s6, $v0      # save the file descriptor 
+# move $s6, $v0      # save the file descriptor
 
 # #read from file
 # li   $v0, 14       # system call for read from file
-# move $a0, $s6      # file descriptor 
+# move $a0, $s6      # file descriptor
 # la   $a1, buffer   # address of buffer to which to read
 # li   $a2, 1024     # hardcoded buffer length
 # syscall            # read from file
 
-# # Close the file 
+# # Close the file
 # li   $v0, 16       # system call for close file
 # move $a0, $s6      # file descriptor to close
 # syscall            # close file
