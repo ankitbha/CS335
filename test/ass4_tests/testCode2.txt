@@ -2,10 +2,13 @@
 MODULE testCode2;
 
 VAR a, b : INTEGER ;
+VAR alla : INTEGER ;
 
 PROCEDURE product(a, b: INTEGER) : INTEGER;
-BEGIN 
-	RETURN a*b;
+VAR ak, bk : INTEGER ;
+VAR alla : INTEGER ;
+BEGIN
+	RETURN a*b*ak*bk;
 END product;
 
 BEGIN

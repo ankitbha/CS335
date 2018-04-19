@@ -7,7 +7,6 @@ import inspect
 # import symtable
 import random
 import par
-import re
 
 class SymClass(object):
 	def __init__(self, lexeme, typ):
@@ -38,25 +37,6 @@ used_reg_float = []
 	#regTuple = ()
 	#regDes = {}
 	#regDes = regDes.fromkeys(list(regTuple))
-
-def magic(incode2):
-	count = 0
-	found = 0
-	labdick = {}
-	for line in incode2:
-		count=count+1
-		if len(line)==1 and (re.match('_L[0-9]+',line[0])):
-			labdick[line[0]] = count
-			del incode2[count-1]
-		incode2[count-1] = [str(count)] + incode2[count-1]
-	# for line in incode2:
-	# 	print(line)
-	# print(labdick)
-	for j, line in enumerate(incode2):
-		for i,elem in enumerate(line):
-			if isinstance(elem, str) and re.match('_L[0-9]+',line[i]):
-				incode2[j][i] = str(labdick[line[i]])
-	return incode2
 
 def check_reg(self, varName):
 	pass
@@ -549,7 +529,7 @@ def translate(line):
 
 	if op=="call":
 		# num, call, func
-		# acode = 
+		# acode =
 		l=line[2]
 		if(len(line==4)):
 			ret = line[3]
@@ -566,7 +546,7 @@ def translate(line):
 		ans = line[2]
 		addr1 = addrDesc[ans]
 		if(addr1 == "MEM"):
-			addr1 = getReg(ans,lineno) 
+			addr1 = getReg(ans,lineno)
 		arg = line[2]
 		acode = acode + "\tsub $sp, $sp, 4\n"
 		acode = acode + "\tsw " + addr1 +", 0($sp)\n"
@@ -885,7 +865,6 @@ if __name__ == "__main__":
 	global incode
 	global tunnelTab
 	global xtras
-	incode = magic(incode)
 	mipsgen()
 
 # .data

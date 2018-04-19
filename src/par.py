@@ -6,6 +6,8 @@ import lex
 import yacc
 from tokenizer import tokenizer
 import symtable
+import re
+from symtable import typeSizeAllocation
 
 # ----------------------------------------- type part -------------------------------------
 
@@ -85,25 +87,53 @@ class Parser(object):
 		self.tunnelTab = symtable.tunnelTable()
 		self.xtras = symtable.xtraNeeds()
 		self.Typeclass = Typeclass()
+		self.locall = False
 
 	def printParseTree(self, p):
 		flag = False
 		if flag:
 			print(p.slice)
 
+	def magic(self, incode2):
+		count = 0
+		found = 0
+		labdick = {}
+		for line in incode2:
+			count=count+1
+			if len(line)==1 and (re.match('_L[0-9]+',line[0])):
+				labdick[line[0]] = count
+				del incode2[count-1]
+			incode2[count-1] = [str(count)] + incode2[count-1]
+		# for line in incode2:
+		# 	print(line)
+		# print(labdick)
+		for j, line in enumerate(incode2):
+			for i,elem in enumerate(line):
+				if isinstance(elem, str) and re.match('_L[0-9]+',line[i]):
+					incode2[j][i] = str(labdick[line[i]])
+		return incode2
+
 
 	def p_module(self, p):
 		'''
-			module : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT
+			module : KEY_MODULE IDENT SCOLON declmarm declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT
 		'''
 		p[0] = {}
 
-		p[0]['code'] = p[4]['code2'] + p[6]['code'] + [['return']] + p[4]['code']
+		p[0]['code'] = p[5]['code2'] + p[7]['code'] + [['return']] + p[5]['code']
 		# print('\n'.join(map(str, p[0]['code'])))
 		# self.tunnelTab.rootTable.printMe()
-		for elem in (p[0]['code']):
+		self.tempir = p[0]['code']
+		self.irrcode = self.magic(self.tempir)
+		for elem in self.tempir:
 			print(elem)
-		self.irrcode = p[0]['code']
+
+	def p_declmarm(self, p):
+		'''
+			declmarm : empty
+		'''
+		p[0]='global'
+
 
 	def p_declarationSequence(self, p):
 		'''
@@ -114,7 +144,7 @@ class Parser(object):
 								| declarationSequence ioStatement SCOLON
 								| empty
 		'''
-		self.printParseTree(p)
+		# self.printParseTree(p)
 		p[0]={}
 		p[0]['code']=[]
 		p[0]['code2']=[]
@@ -244,7 +274,7 @@ class Parser(object):
 					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
 					p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[3]['operator'] , p[0]['place'] , p[2]['place'] , p[3]['place'] ]]
 					p[0]['code'] += [["=" , p[0]['place'] , "-" , p[0]['place']]]
-		
+
 
 	def p_simpless(self, p):
 		'''
@@ -281,7 +311,7 @@ class Parser(object):
 				p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[0]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place'] ]]
 		else:
 			p[0]['empty'] = True
-		
+
 	def p_term(self, p):
 		'''
 			term : termss factor
@@ -527,7 +557,7 @@ class Parser(object):
 				ttemp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
 				offscode += [['+' , ttemp2 , ffplace , finalplace ]]
 				ffplace = ttemp2
-			
+
 			p[0]['offset'] = ffplace
 			p[0]['code'] = p[1]['code'] + p[2]['code'] + offscode
 			p[0]['type'] = arrayent.vtype
@@ -581,7 +611,7 @@ class Parser(object):
 			p[0]['place'] = entry
 			p[0]['code'] = []
 			p[0]['type'] = None
-		
+
 	def p_expList(self, p):
 		'''
 			expList : expList COMMA expression
@@ -813,23 +843,40 @@ class Parser(object):
 			variableDeclaration : identList COLON type
 		'''
 		p[0] = {}
-		if (p[3]['kind'] == 'simplevar'):
-			p[0]['code'] = []
-			for var in p[1]:
-				self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'simplevar')
-		if (p[3]['kind'] == 'array'):
-			declCode = []
-			for var in p[1]:
-				tt = self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'array', p[3]['placist'])
-				declCode += [['declarray' , tt , p[3]['place']]]
-			p[0]['code'] = p[3]['code'] + declCode
+		# print(self.locall)
+		if self.locall==False:
+			if (p[3]['kind'] == 'simplevar'):
+				p[0]['code'] = []
+				for var in p[1]:
+					self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'simplevar', None)
+			if (p[3]['kind'] == 'array'):
+				declCode = []
+				for var in p[1]:
+					tt = self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'array', None, p[3]['placist'])
+					declCode += [['declarray' , tt , p[3]['place']]]
+				p[0]['code'] = p[3]['code'] + declCode
+		else:
+			if (p[3]['kind'] == 'simplevar'):
+				p[0]['code'] = []
+				for var in p[1]:
+					# print(self.tunnelTab.currTable.offsTab)
+					self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'simplevar', self.tunnelTab.currTable.offsTab)
+					self.tunnelTab.currTable.offsTab += typeSizeAllocation[p[3]['type']]
+			if (p[3]['kind'] == 'array'):
+				declCode = []
+				for var in p[1]:
+					tt = self.tunnelTab.currTable.addEntry(var, p[3]['type'] ,'array', self.tunnelTab.currTable.offsTab, p[3]['placist'])
+					self.tunnelTab.currTable.offsTab += 4
+				p[0]['code'] = p[3]['code'] + declCode
 
 	def p_procedureDeclaration(self, p):
 		'''
 			procedureDeclaration : procedureHeading SCOLON  procedureBody IDENT
 		'''
+		self.locall = False
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
+		self.tunnelTab.currTable.printMe()
 		self.tunnelTab.endScope()
 		# p[0]['type'] = p[1]['type']
 
@@ -838,6 +885,7 @@ class Parser(object):
 			procedureHeading : KEY_PROCEDURE IDENT mproc formalParameters COLON type
 							 | KEY_PROCEDURE IDENT mproc formalParameters
 		'''
+		self.locall = True
 		p[0]={}
 		p[0]['code'] = [['label' , p.slice[2].value]] + p[4]['code']
 		p[0]['name'] = p.slice[2].value
@@ -847,7 +895,7 @@ class Parser(object):
 		else:
 			self.tunnelTab.currTable.addOns['type'] = None
 			p[0]['type'] = None
-		self.tunnelTab.currTable.parent.addEntry(p[0]['name'],p[0]['type'],'func')
+		self.tunnelTab.currTable.parent.addEntry(p[0]['name'], p[0]['type'], 'func')
 
 	def p_mproc(self,p):
 		'''
@@ -887,7 +935,8 @@ class Parser(object):
 		p[0] = {}
 		p[0]['code'] = []
 		for var in [p.slice[1].value]+p[2]:
-			tt= self.tunnelTab.currTable.addEntry(var,p[4]['type'],'simplevar')
+			tt= self.tunnelTab.currTable.addEntry(var, p[4]['type'], 'simplevar', self.tunnelTab.currTable.offsTab)
+			self.tunnelTab.currTable.offsTab += typeSizeAllocation[p[4]['type']]
 			p[0]['code'] = [['gparam' , tt ]] + p[0]['code']
 
 
@@ -902,10 +951,17 @@ class Parser(object):
 
 	def p_procedureBody(self, p):
 		'''
-			procedureBody : declarationSequence KEY_BEGIN statementSequence KEY_END
+			procedureBody : declmarf declarationSequence KEY_BEGIN statementSequence KEY_END
 		'''
 		p[0]={}
-		p[0]['code']=p[3]['code']
+		p[0]['code']=p[4]['code']
+
+	def p_declmarf(self, p):
+		'''
+			declmarf : empty
+		'''
+		p[0]='local'
+
 
 	def p_statement(self, p):
 		'''
@@ -999,7 +1055,7 @@ class Parser(object):
 		if(p[3]['type']!='pointer'):
 			print('error')
 		else:
-			p[0]['code'] = 'new, ' + p[3]['place'] + '\n' 
+			p[0]['code'] = 'new, ' + p[3]['place'] + '\n'
 
 
 	def p_procedureCall(self, p):
@@ -1080,7 +1136,7 @@ class Parser(object):
 		if(len(p)==11):
 			p[0]['code'] = p[0]['code'] + [['goto' , p[0]['else'] ]]
 		p[0]['code'] = p[0]['code'] + [[p[0]['next']]]
-		
+
 	def p_mswitch(self, p):
 		'''
 			mswitch : empty
