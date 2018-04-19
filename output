@@ -1,17 +1,28 @@
-['1', '=', a, '15']
-['2', '=', b, '1']
-['3', '<=', _t1, b, '10']
-['4', 'ifgoto', '==', _t1, 'false', '12']
-['5', 'param', a]
-['6', 'param', b]
-['7', 'call', product, _t2]
-['8', 'printint', _t2]
-['9', '+', _t3, b, '1']
-['10', '=', b, _t3]
+## Attributes ##
+type -> INTEGER
+id -> product
+## Variables ##
+b -> lex: b, kind: simplevar, type: INTEGER, placist: None, offset: 4, addr: 4($fp)
+alla -> lex: alla, kind: simplevar, type: INTEGER, placist: None, offset: 16, addr: 16($fp)
+a -> lex: a, kind: simplevar, type: INTEGER, placist: None, offset: 0, addr: 0($fp)
+ak -> lex: ak, kind: simplevar, type: INTEGER, placist: None, offset: 8, addr: 8($fp)
+bk -> lex: bk, kind: simplevar, type: INTEGER, placist: None, offset: 12, addr: 12($fp)
+['1', '=', lex: a, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: a, '15']
+['2', '=', lex: b, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: b, '1']
+['3', '<=', lex: _t3, kind: simplevar, type: BOOLEAN, placist: None, offset: None, addr: None, lex: b, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: b, '10']
+['4', 'ifgoto', '==', lex: _t3, kind: simplevar, type: BOOLEAN, placist: None, offset: None, addr: None, 'false', '12']
+['5', 'param', lex: a, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: a]
+['6', 'param', lex: b, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: b]
+['7', 'call', lex: product, kind: func, type: INTEGER, placist: None, offset: None, addr: product, lex: _t4, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None]
+['8', 'printint', lex: _t4, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None]
+['9', '+', lex: _t5, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None, lex: b, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: b, '1']
+['10', '=', lex: b, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: b, lex: _t5, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None]
 ['11', 'goto', '3']
 ['12', 'return']
 ['13', 'label', 'product']
-['14', 'gparam', b]
-['15', 'gparam', a]
-['16', '*', _t0, a, b]
-['17', 'return', _t0]
+['14', 'gparam', lex: b, kind: simplevar, type: INTEGER, placist: None, offset: 4, addr: 4($fp)]
+['15', 'gparam', lex: a, kind: simplevar, type: INTEGER, placist: None, offset: 0, addr: 0($fp)]
+['16', '*', lex: _t0, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None, lex: a, kind: simplevar, type: INTEGER, placist: None, offset: 0, addr: 0($fp), lex: b, kind: simplevar, type: INTEGER, placist: None, offset: 4, addr: 4($fp)]
+['17', '*', lex: _t1, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None, lex: _t0, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None, lex: ak, kind: simplevar, type: INTEGER, placist: None, offset: 8, addr: 8($fp)]
+['18', '*', lex: _t2, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None, lex: _t1, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None, lex: bk, kind: simplevar, type: INTEGER, placist: None, offset: 12, addr: 12($fp)]
+['19', 'return', lex: _t2, kind: simplevar, type: INTEGER, placist: None, offset: None, addr: None]

@@ -5,15 +5,17 @@ typeSizeAllocation.update({'INTEGER': 4, 'CHAR': 1, 'BOOLEAN': 1, 'REAL': 8})
 typeSizeAllocation.update({'FILE': None, 'STRING': None})
 
 divList = ['bb', 'func']
-kindList = ['simplevar', 'array', 'pointer', 'record']
+kindList = ['simplevar', 'array', 'pointer', 'record', 'func', 'const']
 
 class SymTabEntry(object):
-	def __init__(self, lex, vtype, kind, size=None, placist=None):
+	def __init__(self, lex, vtype, kind, offset=None, addr=None, size=None, placist=None):
 		self.lex = lex
 		self.kind = kind
 		self.vtype = vtype
 		self.size = size
 		self.placist = placist
+		self.offset = offset
+		self.addr = addr
 
 	#TODO write correct following function
 	#def updEntry(self, addOns, updAddOns):
@@ -21,8 +23,8 @@ class SymTabEntry(object):
 		#TODO remove the following two functions
 
 	def __repr__(self):
-		return "{}".format(self.lex)
-		# return "lex: {}, kind: {}, type: {}, p: {}".format(self.lex, self.kind, self.vtype,self.placist)
+		# return "{}".format(self.lex)
+		return "lex: {}, kind: {}, type: {}, placist: {}, offset: {}, addr: {}".format(self.lex, self.kind, self.vtype, self.placist, self.offset, self.addr)
 
 	def __str__(self):
 		return self.lex
@@ -36,13 +38,23 @@ class SymTab(object):
 		self.varsHere = {}
 		self.children = {}
 		self.loopLabs = {'pre': None, 'loop': None, 'suf': None}
+		self.offsTab = 0
 
-	def addEntry(self, lex, vtype, kind, placist=None):
-		if vtype in typeSizeAllocation.keys():
-			size = typeSizeAllocation[vtype]
+	def addEntry(self, lex, vtype, kind, offset=None, placist=None):
+		if kind=='simplevar':
+			if vtype in typeSizeAllocation.keys():
+				size = typeSizeAllocation[vtype]
+			else:
+				size = None
+		elif (kind=='pointer' or kind=='const'):
+			size = 4
 		else:
 			size = None
-		self.varsHere[lex] = SymTabEntry(lex, vtype, kind, size, placist)
+		if (offset!=None):
+			addr = str(offset)+'($fp)'
+		else:
+			addr = lex
+		self.varsHere[lex] = SymTabEntry(lex, vtype, kind, offset, addr, size, placist)
 		return self.varsHere[lex]
 
 	def queryEnt(self, lex):
@@ -114,8 +126,8 @@ class tunnelTable(object):
 		except KeyError:
 			return None
 
-	def addEntry(self, lex, vtype, kind, placist=None):
-		return self.currTable.addEntry(lex, vtype, kind, placist)
+	def addEntry(self, lex, vtype, kind, offset=0, placist=None):
+		return self.currTable.addEntry(lex, vtype, kind, offset, placist)
 
 	def startScope(self, div, addOns):
 		freshTable = SymTab(div, addOns, self.currTable)

@@ -2,10 +2,12 @@
 MODULE testCode0;
 
 VAR a,b,test : REAL ;
+VAR alla : INTEGER ;
 
 BEGIN
 	a := 1;
 	b := 1;
+	alla := a;
 	test := a+b;
 	WRITEREAL(test);
 END testCode0.
