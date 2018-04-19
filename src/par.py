@@ -6,6 +6,7 @@ import lex
 import yacc
 from tokenizer import tokenizer
 import symtable
+import re
 
 # ----------------------------------------- type part -------------------------------------
 
@@ -91,6 +92,25 @@ class Parser(object):
 		if flag:
 			print(p.slice)
 
+	def magic(self, incode2):
+		count = 0
+		found = 0
+		labdick = {}
+		for line in incode2:
+			count=count+1
+			if len(line)==1 and (re.match('_L[0-9]+',line[0])):
+				labdick[line[0]] = count
+				del incode2[count-1]
+			incode2[count-1] = [str(count)] + incode2[count-1]
+		# for line in incode2:
+		# 	print(line)
+		# print(labdick)
+		for j, line in enumerate(incode2):
+			for i,elem in enumerate(line):
+				if isinstance(elem, str) and re.match('_L[0-9]+',line[i]):
+					incode2[j][i] = str(labdick[line[i]])
+		return incode2
+
 
 	def p_module(self, p):
 		'''
@@ -101,9 +121,10 @@ class Parser(object):
 		p[0]['code'] = p[4]['code2'] + p[6]['code'] + [['return']] + p[4]['code']
 		# print('\n'.join(map(str, p[0]['code'])))
 		# self.tunnelTab.rootTable.printMe()
-		for elem in (p[0]['code']):
+		self.tempir = p[0]['code']
+		self.irrcode = self.magic(self.tempir)
+		for elem in self.tempir:
 			print(elem)
-		self.irrcode = p[0]['code']
 
 	def p_declarationSequence(self, p):
 		'''
@@ -244,7 +265,7 @@ class Parser(object):
 					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
 					p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[3]['operator'] , p[0]['place'] , p[2]['place'] , p[3]['place'] ]]
 					p[0]['code'] += [["=" , p[0]['place'] , "-" , p[0]['place']]]
-		
+
 
 	def p_simpless(self, p):
 		'''
@@ -281,7 +302,7 @@ class Parser(object):
 				p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[0]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place'] ]]
 		else:
 			p[0]['empty'] = True
-		
+
 	def p_term(self, p):
 		'''
 			term : termss factor
@@ -527,7 +548,7 @@ class Parser(object):
 				ttemp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
 				offscode += [['+' , ttemp2 , ffplace , finalplace ]]
 				ffplace = ttemp2
-			
+
 			p[0]['offset'] = ffplace
 			p[0]['code'] = p[1]['code'] + p[2]['code'] + offscode
 			p[0]['type'] = arrayent.vtype
@@ -581,7 +602,7 @@ class Parser(object):
 			p[0]['place'] = entry
 			p[0]['code'] = []
 			p[0]['type'] = None
-		
+
 	def p_expList(self, p):
 		'''
 			expList : expList COMMA expression
@@ -998,7 +1019,7 @@ class Parser(object):
 		if(p[3]['type']!='pointer'):
 			print('error')
 		else:
-			p[0]['code'] = 'new, ' + p[3]['place'] + '\n' 
+			p[0]['code'] = 'new, ' + p[3]['place'] + '\n'
 
 
 	def p_procedureCall(self, p):
@@ -1079,7 +1100,7 @@ class Parser(object):
 		if(len(p)==11):
 			p[0]['code'] = p[0]['code'] + [['goto' , p[0]['else'] ]]
 		p[0]['code'] = p[0]['code'] + [[p[0]['next']]]
-		
+
 	def p_mswitch(self, p):
 		'''
 			mswitch : empty
