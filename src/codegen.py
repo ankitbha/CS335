@@ -547,18 +547,23 @@ def translate(line):
 
 	if op=="call":
 		# num, call, func
+		# acode = 
 		l=line[2]
-		# acode = acode + "\tadd $s8, $zero, $sp \n"
+		acode = acode + "\taddi $sp, $sp, -8\n"
+		acode = acode + "\tsw $fp, -4($sp)\n"
+		acode = acode + "\tsw $ra, 0($sp)\n"
+		acode = acode + "\tsub $sp, $sp, 4\n"
 		acode = acode + "\tjal " + l +"\n"
 
 	if op == "param":
-		# num, param, a
+		# param, exp
+		ans = line[2]
+		addr1 = addrDesc[ans]
+		if(addr1 == "MEM"):
+			addr1 = getReg(ans,lineno) 
 		arg = line[2]
-		pass
-
-
-
-
+		acode = acode + "\tsub $sp, $sp, 4\n"
+		acode = acode + "\tsw " + addr1 +", $sp\n"
 
 	if op=="return":
 		if(ex==False):
@@ -569,9 +574,10 @@ def translate(line):
 				ans=line[2]
 				addr1 = addrDesc[ans]
 				if(addr1 == "MEM"):
-					acode = acode + "\tlw $v0, " + ans.lexeme +"\n"
-				acode = acode + "\tmove $v0, " + addr1 +"\n"
-			acode = acode + "\tjr $ra\n"
+					addr1 = getReg(ans,lineno)
+				tempr = getReg(symTable["_temp"],lineno)
+				acode = acode + "\tmove " + tempr + ", $sp\n"
+				acode = acode + "\tjr $ra\n"
 
 
 # ------------------------------------------------------------------------------------------------------------
