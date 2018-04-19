@@ -101,8 +101,10 @@ class Parser(object):
 
 		p[0]['code'] = p[4]['code2'] + p[6]['code'] + [['return']] + p[4]['code']
 		# print('\n'.join(map(str, p[0]['code'])))
+		# self.tunnelTab.rootTable.printMe()
 		for elem in (p[0]['code']):
 			print(elem)
+		self.irrcode = p[0]['code']
 
 	def p_declarationSequence(self, p):
 		'''
@@ -1269,6 +1271,8 @@ class Parserrr(object):
 	def parse_file(self, _file, debug=False):
 		content = self.read_file(_file)
 		parse_ret = self.parser.parse(content, lexer=self.lexer, debug=debug)
+		# print("$$$$$$$$$$$$$$$$$$")
+		self.irrrcode = self.parserObj.irrcode
 		return parse_ret
 
 if __name__=="__main__":

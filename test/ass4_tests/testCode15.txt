@@ -2,15 +2,17 @@
 MODULE testCode15;
 
 VAR a,b,c,d,e,f,l : INTEGER;
+VAR ll:REAL;
 READINT(a);
 READINT(b);
 READINT(c);
-VAR arr : ARRAY a*a,b*c,c*a OF INTEGER;
+VAR arr : ARRAY a*a,b*c,c*a OF REAL;
 
 BEGIN
 READINT(d);
 READINT(e);
 READINT(f);
-	arr[d+e, e-d, f+a] := 100;
+	arr[d+e, e-d, f+a] := 10.0;
+	ll := arr[d+e, e-d, f+a];
 	l := a - e*f -d;
 END testCode15.

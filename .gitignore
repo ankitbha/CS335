@@ -2,3 +2,5 @@ parser.out
 parsetab.py
 *.html
 *.pyc
+connect.py
+linker.py

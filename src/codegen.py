@@ -4,8 +4,10 @@ import sys
 import math
 import copy
 import inspect
-#import symtable
+import symtable
 import random
+import par
+import re
 
 class SymClass(object):
 	def __init__(self, lexeme, typ):
@@ -35,6 +37,25 @@ used_reg_float = []
 	#regTuple = ()
 	#regDes = {}
 	#regDes = regDes.fromkeys(list(regTuple))
+
+def magic(incode2):
+	count = 0
+	found = 0
+	labdick = {}
+	for line in incode2:
+		count=count+1
+		if len(line)==1 and (re.match('_L[0-9]+',line[0])):
+			labdick[line[0]] = count
+			del incode2[count-1]
+		incode2[count-1] = [str(count)] + incode2[count-1]
+	# for line in incode2:
+	# 	print(line)
+	# print(labdick)
+	for j, line in enumerate(incode2):
+		for i,elem in enumerate(line):
+			if isinstance(elem, str) and re.match('_L[0-9]+',line[i]):
+				incode2[j][i] = str(labdick[line[i]])
+	return incode2
 
 def check_reg(self, varName):
 	pass
@@ -630,25 +651,26 @@ leaders = [1,]
 labels = {1:"main"}
 basicblocks = {}
 
-def main():
+def mipsgen():
 	global acode
 	global mathop
 	global addrDesc
 	global nextUseTable
-	global incode
-	global variables
-	global arrayz
+	# global incode
+	global glvar
+	# global arrayz
 	global symList
 	global symTable
 	global leaders
 	global basicblocks
 	global labels
+	global
 
-	if len(sys.argv) == 2:
-		filename = str(sys.argv[1])
-	else:
-		print("Too many or too few arguements")
-		exit()
+	# if len(sys.argv) == 2:
+	# 	filename = str(sys.argv[1])
+	# else:
+	# 	print("Too many or too few arguements")
+	# 	exit()
 
 	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint', 'readarray', 'writearray']
 	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
@@ -656,61 +678,55 @@ def main():
 	boolop = ['&', '|', '!']
 	reserved = keyword + relation + mathop + boolop
 	acode="# Generated Code \n"
-	incodestr = open(filename).read().splitlines()
+	# incodestr = open(filename).read().splitlines()
 
-	for line in incodestr:
-		incode.append(line.strip().split(', '))
-	#print(incode)
+	# for line in incodestr:
+	# 	incode.append(line.strip().split(', '))
 
 # populate variables list
 
-	for line in incode:
-		# for var in line:
-		# 	if(var not in reserved and not RepresentsInt(var)):
-		# 		variables.append(var)
-		if line[1] in ['label', 'return']:
-			pass
-		elif line[1] in ['function', 'call']:
-			#funcs.append[line[2]]
-			pass
-		elif line[1] in ['readarray', 'writearray']:
-			arrayz.append(line[2])
-			for var in line[3:]:
-				if(var not in reserved and not RepresentsInt(var)):
-					variables.append(var)
-		else:
-			for var in line:
-				if(var not in reserved and not RepresentsInt(var)):
-					variables.append(var)
-
-	variables = list(set(variables))
-	arrayz = list(set(arrayz))
-	#print(variables)
+	# for line in incode:
+	# 	if line[1] in ['label', 'return']:
+	# 		pass
+	# 	elif line[1] in ['function', 'call']:
+	# 		pass
+	# 	elif line[1] in ['readarray', 'writearray']:
+	# 		arrayz.append(line[2])
+	# 		for var in line[3:]:
+	# 			if(var not in reserved and not RepresentsInt(var)):
+	# 				variables.append(var)
+	# 	else:
+	# 		for var in line:
+	# 			if(var not in reserved and not RepresentsInt(var)):
+	# 				variables.append(var)
+	#
+	# variables = list(set(variables))
+	# arrayz = list(set(arrayz))
 
 # populate symbol table
 
-	for v in variables:
-		symTable[v] = SymClass(v,'int')
-		symList.append(symTable[v])
-	for v in arrayz:
-		symTable[v] = SymClass(v,'array_int')
-		symList.append(symTable[v])
+	# for v in variables:
+	# 	symTable[v] = SymClass(v,'int')
+	# 	symList.append(symTable[v])
+	# for v in arrayz:
+	# 	symTable[v] = SymClass(v,'array_int')
+	# 	symList.append(symTable[v])
+	#
+	# symTable["_temp"] = SymClass("_temp", 'int')
+	# symList.append(symTable["_temp"])
 
-
-
-	symTable["_temp"] = SymClass("_temp", 'int')
-	symList.append(symTable["_temp"])
 # set the variables in IR to point to symTable dictionary's entries
 
-	for line in incode:
-		for ind, var in enumerate(line):
-			if(var in variables):
-				line[ind] = symTable[var]
-			if(var in arrayz):
-				line[ind] = symTable[var]
+	# for line in incode:
+	# 	for ind, var in enumerate(line):
+	# 		if(var in variables):
+	# 			line[ind] = symTable[var]
+	# 		if(var in arrayz):
+	# 			line[ind] = symTable[var]
 
 # address descriptors
-	for s in symList:
+	glvar = list(tunnelTab.rootTable.varsHere.keys())
+	for s in glvar:
 		addrDesc[s]='MEM'
 
 # set up leaders and basic blocks
@@ -821,10 +837,20 @@ def main():
 		translate(line)
 
 	acode = acode + "exit:\n\tli $v0, 10\n\tsyscall"
-	print(acode)
+	return acode
 
 if __name__ == "__main__":
-	main()
+	parser = par.Parserrr()
+	filename = sys.argv[1]
+    result = parser.parse_file(filename, debug = True)
+	incode = parser.irrrcode
+	tunnelTab = parser.parserObj.tunnelTab
+	xtras = parser.parserObj.xtras
+	global incode
+	global tunnelTab
+	global xtras
+	incode = magic(incode)
+	mipsgen()
 
 # .data
 # fin: .asciiz "maze1.dat"      # filename for input

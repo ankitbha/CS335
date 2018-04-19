@@ -21,8 +21,8 @@ class SymTabEntry(object):
 		#TODO remove the following two functions
 
 	def __repr__(self):
-		# return "{}".format(self.lex)
-		return "lex: {}, kind: {}, type: {}".format(self.lex, self.kind, self.vtype)
+		return "{}".format(self.lex)
+		# return "lex: {}, kind: {}, type: {}, size: {}".format(self.lex, self.kind, self.vtype, self.size)
 
 	def __str__(self):
 		return self.lex
@@ -136,7 +136,7 @@ class xtraNeeds(object):
 
 	def getNewLabel(self):
 		self.labelCount += 1
-		return "L" + str(self.labelCount-1)
+		return "_L" + str(self.labelCount-1)
 
 	def getNewId(self):
 		self.idCount += 1

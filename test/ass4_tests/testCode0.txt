@@ -1,11 +1,11 @@
 (*first program*)
 MODULE testCode0;
 
-VAR a,b,test : INTEGER ;
+VAR a,b,test : REAL ;
 
 BEGIN
 	a := 1;
 	b := 1;
 	test := a+b;
-	WRITEINT(test);
+	WRITEREAL(test);
 END testCode0.
