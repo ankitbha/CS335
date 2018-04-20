@@ -1,0 +1,33 @@
+1, readchar, a
+2, ORD, _t0, a
+3, +, _t1, _t0, 1
+4, =, bh, _t1
+5, CHR, _t2, bh
+6, printchar, _t2
+7, return
+# Generated Code 
+.data
+bh:  .space 4
+a:  .space 1
+nl:   .asciiz  "\n"
+
+.text
+.globl main
+
+.ent main
+main:
+	li $v0, 12
+	syscall
+	move, $t3 ,$v0
+	move, $s6, $t3
+	add $s5, $s6, $zero
+	addi $s5, $s5, 1
+	move $s7, $s5
+	move, $t7, $s7
+	li $v0, 11
+	move, $a0, $t7
+	syscall
+	j exit
+exit:
+	li $v0, 10
+	syscall
