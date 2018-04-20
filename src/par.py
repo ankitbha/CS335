@@ -39,6 +39,25 @@ class Parser(object):
 		('left', 'DOT')
 	)
 
+	accepted_types = {
+		  '*': ('INTEGER', 'REAL', None)
+		, '+': ('INTEGER', 'REAL', None)
+		, '-': ('INTEGER', 'REAL', None)
+		, '/': ('INTEGER', 'REAL', None)
+		, '%': ('INTEGER')
+		, 'LT': ('INTEGER', 'BOOLEAN')
+		, 'LTEQ': ('INTEGER', 'BOOLEAN')
+		, 'GT': ('INTEGER', 'BOOLEAN')
+		, 'GTEQ': ('INTEGER', 'BOOLEAN')
+		, 'EQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
+		, 'NEQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
+		, 'AND': ('BOOLEAN', 'BOOLEAN')
+		, 'OR': ('BOOLEAN', 'BOOLEAN')
+		, 'NOT' : ('BOOLEAN', 'BOOLEAN')
+		, 'IS' : ()
+		, 'IN' : ()
+	}
+
 	def __init__(self, lexer):
 		self.lexer = lex.lex(module=tokenizer())
 		self.tunnelTab = symtable.tunnelTable()
@@ -52,7 +71,7 @@ class Parser(object):
 		return None
 
 	def get_new_object(self, obj1, obj2, token):
-		type_list = accepted_types[token]
+		type_list = self.accepted_types[token]
 		type1, value1 = obj1['type'], obj1['place']
 		if(obj2 != None):
 			type2, value2 = obj2['type'], obj2['place']
@@ -327,7 +346,7 @@ class Parser(object):
 				else:
 					flagg = 0
 
-				
+
 		else:
 			p[0]['empty'] = True
 
@@ -376,7 +395,7 @@ class Parser(object):
 				else:
 					p[0]['code'] = p[1]['code'] + [[p[1]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
 				p[0]['operator'] = p.slice[3].value
-				
+
 		else:
 			p[0]['empty'] = True
 
@@ -1360,24 +1379,5 @@ class Parserrr(object):
 if __name__=="__main__":
 	parser = Parserrr()
 	filename = sys.argv[1]
-
-	accepted_types = {
-		  '*': ('INTEGER', 'REAL', None)
-		, '+': ('INTEGER', 'REAL', None)
-		, '-': ('INTEGER', 'REAL', None)
-		, '/': ('INTEGER', 'REAL', None)
-		, '%': ('INTEGER')
-		, 'LT': ('INTEGER', 'BOOLEAN')
-		, 'LTEQ': ('INTEGER', 'BOOLEAN')
-		, 'GT': ('INTEGER', 'BOOLEAN')
-		, 'GTEQ': ('INTEGER', 'BOOLEAN')
-		, 'EQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
-		, 'NEQUAL': ('INTEGER', 'REAL', 'BOOLEAN')
-		, 'AND': ('BOOLEAN', 'BOOLEAN')
-		, 'OR': ('BOOLEAN', 'BOOLEAN')
-		, 'NOT' : ('BOOLEAN', 'BOOLEAN')
-		, 'IS' : ()
-		, 'IN' : ()
-	}
 
 	result = parser.parse_file(filename, debug = True)
