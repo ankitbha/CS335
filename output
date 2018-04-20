@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ['1', 'readint', a]
 ['2', 'readint', bh]
 ['3', 'readint', c]
@@ -156,3 +157,5 @@ syscall
 exit:
 	li $v0, 10
 	syscall
+=======
+>>>>>>> 44281bb9e430322ee8eb29bb852e9b1d0f24bbda

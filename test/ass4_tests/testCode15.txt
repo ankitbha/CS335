@@ -2,7 +2,7 @@
 MODULE testCode15;
 
 VAR a,bh,c,d,e,f,l : INTEGER;
-VAR ll:INTEGER;
+VAR doo:INTEGER;
 READINT(a);
 READINT(bh);
 READINT(c);
@@ -13,8 +13,8 @@ READINT(d);
 READINT(e);
 READINT(f);
 	arr[d+e, e-d, f+a] := 10;
-	ll := arr[d+e, e-d, f+a];
+	doo := arr[d+e, e-d, f+a];
 	l := a - e*f -d;
-	WRITEINT(l);
-	WRITEINT(ll);
+	WRITEINT(arr[d+e, e-d, f+a]);
+	WRITEINT(doo);
 END testCode15.
