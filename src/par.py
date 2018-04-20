@@ -876,8 +876,11 @@ class Parser(object):
 		self.locall = False
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
-		# self.tunnelTab.currTable.printMe()
+		self.tunnelTab.currTable.printMe()
+		totofftab = self.tunnelTab.currTable.offsTab
 		self.tunnelTab.endScope()
+		tabEnt = self.tunnelTab.queryEnt(p[1]['name'], None)
+		tabEnt.offset = totofftab
 		# p[0]['type'] = p[1]['type']
 
 	def p_procedureHeading(self, p):
