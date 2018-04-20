@@ -125,8 +125,8 @@ class Parser(object):
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
-		# for elem in self.tempir:
-			# print(elem)
+		for elem in self.tempir:
+			print(elem)
 
 	def p_declmarm(self, p):
 		'''
@@ -876,7 +876,7 @@ class Parser(object):
 		self.locall = False
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
-		self.tunnelTab.currTable.printMe()
+		# self.tunnelTab.currTable.printMe()
 		self.tunnelTab.endScope()
 		# p[0]['type'] = p[1]['type']
 

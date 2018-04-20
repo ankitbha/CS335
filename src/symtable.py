@@ -104,6 +104,15 @@ class tunnelTable(object):
 		else:
 			return queryRes
 
+	def getVariables(self,Table=None):
+		if(Table==None):
+			Table=self.rootTable
+		var = list(Table.varsHere.values())
+		var = var + list(Table.temps.values())
+		for child in list(Table.children.values()):
+			var = var + self.getVariables(child)
+		return var
+
 	def printfull(self, Table):
 		if(Table == None):
 			iterTable = self.currTable
@@ -176,6 +185,8 @@ class xtraNeeds(object):
 			size = None
 		tempObj = SymTabEntry("_t"+str(self.tempCount-1), vtype, kind, None, "_t"+str(self.tempCount-1), size, None)
 		tunnelTab.currTable.temps["_t"+str(self.tempCount-1)] = tempObj
+		# print(self.tempCount-1)
+		# print(tunnelTab.currTable.temps)
 		return tempObj
 
 	def getNewLabel(self):

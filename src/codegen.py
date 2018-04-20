@@ -526,23 +526,39 @@ def translate(line):
 		# num, call, func
 		# acode =
 		l=line[2]
-		if(len(line==4)):
-			ret = line[3]
+		if(len(line)==4):
+			ret = line[3].vtype
+			acode = acode + "\taddi $sp, $sp, -16\n"
+			acode = acode + "\tsw $fp, -12($sp)\n"
+			acode = acode + "\tsw $ra, -8($sp)\n"
+			acode = acode + "\tmove $fp, -4($sp)\n"
+			acode = acode + "\taddi $sp, $sp," + l.offset + "\n"
+			acode = acode + "\tjal " + l.lex +"\n"
+			acode = acode + "\tmove $sp, $fp\n"
+			acode = acode + "\tlw $fp, -12($sp)\n"
+			acode = acode + "\tmove $ra, -8($sp)\n"
 		else:
 			ret = None
-		acode = acode + "\taddi $sp, $sp, -12\n"
-		acode = acode + "\tsw $fp, -8($sp)\n"
-		acode = acode + "\tsw $ra, -4($sp)\n"
-		acode = acode + "\tmove $fp, $sp\n"
-		acode = acode + "\tjal " + l.lex +"\n"
+			acode = acode + "\taddi $sp, $sp, -12\n"
+			acode = acode + "\tsw $fp, -8($sp)\n"
+			acode = acode + "\tsw $ra, -4($sp)\n"
+			acode = acode + "\tmove $fp, $sp\n"
+			acode = acode + "\tjal " + l.lex +"\n"
+			acode = acode + "\tmove $sp, $fp\n"
+			acode = acode + "\tlw $fp, -8($sp)\n"
+			acode = acode + "\tmove $ra, -4($sp)\n"
 
 	if op == "param":
 		# param, exp
 		ans = line[2]
-		addr1 = addrDesc[ans]
-		if(addr1 == "MEM"):
-			addr1 = getReg(ans,lineno)
-		arg = line[2]
+		if(isInt(ans)):
+			addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+			acode = acode + "\tli " + addr1 + ", " + ans + "\n"
+		else:
+			addr1 = addrDesc[ans]
+			if(addr1 == "MEM"):
+				addr1 = getReg(ans,lineno)
+
 		acode = acode + "\tsub $sp, $sp, 4\n"
 		acode = acode + "\tsw " + addr1 +", 0($sp)\n"
 
@@ -552,7 +568,7 @@ def translate(line):
 		addr1 = addrDesc[ans]
 		if(addr1 == "MEM"):
 			addr1 = getReg(ans,lineno)
-		acode = acode + "\tlw " + addr1 + ", " + str((-ans.offset-8)) +"($sp)\n"
+		acode = acode + "\tlw " + addr1 + ", " + str((-ans.offset-12)) +"($fp)\n"
 
 	if op == "declarray":
 		arr = line[2]
@@ -571,17 +587,20 @@ def translate(line):
 			acode = acode + "\tj exit\n"
 			ex=True
 		else:
+			if(len(line)==2):
+				acode = acode + "jr $ra\n"
 			if(len(line)==3):
 				if(ret==None):
 					print("Error")
 				ans=line[2]
-				addr1 = addrDesc[ret]
-				if(addr1 == "MEM"):
-					addr1 = getReg(ret,lineno)
-				addr2 = addrDesc[ans]
-				if(addr2 == "MEM"):
-					addr2 = getReg(ans,lineno)
-				acode = acode + "\tmove " + tempr + ", $sp\n"
+				if(isInt(ans)):
+					addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+					acode = acode + "\tli " + addr1 + ", " + ans + "\n"
+				else:
+					addr1 = addrDesc[ans]
+					if(addr1 == "MEM"):
+						addr1 = getReg(ans,lineno)
+				acode = acode + "\tsw " + addr1 + ", 0($fp)\n"
 				acode = acode + "\tjr $ra\n"
 
 
@@ -673,7 +692,7 @@ def mipsgen():
 	global leaders
 	global basicblocks
 	global labels
-	global glvar
+	# global glvar
 
 	# if len(sys.argv) == 2:
 	# 	filename = str(sys.argv[1])
@@ -734,11 +753,23 @@ def mipsgen():
 	# 			line[ind] = symTable[var]
 
 # address descriptors
-	glvar = list(tunnelTab.rootTable.varsHere.values())
-	gltemp = list(tunnelTab.rootTable.temps.values())
-	glvar = glvar + gltemp
+	# glvar = list(tunnelTab.rootTable.varsHere.values())
+	# gltemp = list(tunnelTab.rootTable.temps.values())
+	# glvar = glvar + gltemp
+	# procs = tunnelTab.rootTable.children
+	glvar = tunnelTab.getVariables()
+	# print(procs)
+	# print(procs['bigger'].temps)
+	# for proc in procs:
+	# 	glvar = glvar + list(procs[proc].varsHere.values())
+	# 	glvar = glvar + list(procs[proc].temps.values())
+	# print(glvar)
+	for s in glvar:
+		if(s.kind=='func'):
+			glvar.remove(s)
 	for s in glvar:
 		addrDesc[s]='MEM'
+	
 	# print(addrDesc)
 # set up leaders and basic blocks
 
@@ -837,6 +868,8 @@ def mipsgen():
 	acode += ".text\n"
 	acode += ".globl main\n\n"
 	acode += ".ent main\n"
+
+	print(addrDesc)
 
 	for line in incode:
 
