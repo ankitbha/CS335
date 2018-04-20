@@ -46,39 +46,38 @@ def getReg(varObj, numLine):
 			if (reg_float[i]==varObj):
 				return i
 
-		if unused_reg_float:
+		if len(unused_reg_float)!=0:
 			reg = unused_reg_float[0]
 			unused_reg_float.remove(reg)
 			used_reg_float.append(reg)
-			reg_float[reg] = [varObj]
+			reg_float[reg] = varObj
 			addrDesc[varObj] = reg
 			return reg
 
 
 		else:
-			forNextUse=nextUseTable[numLine]
-			tempFarthest=None
-			#forNextUse should be a dictionary, so nextUseTable must also be a
-			#dictionary with keys as line numbers and value as another dictionary
-			#with key being variable names and values being nextUselineNo
-			for var in forNextUse.keys():
-				if (tempFarthest==None):
-					tempFarthest=var
-				elif (forNextUse[var]>forNextUse[tempFarthest]):
-					tempFarthest=var
-				else:
-					continue
-			for spillReg in reg_float.keys():
-				if reg_float[spillReg]==tempFarthest:
-					break
+			spillReg = random.choice(used_reg_float)
+			# forNextUse=nextUseTable[numLine]
+			# tempFarthest=None
+			# for var in forNextUse.keys():
+			# 	if (tempFarthest==None):
+			# 		tempFarthest=var
+			# 	elif (forNextUse[var]>forNextUse[tempFarthest]):
+			# 		tempFarthest=var
+			# 	else:
+			# 		continue
+			# for spillReg in reg_float.keys():
+			# 	if reg_float[spillReg]==tempFarthest:
+			# 		break
 
 			#write something like
 			#    assembly = assembly + "movl " + regspill + ", " + var + "\n"
 			# acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
+			acode = acode + "\t" + "s.s " + spillReg + ", " + (reg_float[spillReg]).lex + "\n"
+			acode = acode + "\t" + "l.s " + spillReg + ", " + varObj.lex + "\n"
 			addrDesc[reg_float[spillReg]] = "MEM"
-			reg_float[spillReg] = [varObj]
+			reg_float[spillReg] = varObj
 			addrDesc[varObj] = spillReg
-			return spillReg
 
 	else:
 		#regExist=False
@@ -189,6 +188,150 @@ def translate(line):
 	op = line[1]
 	# Generating assembly code if the tac is a mathematical operation
 	#print(op)
+
+
+	if op in floatop:
+		#print(op)
+		ans = line[2]
+		#print(ans)
+		num1 = line[3]
+		num2 = line[4]
+		# Addition
+		if op == '+f':
+			#print("yes")
+			if isInt(num1) and isInt(num2):
+				#print("yes")
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli.s " + reg + str(float(num1)+float(num2)) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+
+				acode = acode + "\tli.s " + reg + ", " + num1 + "\n"
+				acode = acode + "\tadd.s " + reg + ", " + reg + ", " +addr2 + "\n"
+
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1, lineno)
+				acode = acode + "\tli.s " + reg + ", " + num2 + "\n"
+
+				acode = acode + "\tadd.s " + reg + ", " + reg + ", " +addr1 + "\n"
+
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1, lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2, lineno)
+
+				acode = acode + "\tadd.s " + reg + ", " + addr1 +", "+ addr2 + "\n"
+
+		elif op == '-f':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli.s " + reg + str(float(num1)-float(num2)) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+
+				acode = acode + "\tli.s " + reg + ", " + num1 + "\n"
+
+				acode = acode + "\tsub.s " + reg + ", " + reg + ", " +addr2 + "\n"
+
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tli.s " + reg + ", " + num2 + "\n"
+
+				acode = acode + "\tsub.s " + reg + ", " + addr1 + ", " + reg + "\n"
+
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+
+				acode = acode + "\tsub.s " + reg + ", " + addr1 +", "+ addr2 + "\n"
+
+		elif op == '*f':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli.s " + reg + str(float(num1)*float(num2)) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tli.s " + reg + ", " + num1 + "\n"
+				acode = acode + "\tmul.s " + reg + ", " + reg + ", " + addr2 + "\n"
+
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli.s " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tmul.s " + reg + ", " + reg + ", " + addr1 + "\n"
+
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+
+				acode = acode + "\tmul.s " + reg + ", " + addr1 +", "+ addr2 + "\n"
+
+		elif op == '/f':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli.s " + reg + str(float(num1)/float(num2)) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli.s " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+
+				acode = acode + "\tdiv.s " + reg + ", " + reg + ", " + addr2 + "\n"
+
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tdiv.s " + reg + ", " + addr1 + ", " + reg  + "\n"
+
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+
+				acode = acode + "\tdiv.s " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
 	if op in mathop:
 		#print(op)
@@ -520,8 +663,6 @@ def translate(line):
 		acode = acode +"\tsyscall\n"
 		acode = acode +"\tmove, "+ addr1 + " ,$v0" + "\n"
 
-# --------------------------------------------------------------------------------------------------------
-
 	if op=="call":
 		# num, call, func
 		# acode =
@@ -566,6 +707,7 @@ def translate(line):
 			acode = acode + "\tmove $a0, " + addr1 + "\n"
 		acode = acode + "li $v0, 9\n"
 		acode = acode + "syscall\n"
+
 	if op=="return":
 		if(ex==False):
 			acode = acode + "\tj exit\n"
@@ -650,6 +792,7 @@ def translate(line):
 				acode = acode + "\tsw " +  res +  ", 0(" + temparr + ")\n"
 
 mathop = ['+', '-', '*', '/', '%']
+floatop = ['+f', '-f', '*f', '/f']
 addrDesc = {}
 nextUseTable = {}
 incode = []
@@ -663,6 +806,7 @@ basicblocks = {}
 def mipsgen():
 	global acode
 	global mathop
+	global floatop
 	global addrDesc
 	global nextUseTable
 	global incode
@@ -685,7 +829,7 @@ def mipsgen():
 	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 
 	boolop = ['&', '|', '!']
-	reserved = keyword + relation + mathop + boolop
+	reserved = keyword + relation + mathop + boolop + floatop
 	acode="# Generated Code \n"
 	# incodestr = open(filename).read().splitlines()
 
@@ -790,7 +934,7 @@ def mipsgen():
 			for sym in glvar:
 				nextUseTable[int(ins[0])][sym] = copy.deepcopy(tempTab[sym])
 
-			if ins[1] in mathop:
+			if (ins[1] in mathop) or (ins[1] in floatop):
 				tempTab[ins[2]] = (0,math.inf)
 				if ins[3] in glvar:
 					tempTab[ins[3]] = (1,int(ins[0]))
