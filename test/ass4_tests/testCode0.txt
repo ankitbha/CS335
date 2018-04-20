@@ -1,13 +1,13 @@
 (*first program*)
 MODULE testCode0;
 
-VAR a,b,test : INTEGER ;
+VAR a,bh,test : INTEGER ;
 VAR alla : INTEGER ;
 
 BEGIN
 	a := 1;
-	b := 1;
+	bh := 1;
 	alla := a;
-	test := a+b;
+	test := a+bh;
 	WRITEINT(test);
 END testCode0.

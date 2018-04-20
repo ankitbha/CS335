@@ -153,12 +153,13 @@ def flushAddrDesc():
 	for reg in used_reg_norm:
 		# used_reg_norm.remove(reg)
 		addrDesc[reg_norm[reg]] = 'MEM'
-		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lex + "\n"
+		if((reg_norm[reg]).lex not in ['_temp','_temp1']):
+			acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).addr + "\n"
 		# unused_reg_norm.append(reg)
 	for reg in used_reg_float:
 		# used_reg_float.remove(reg)
 		addrDesc[reg_float[reg]] = 'MEM'
-		acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lex + "\n"
+		acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).addr + "\n"
 		# unused_reg_float.append(reg)
 
 
@@ -669,25 +670,27 @@ def translate(line):
 		l=line[2]
 		if(len(line)==4):
 			ret = line[3].vtype
-			acode = acode + "\taddi $sp, $sp, -16\n"
-			acode = acode + "\tsw $fp, -12($sp)\n"
-			acode = acode + "\tsw $ra, -8($sp)\n"
-			acode = acode + "\tmove $fp, -4($sp)\n"
-			acode = acode + "\taddi $sp, $sp," + str(l.offset) + "\n"
-			acode = acode + "\tjal " + l.lex +"\n"
-			acode = acode + "\tmove $sp, $fp\n"
-			acode = acode + "\tlw $fp, -12($sp)\n"
-			acode = acode + "\tmove $ra, -8($sp)\n"
-		else:
-			ret = None
 			acode = acode + "\taddi $sp, $sp, -12\n"
 			acode = acode + "\tsw $fp, -8($sp)\n"
 			acode = acode + "\tsw $ra, -4($sp)\n"
 			acode = acode + "\tmove $fp, $sp\n"
+			# acode = acode + "\taddi $fp, $fp, -4\n"
+			acode = acode + "\taddi $sp, $sp, " + str(-l.offset) + "\n"
 			acode = acode + "\tjal " + l.lex +"\n"
 			acode = acode + "\tmove $sp, $fp\n"
 			acode = acode + "\tlw $fp, -8($sp)\n"
-			acode = acode + "\tmove $ra, -4($sp)\n"
+			acode = acode + "\tlw $ra, -4($sp)\n"
+		else:
+			ret = None
+			acode = acode + "\taddi $sp, $sp, -8\n"
+			acode = acode + "\tsw $fp, -4($sp)\n"
+			acode = acode + "\tsw $ra, 0($sp)\n"
+			acode = acode + "\tmove $fp, $sp\n"
+			# acode = acode + "\taddi $fp, $fp, -4\n"
+			acode = acode + "\tjal " + l.lex +"\n"
+			acode = acode + "\tmove $sp, $fp\n"
+			acode = acode + "\tlw $fp, -8($sp)\n"
+			acode = acode + "\tlw $ra, -4($sp)\n"
 
 	if op == "param":
 		# param, exp
@@ -1010,7 +1013,13 @@ def mipsgen():
 
 #	acode = ""
 	acode += ".data\n"
-	for var in glvar:
+	varlist = list(tunnelTab.rootTable.varsHere.values())
+	varlist2 = []
+	for var in varlist:
+		if(var.vtype!='func'):
+			varlist2.append(var)
+
+	for var in varlist2:
 		acode += var.lex +":  "+".space " + str(var.size) +"\n"
 	# for var in arrayz:
 	# 	acode += var+":  "+".space 400\n"
@@ -1031,6 +1040,9 @@ def mipsgen():
 		translate(line)
 
 	acode = acode + "exit:\n\tli $v0, 10\n\tsyscall"
+	with open("/home/rohit/Desktop/1.s","w") as file:
+		file.write(acode)
+
 	return acode
 
 if __name__ == "__main__":
@@ -1045,7 +1057,8 @@ if __name__ == "__main__":
 	global incode
 	global tunnelTab
 	global xtras
-	print(mipsgen())
+	# print(mipsgen())
+	mipsgen()
 
 # .data
 # fin: .asciiz "maze1.dat"      # filename for input

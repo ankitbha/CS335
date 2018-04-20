@@ -1,21 +1,23 @@
 MODULE testCode1;
 
-VAR a, b, test : INTEGER ;
+VAR a, bh, test : INTEGER ;
  
-PROCEDURE bigger(a, b: INTEGER) : INTEGER;
+PROCEDURE bigger(a, bh: INTEGER) : INTEGER;
 	BEGIN
-		IF  ( a > b ) THEN
+		IF  ( a > bh ) THEN
 			RETURN a ;
-		ELSEIF (a = b) THEN
+		ELSEIF (a = bh) THEN
 			RETURN 0 ;
 		ELSE
-			RETURN b ;
+			RETURN bh ;
 		END ;
 	END bigger;
 
  BEGIN
- 	a := 1;
- 	b := 1;
-	test := bigger(a,b);
+ 	READINT(a);
+ 	READINT(bh);
+ 	WRITEINT(a);
+ 	WRITEINT(bh);
+	test := bigger(a,bh);
  	WRITEINT(test);
  END testCode1.

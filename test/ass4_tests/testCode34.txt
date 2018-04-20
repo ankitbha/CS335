@@ -1,20 +1,11 @@
-(* Program to test pass by reference of an Array *)
-MODULE testCode15;
+MODULE testCode0;
 
-VAR a,bh,c,d,e,f,l : INTEGER;
-VAR doo:INTEGER;
-READINT(a);
-READINT(bh);
-READINT(c);
-VAR arr : ARRAY a,bh,c OF INTEGER;
+VAR a,b,c,d,e : INTEGER ;
 
 BEGIN
-READINT(d);
-READINT(e);
-READINT(f);
-	arr[d, e, f] := 10;
-	doo := arr[d, e, f];
-	l := a - e*f -d;
-	WRITEINT(l);
-	WRITEINT(doo);
-END testCode15.
+	b := 1;
+	c := 2;
+	d := 1;
+	e := 1;
+	a := b + c - d/e * b % 10;
+END testCode0.
