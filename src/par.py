@@ -146,16 +146,16 @@ class Parser(object):
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
-		for elem in self.tempir:
-			for e in elem[:-1]:
-				if type(e)==str:
-					print(e,end=', ')
-				else:
-					print(e.lex,end=', ')
-			if type(elem[-1])==str:
-				print(elem[-1],end='\n')
-			else:
-				print(elem[-1].lex,end='\n')
+		# for elem in self.tempir:
+		# 	for e in elem[:-1]:
+		# 		if type(e)==str:
+		# 			print(e,end=', ')
+		# 		else:
+		# 			print(e.lex,end=', ')
+		# 	if type(elem[-1])==str:
+		# 		print(elem[-1],end='\n')
+		# 	else:
+		# 		print(elem[-1].lex,end='\n')
 
 
 
@@ -938,7 +938,7 @@ class Parser(object):
 		self.locall = False
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
-		self.tunnelTab.currTable.printMe()
+		# self.tunnelTab.currTable.printMe()
 		totofftab = self.tunnelTab.currTable.offsTab
 		self.tunnelTab.endScope()
 		tabEnt = self.tunnelTab.queryEnt(p[1]['name'], None)
@@ -1135,10 +1135,9 @@ class Parser(object):
 			procedureCall : designator actualParameters
 		'''
 		p[0]={}
-		self.tunnelTab.printfull(None)
-		print((p[1]['place'].lex))
+		# self.tunnelTab.printfull(None)
 		proc = self.tunnelTab.queryEnt(p[1]['place'].lex,None)
-		print(proc)
+		# print(proc)
 		p[0]['type'] = proc.vtype
 		if(p[0]['type']!=None):
 			print("typeerror")
@@ -1161,12 +1160,12 @@ class Parser(object):
 		if(len(p)==8):
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[0]['code'] = p[3]['code'] + [["ifgoto" , "=", p[3]['place'] , "false" , p[3]['false']]]
+			p[0]['code'] = p[3]['code'] + [["ifgoto" , "==", p[3]['place'] , "0" , p[3]['false']]]
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + [[p[3]['false']]] + p[6]['code']
 		else:
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
-			p[0]['code'] = p[3]['code'] + [["ifgoto", "=", p[3]['place'] , "false" , p[3]['false']]]
+			p[0]['code'] = p[3]['code'] + [["ifgoto", "==", p[3]['place'] , "0" , p[3]['false']]]
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + [[p[3]['false']]] + p[6]['code'] + p[8]['code']
 		self.tunnelTab.endScope()
 
@@ -1182,7 +1181,7 @@ class Parser(object):
 			if p[3]['type'] != 'BOOLEAN':
 				print("typeerror")
 			p[3]['false'] = self.xtras.getNewLabel()
-			p[0]['code'] = p[1]['code'] + p[3]['code'] + [["ifgoto", "=", p[3]['place'] , "false", p[3]['false']]]
+			p[0]['code'] = p[1]['code'] + p[3]['code'] + [["ifgoto", "==", p[3]['place'] , "0", p[3]['false']]]
 			p[0]['code'] = p[0]['code'] + p[5]['code'] + [[p[3]['false']]]
 
 
@@ -1202,9 +1201,9 @@ class Parser(object):
 			p[0]['code'] = p[0]['code'] + [[p[0]['else']]] + p[9]['code'] + [['goto' , p[0]['next']]]
 
 		p[0]['code'] = p[0]['code'] + [[p[0]['test']]]
-		p[0]['code'] = p[0]['code'] + p[5]['ecode'] + [['ifgoto', '=',  p[2]['place'] , p[5]['place'] , p[5]['label']]]
+		p[0]['code'] = p[0]['code'] + p[5]['ecode'] + [['ifgoto', '==',  p[2]['place'] , p[5]['place'] , p[5]['label']]]
 		for case in p[6]:
-			p[0]['code'] = p[0]['code'] + case['ecode'] + [['ifgoto', '=',  p[2]['place'] , case['place'] , case['label']]]
+			p[0]['code'] = p[0]['code'] + case['ecode'] + [['ifgoto', '==',  p[2]['place'] , case['place'] , case['label']]]
 		if(len(p)==11):
 			p[0]['code'] = p[0]['code'] + [['goto' , p[0]['else'] ]]
 		p[0]['code'] = p[0]['code'] + [[p[0]['next']]]
@@ -1246,7 +1245,7 @@ class Parser(object):
 		#TODO uncomment the above type checking call when done
 		whileCode = [[self.tunnelTab.currTable.loopLabs['loop']]]
 		whileCode += p[3]['code']
-		whileCode += [['ifgoto', '==', p[3]['place'] , 'false' ,  self.tunnelTab.currTable.loopLabs['suf'] ]]
+		whileCode += [['ifgoto', '==', p[3]['place'] , '0' ,  self.tunnelTab.currTable.loopLabs['suf'] ]]
 		whileCode += p[5]['code']
 		whileCode += [['goto' , self.tunnelTab.currTable.loopLabs['loop']]]
 		whileCode += [[self.tunnelTab.currTable.loopLabs['suf']]]
@@ -1274,7 +1273,7 @@ class Parser(object):
 		forCode = p[4]['code']
 		forCode += [[self.tunnelTab.currTable.loopLabs['pre']]]
 		forCode += p[6]['code']
-		forCode += [["ifgoto", "==", p[6]['place'] , "false" , self.tunnelTab.currTable.loopLabs['suf']]]
+		forCode += [["ifgoto", "==", p[6]['place'] , "0" , self.tunnelTab.currTable.loopLabs['suf']]]
 		forCode += p[11]['code']
 		forCode += [[self.tunnelTab.currTable.loopLabs['loop']]]
 		forCode += p[8]['code']

@@ -1,6 +1,55 @@
-1, println, a
-2, return
-$$$$$$$$$$$
-a
-"hey you"
-$$$$$$$
+4 ifgoto == _t3 0 12
+# Generated Code 
+.data
+a:  .space 4
+alla:  .space 4
+bh:  .space 4
+nl:   .asciiz  "\n"
+
+.text
+.globl main
+
+.ent main
+main:
+	li $s3, 15
+	li $s5, 1
+L3:
+	li $s5, 10
+	sle $s3, $s5, $s5
+	sw $s3, _t3
+L5:
+	sub $sp, $sp, 4
+	sw $s5, 0($sp)
+	sub $sp, $sp, 4
+	sw $s3, 0($sp)
+	addi $sp, $sp, -12
+	sw $fp, -8($sp)
+	sw $ra, -4($sp)
+	move $fp, $sp
+	addi $sp, $sp, -20
+	jal product
+	move $sp, $fp
+	lw $fp, -8($sp)
+	lw $ra, -4($sp)
+	li $v0, 1
+	move, $a0, $s3
+	syscall
+	add $s5, $s5, $zero
+	addi $s5, $s5, 1
+	move $s5, $s5
+	sw $s3, _t4
+	sw $s5, _t5
+	j L3
+L12:
+	j exit
+product:
+	lw $s3, -16($fp)
+	lw $s5, -12($fp)
+	mul $t2, $s5, $s3
+	mul $t3, $t2, $s2
+	mul $t6, $t3, $t9
+	sw $t6, 0($fp)
+	jr $ra
+exit:
+	li $v0, 10
+	syscall
