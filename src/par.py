@@ -125,8 +125,8 @@ class Parser(object):
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
-		for elem in self.tempir:
-			print(elem)
+		# for elem in self.tempir:
+			# print(elem)
 
 	def p_declmarm(self, p):
 		'''
@@ -226,7 +226,7 @@ class Parser(object):
 			p[0]['type'] = p[1]['type']
 			p[0]['place'] = p[1]['place']
 		else:
-			temp_var = self.xtras.getNewTemp('BOOLEAN', 'simplevar')
+			temp_var = self.xtras.getNewTemp('BOOLEAN', 'simplevar',self.tunnelTab)
 			temp_var = temp_var
 			if((p.slice[2].value != 'IN') and (p.slice[2].value != 'IS')):
 				p[0]['code'] = p[1]['code'] +  p[3]['code'] + [[p.slice[2].value, temp_var,  p[1]['place'], p[3]['place']]]
@@ -261,7 +261,7 @@ class Parser(object):
 					p[0]['code'] = p[2]['code']
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
-			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar',self.tunnelTab)
 			# temp_var = temp_var.lex
 			p[0]['place'] = temp_var
 			if(len(p)==3):
@@ -292,7 +292,7 @@ class Parser(object):
 					p[0]['code'] = p[2]['code']
 			else:
 
-				temp_var = self.xtras.getNewTemp(p[2]['type'], 'simplevar')
+				temp_var = self.xtras.getNewTemp(p[2]['type'], 'simplevar',self.tunnelTab)
 				p[0]['operator'] = p.slice[3].value
 				p[0]['type'] = p[2]['type']
 				if (flagg==1 and p[0]['type'] != 'BOOLEAN'):
@@ -324,7 +324,7 @@ class Parser(object):
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
 			# newobj = get_new_object(p[1], p[2], p[2]['operator'])
-			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar',self.tunnelTab)
 			#temp_var = temp_var
 			p[0]['place'] = temp_var
 			p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place'] ]]
@@ -345,7 +345,7 @@ class Parser(object):
 					p[0]['type'] = p[2]['type']
 					p[0]['code'] = p[2]['code']
 			else:
-				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
+				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar',self.tunnelTab)
 				p[0]['type'] = p[2]['type']
 				p[0]['place'] = temp_var
 				p[0]['operator'] = p.slice[3].value
@@ -379,7 +379,7 @@ class Parser(object):
 				p[0]['kind'] = 'simplevar'
 		if(len(p)==2):
 			if p[0]['kind'] == 'array':
-				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
+				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar', self.tunnelTab)
 				#temp_var = temp_var
 				asscode = [["readarray" , p[1]['place'] , p[1]['offset'] , temp_var ]]
 				p[0]['code'] = p[1]['code'] + asscode
@@ -394,7 +394,7 @@ class Parser(object):
 			if( str(p.slice[1]) == 'designator'):
 				proc = self.tunnelTab.queryProc(p[1]['place'].lex)
 				p[0]['type'] = proc['type']
-				temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+				temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar', self.tunnelTab)
 				#temp_var = temp_var.lex
 				p[0]['place'] = temp_var
 				p[0]['code'] = p[2]['code'] + [['call' , p[1]['place'] , p[0]['place'] ]]
@@ -402,7 +402,7 @@ class Parser(object):
 			elif(p.slice[1].value == 'ABS'):
 				if(p[2]['type'] in ['REAL', 'INTEGER']):
 					p[0]['type'] = p[2]['type']
-					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar', self.tunnelTab)
 					#temp_var = temp_var.lex
 					p[0]['place'] = temp_var
 					p[0]['code'] = p[2]['code'] + [["abs" , p[0]['place'] , p[2]['place'] ]]
@@ -411,7 +411,7 @@ class Parser(object):
 			elif(p.slice[1].value == '!'):
 				if(p[2]['type'] in ['BOOLEAN']):
 					p[0]['type'] = p[2]['type']
-					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar',self.tunnelTab)
 					#temp_var = temp_var.lex
 					p[0]['place'] = temp_var
 					p[0]['code'] = p[2]['code'] + [["!" , p[0]['place'] , p[2]['place'] ]]
@@ -423,7 +423,7 @@ class Parser(object):
 			if(p.slice[1].value == "CHR"):
 				if(p[3]['type'] in ['INTEGER']):
 					p[0]['type'] = 'CHAR'
-					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar', self.tunnelTab)
 					#temp_var = temp_var.lex
 					p[0]['place'] = temp_var
 					p[0]['code'] = p[3]['code'] + [["CHR" , p[0]['place'] , p[3]['place'] ]]
@@ -432,7 +432,7 @@ class Parser(object):
 			if(p.slice[1].value == "ORD"):
 				if(p[3]['type'] in ['CHAR']):
 					p[0]['type'] = 'INTEGER'
-					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
+					temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar', self.tunnelTab)
 					# temp_var = temp_var.lex
 					p[0]['place'] = temp_var
 					p[0]['code'] = p[3]['code'] + [["ORD" , p[0]['place'] , p[3]['place']]]
@@ -498,13 +498,13 @@ class Parser(object):
 		p[0] = {}
 		if(len(p)==3):
 			p[0]['code'] = []
-			temp_var = self.xtras.getNewTemp('SET', 'simplevar')
+			temp_var = self.xtras.getNewTemp('SET', 'simplevar', self.tunnelTab)
 			# temp_var = temp_var.lex
 			p[0]['place'] = temp_var
 			p[0]['type'] = 'SET'
 		else:
 			p[0]['type'] = 'SET'
-			temp_var = self.xtras.getNewTemp('SET', 'simplevar')
+			temp_var = self.xtras.getNewTemp('SET', 'simplevar', self.tunnelTab)
 			# temp_var = temp_var.lex
 			p[0]['place'] = temp_var
 			p[0]['code'] = p[2]['code'] + [["SET" , p[0]['place'] , p[2]['place'] ]]
@@ -517,7 +517,7 @@ class Parser(object):
 		p[0] = {}
 		if(len(p)==2):
 			p[0]['type'] = p[1]['type']
-			temp_var = self.xtras.getNewTemp('SET', 'simplevar')
+			temp_var = self.xtras.getNewTemp('SET', 'simplevar', self.tunnelTab)
 			# temp_var = temp_var.lex
 			p[0]['place'] = temp_var
 			p[0]['code'] = p[1]['code'] + [["=" , p[0]['place'] , p[1]['place']]]
@@ -550,11 +550,11 @@ class Parser(object):
 				for j in range(i+1, len(placistt)):
 					# temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
 					# templace = temp.lex
-					temp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
+					temp2 = self.xtras.getNewTemp('INTEGER', 'simplevar', self.tunnelTab)
 					templace2 = temp2
 					offscode += [['*' , templace2 , finalplace , placistt[j] ]]
 					finalplace = templace2
-				ttemp2 = self.xtras.getNewTemp('INTEGER', 'simplevar')
+				ttemp2 = self.xtras.getNewTemp('INTEGER', 'simplevar', self.tunnelTab)
 				offscode += [['+' , ttemp2 , ffplace , finalplace ]]
 				ffplace = ttemp2
 
@@ -737,7 +737,7 @@ class Parser(object):
 			arrayType : KEY_ARRAY length comass KEY_OF type
 		'''
 		p[0] = {}
-		temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
+		temp = self.xtras.getNewTemp('INTEGER', 'simplevar', self.tunnelTab)
 		p[0]['place'] = temp
 		sizCode = [['*' , p[0]['place'] , p[2]['place'] , p[3]['place']]]
 		p[0]['code'] = p[2]['code'] + p[3]['code'] + sizCode
@@ -769,7 +769,7 @@ class Parser(object):
 			p[0]['code'] = []
 			p[0]['place'] = '1'
 		else:
-			temp = self.xtras.getNewTemp('INTEGER', 'simplevar')
+			temp = self.xtras.getNewTemp('INTEGER', 'simplevar', self.tunnelTab)
 			p[0]['place'] = temp
 			comCode = [['*' , p[0]['place'] , p[1]['place'] , p[3]['place']]]
 			p[0]['code'] = p[1]['code'] + p[3]['code'] + comCode

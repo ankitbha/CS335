@@ -4,14 +4,9 @@ import sys
 import math
 import copy
 import inspect
-# import symtable
+import symtable
 import random
 import par
-
-class SymClass(object):
-	def __init__(self, lexeme, typ):
-		self.lexeme = lexeme
-		self.typ = typ
 
 #class CodeGen:
 # def reg_init():
@@ -46,7 +41,7 @@ def getReg(varObj, numLine):
 	global reg_norm
 	global used_reg_norm
 	global unused_reg_norm
-	if varObj.typ in ["float", "double"]:
+	if varObj.vtype == "REAL":
 		for i in reg_float.keys():
 			if (reg_float[i]==varObj):
 				return i
@@ -122,8 +117,8 @@ def getReg(varObj, numLine):
 			# 	if reg_norm[spillReg]==tempFarthest:
 			# 		break
 
-			acode = acode + "\t" + "sw " + spillReg + ", " + (reg_norm[spillReg]).lexeme + "\n"
-			acode = acode + "\t" + "lw " + spillReg + ", " + varObj.lexeme + "\n"
+			acode = acode + "\t" + "sw " + spillReg + ", " + (reg_norm[spillReg]).lex + "\n"
+			acode = acode + "\t" + "lw " + spillReg + ", " + varObj.lex + "\n"
 			addrDesc[reg_norm[spillReg]] = "MEM"
 			reg_norm[spillReg] = varObj
 			addrDesc[varObj] = spillReg
@@ -139,7 +134,7 @@ def flushRegDesc():
 	# for reg in used_reg_norm:
 	# 	used_reg_norm.remove(reg)
 		# addrDesc[reg_norm[reg]] = 'MEM'
-		# acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
+		# acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lex + "\n"
 		# unused_reg_norm.append(reg)
 
 
@@ -148,7 +143,7 @@ def flushRegDesc():
 	for reg in used_reg_float:
 		used_reg_float.remove(reg)
 		# addrDesc[reg_float[reg]] = 'MEM'
-		# acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lexeme + "\n"
+		# acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lex + "\n"
 		unused_reg_float.append(reg)
 
 def flushAddrDesc():
@@ -159,17 +154,17 @@ def flushAddrDesc():
 	for reg in used_reg_norm:
 		# used_reg_norm.remove(reg)
 		addrDesc[reg_norm[reg]] = 'MEM'
-		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lexeme + "\n"
+		acode = acode + "\t" + "sw " + reg + ", " + (reg_norm[reg]).lex + "\n"
 		# unused_reg_norm.append(reg)
 	for reg in used_reg_float:
 		# used_reg_float.remove(reg)
 		addrDesc[reg_float[reg]] = 'MEM'
-		acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lexeme + "\n"
+		acode = acode + "\t" + "sw " + reg + ", " + (reg_float[reg]).lex + "\n"
 		# unused_reg_float.append(reg)
 
 
 def isInt(s):
-	if (isinstance(s, SymClass)):
+	if (isinstance(s, symtable.SymTabEntry)):
 		return False
 	else:
 		return True
@@ -504,7 +499,7 @@ def translate(line):
 			addr2 = addrDesc[num2]
 			if(addr2 == "MEM"):
 				addr2 = getReg(num2,lineno)
-			acode = acode + "\tmove" + addr1 + ", " + addr2 + "\n"
+			acode = acode + "\tmove " + addr1 + ", " + addr2 + "\n"
 	if op=="printint":
 		#8, print, a
 		ans=line[2];
@@ -565,10 +560,10 @@ def translate(line):
 		if(isInt(size)):
 			acode = acode + "\tli $a0, " + size + "\n"
 		else:
-			addr1 = addrDesc[ans]
+			addr1 = addrDesc[size]
 			if(addr1 == "MEM"):
-				addr1 = getReg(ans,lineno)
-			acode = acode + "\tli $a0, " + addr1 + "\n"
+				addr1 = getReg(size,lineno)
+			acode = acode + "\tmove $a0, " + addr1 + "\n"
 		acode = acode + "li $v0, 9\n"
 		acode = acode + "syscall\n"
 	if op=="return":
@@ -601,7 +596,7 @@ def translate(line):
 		res = line[4]
 		addr = addrDesc[res]
 		arr = getReg(array,lineno)
-		acode = acode + "\tla " + arr + ", " + array.lexeme + "\n"
+		acode = acode + "\tla " + arr + ", " + array.lex + "\n"
 		if(addr=="MEM"):
 			addr=getReg(res,lineno)
 		if(isInt(index)):
@@ -613,8 +608,8 @@ def translate(line):
 				addri=getReg(index,lineno)
 			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
 			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
-			acode = acode + "\tadd " + arrdi + ", " + arr + "," + addri + "\n"
-			acode = acode + "\tlw " + addr + ", " + arrdi + "\n"
+			acode = acode + "\tadd " + addri + ", " + arr + "," + addri + "\n"
+			acode = acode + "\tlw " + addr + ", " + addri + "\n"
 
 	if op=="writearray":
 		#3, write, a, var, var
@@ -623,9 +618,9 @@ def translate(line):
 		index = line[3]
 		res = line[4]
 		arr = getReg(array,lineno)
-		acode = acode + "\tla " + arr + ", " + array.lexeme + "\n"
-		temparr = getReg(symTable["_temp"],lineno)
-		acode = acode + "\tla " + temparr + ", " + array.lexeme + "\n"
+		acode = acode + "\tla " + arr + ", " + array.lex + "\n"
+		temparr = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+		acode = acode + "\tla " + temparr + ", " + array.lex + "\n"
 		if (not isInt(res)):
 			rres = getReg(res,lineno)
 			if(isInt(index)):
@@ -647,12 +642,12 @@ def translate(line):
 				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				# rres = getReg("number",lineno)
-				acode = acode + "\tli " + res + ", 0(" + temparr + ")\n"
+				acode = acode + "\tsw " + res + ", 0(" + temparr + ")\n"
 			else:
 				rindex = getReg(index,lineno)
 				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
 				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
-				acode = acode + "\tli " +  res +  ", 0(" + temparr + ")\n"
+				acode = acode + "\tsw " +  res +  ", 0(" + temparr + ")\n"
 
 mathop = ['+', '-', '*', '/', '%']
 addrDesc = {}
@@ -661,8 +656,6 @@ incode = []
 variables = []
 arrayz = []
 #funcs=[]
-symList = []
-symTable = {}
 leaders = [1,]
 labels = {1:"main"}
 basicblocks = {}
@@ -672,7 +665,7 @@ def mipsgen():
 	global mathop
 	global addrDesc
 	global nextUseTable
-	# global incode
+	global incode
 	global glvar
 	# global arrayz
 	global symList
@@ -680,7 +673,7 @@ def mipsgen():
 	global leaders
 	global basicblocks
 	global labels
-	global
+	global glvar
 
 	# if len(sys.argv) == 2:
 	# 	filename = str(sys.argv[1])
@@ -741,10 +734,12 @@ def mipsgen():
 	# 			line[ind] = symTable[var]
 
 # address descriptors
-	glvar = list(tunnelTab.rootTable.varsHere.keys())
+	glvar = list(tunnelTab.rootTable.varsHere.values())
+	gltemp = list(tunnelTab.rootTable.temps.values())
+	glvar = glvar + gltemp
 	for s in glvar:
 		addrDesc[s]='MEM'
-
+	# print(addrDesc)
 # set up leaders and basic blocks
 
 	for line in incode:
@@ -766,7 +761,7 @@ def mipsgen():
 		#	labels[int(line[0])] = "L"+str(line[0])
 
 		elif 'label' in line:
-			#line[2] = line[2].lexeme
+			#line[2] = line[2].lex
 			leaders.append(int(line[0]))
 			labels[int(line[0])] = line[2]
 	leaders = list(set(leaders))
@@ -788,47 +783,47 @@ def mipsgen():
 	#print(nextUseTable)
 	for l, block in basicblocks.items():
 		tempTab = {}
-		for sym in symList:
+		for sym in glvar:
 			tempTab[sym] = (0,math.inf)
 		for ins in block[::-1]:
 			nextUseTable[int(ins[0])] = {}
-			for sym in symList:
+			for sym in glvar:
 				nextUseTable[int(ins[0])][sym] = copy.deepcopy(tempTab[sym])
 
 			if ins[1] in mathop:
 				tempTab[ins[2]] = (0,math.inf)
-				if ins[3] in symList:
+				if ins[3] in glvar:
 					tempTab[ins[3]] = (1,int(ins[0]))
-				if ins[4] in symList:
+				if ins[4] in glvar:
 					tempTab[ins[4]] = (1,int(ins[0]))
 			elif ins[1] == '=':
 				tempTab[ins[2]] = (0,math.inf)
-				if ins[3] in symList:
+				if ins[3] in glvar:
 					tempTab[ins[3]] = (1,int(ins[0]))
 			elif ins[1] == 'ifgoto':
-				if ins[3] in symList:
+				if ins[3] in glvar:
 					tempTab[ins[3]] = (1,int(ins[0]))
-				if ins[4] in symList:
+				if ins[4] in glvar:
 					tempTab[ins[4]] = (1,int(ins[0]))
 			elif ins[1] == 'printint':
-				if ins[2] in symList:
+				if ins[2] in glvar:
 					tempTab[ins[2]] = (1,int(ins[0]))
 			elif ins[1] == 'scanint':
-				if ins[2] in symList:
+				if ins[2] in glvar:
 					tempTab[ins[2]] = (0,math.inf)
 			elif ins[1] == 'readarray':
-				if ins[2] in symList:
+				if ins[2] in glvar:
 					tempTab[ins[2]] = (1,int(ins[0]))
-				if ins[3] in symList:
+				if ins[3] in glvar:
 					tempTab[ins[3]] = (1,int(ins[0]))
-				if ins[4] in symList:
+				if ins[4] in glvar:
 					tempTab[ins[4]] = (1,int(ins[0]))
 			elif ins[1] == 'writearray':
-				if ins[2] in symList:
+				if ins[2] in glvar:
 					tempTab[ins[2]] = (1,int(ins[0]))
-				if ins[3] in symList:
+				if ins[3] in glvar:
 					tempTab[ins[3]] = (1,int(ins[0]))
-				if ins[4] in symList:
+				if ins[4] in glvar:
 					tempTab[ins[4]] = (1,int(ins[0]))
 			#addMore
 
@@ -858,14 +853,15 @@ def mipsgen():
 if __name__ == "__main__":
 	parser = par.Parserrr()
 	filename = sys.argv[1]
-    result = parser.parse_file(filename, debug = True)
+	result = parser.parse_file(filename, debug = True)
 	incode = parser.irrrcode
 	tunnelTab = parser.parserObj.tunnelTab
+	tunnelTab.rootTable.addEntry("_temp", "INTEGER", "simplevar")
 	xtras = parser.parserObj.xtras
 	global incode
 	global tunnelTab
 	global xtras
-	mipsgen()
+	print(mipsgen())
 
 # .data
 # fin: .asciiz "maze1.dat"      # filename for input
