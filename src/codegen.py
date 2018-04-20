@@ -653,7 +653,7 @@ def translate(line):
 		acode = acode +"\tmove, $a0, " + addr1 + "\n"
 		acode = acode +"\tsyscall\n"
 
-	if op=="scanint":
+	if op=="readint":
 		#8, scanint, a
 		ans=line[2];
 		addr1 = addrDesc[ans]
@@ -673,7 +673,7 @@ def translate(line):
 			acode = acode + "\tsw $fp, -12($sp)\n"
 			acode = acode + "\tsw $ra, -8($sp)\n"
 			acode = acode + "\tmove $fp, -4($sp)\n"
-			acode = acode + "\taddi $sp, $sp," + l.offset + "\n"
+			acode = acode + "\taddi $sp, $sp," + str(l.offset) + "\n"
 			acode = acode + "\tjal " + l.lex +"\n"
 			acode = acode + "\tmove $sp, $fp\n"
 			acode = acode + "\tlw $fp, -12($sp)\n"
@@ -714,6 +714,9 @@ def translate(line):
 	if op == "declarray":
 		arr = line[2]
 		size = line[3]
+		addr = addrDesc[arr]
+		if(addr == "MEM"):
+			addr = getReg(arr,lineno)
 		if(isInt(size)):
 			acode = acode + "\tli $a0, " + size + "\n"
 		else:
@@ -721,8 +724,9 @@ def translate(line):
 			if(addr1 == "MEM"):
 				addr1 = getReg(size,lineno)
 			acode = acode + "\tmove $a0, " + addr1 + "\n"
-		acode = acode + "li $v0, 9\n"
-		acode = acode + "syscall\n"
+		acode = acode + "\tli $v0, 9\n"
+		acode = acode + "\tsyscall\n"
+		acode = acode + "\tmove " + addr + ", $v0\n"
 
 	if op=="return":
 		if(ex==False):
@@ -770,7 +774,7 @@ def translate(line):
 			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
 			acode = acode + "\tadd " + addri + ", " + addri + ", " + addri + "\n"
 			acode = acode + "\tadd " + addri + ", " + arr + "," + addri + "\n"
-			acode = acode + "\tlw " + addr + ", " + addri + "\n"
+			acode = acode + "\tlw " + addr + ", 0(" + addri + ")\n"
 
 	if op=="writearray":
 		#3, write, a, var, var
@@ -797,18 +801,20 @@ def translate(line):
 				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
 				acode = acode + "\tsw " + rres + ", 0(" + temparr + ")\n"
 		else:
+			tempr = getReg(tunnelTab.rootTable.queryEnt("_temp1"),lineno)
 			if(isInt(index)):
 				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
 				acode = acode + "\taddi " + temparr + ", " +  temparr + ", " + index + "\n"
-				# rres = getReg("number",lineno)
-				acode = acode + "\tsw " + res + ", 0(" + temparr + ")\n"
+				acode = acode + "\tli" + tempr + ", " + res + "\n"
+				acode = acode + "\tsw " + tempr + ", 0(" + temparr + ")\n"
 			else:
 				rindex = getReg(index,lineno)
 				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
 				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
-				acode = acode + "\tsw " +  res +  ", 0(" + temparr + ")\n"
+				acode = acode + "\tli " + tempr + ", " + res + "\n" 
+				acode = acode + "\tsw " +  tempr +  ", 0(" + temparr + ")\n"
 
 mathop = ['+', '-', '*', '/', '%']
 floatop = ['+f', '-f', '*f', '/f']
@@ -844,7 +850,7 @@ def mipsgen():
 	# 	print("Too many or too few arguements")
 	# 	exit()
 
-	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'scanint', 'readarray', 'writearray']
+	keyword = ['ifgoto', 'goto', 'return', 'call', 'printint', 'label', 'call', 'function' , 'exit', 'return', 'readint', 'readarray', 'writearray']
 	relation = ['<=', '>=', '==', '>', '<', '!=', '=']
 
 	boolop = ['&', '|', '!']
@@ -983,7 +989,7 @@ def mipsgen():
 			elif ins[1] == 'printint':
 				if ins[2] in glvar:
 					tempTab[ins[2]] = (1,int(ins[0]))
-			elif ins[1] == 'scanint':
+			elif ins[1] == 'readint':
 				if ins[2] in glvar:
 					tempTab[ins[2]] = (0,math.inf)
 			elif ins[1] == 'readarray':
@@ -1004,16 +1010,16 @@ def mipsgen():
 
 #	acode = ""
 	acode += ".data\n"
-	for var in variables:
-		acode += var+":  "+".space 4\n"
-	for var in arrayz:
-		acode += var+":  "+".space 400\n"
+	for var in glvar:
+		acode += var.lex +":  "+".space " + str(var.size) +"\n"
+	# for var in arrayz:
+	# 	acode += var+":  "+".space 400\n"
 
 	acode += ".text\n"
 	acode += ".globl main\n\n"
 	acode += ".ent main\n"
 
-	print(addrDesc)
+	# print(addrDesc)
 
 	for line in incode:
 
@@ -1034,6 +1040,7 @@ if __name__ == "__main__":
 	incode = parser.irrrcode
 	tunnelTab = parser.parserObj.tunnelTab
 	tunnelTab.rootTable.addEntry("_temp", "INTEGER", "simplevar")
+	tunnelTab.rootTable.addEntry("_temp1", "INTEGER", "simplevar")
 	xtras = parser.parserObj.xtras
 	global incode
 	global tunnelTab

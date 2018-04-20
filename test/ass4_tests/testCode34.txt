@@ -6,15 +6,15 @@ VAR doo:INTEGER;
 READINT(a);
 READINT(bh);
 READINT(c);
-VAR arr : ARRAY a*a,bh*c,c*a OF INTEGER;
+VAR arr : ARRAY a,bh,c OF INTEGER;
 
 BEGIN
 READINT(d);
 READINT(e);
 READINT(f);
-	arr[d+e, e-d, f+a] := 10;
-	doo := arr[d+e, e-d, f+a];
+	arr[d, e, f] := 10;
+	doo := arr[d, e, f];
 	l := a - e*f -d;
-	WRITEINT(arr[d+e, e-d, f+a]);
+	WRITEINT(l);
 	WRITEINT(doo);
 END testCode15.

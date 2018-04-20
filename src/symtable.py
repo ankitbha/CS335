@@ -47,7 +47,7 @@ class SymTab(object):
 				size = typeSizeAllocation[vtype]
 			else:
 				size = None
-		elif (kind=='pointer' or kind=='const'):
+		elif (kind=='pointer' or kind=='array' or kind=='const'):
 			size = 4
 		else:
 			size = None

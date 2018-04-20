@@ -126,7 +126,17 @@ class Parser(object):
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
 		for elem in self.tempir:
-			print(elem)
+			for e in elem[:-1]:
+				if type(e)==str:
+					print(e,end=', ')
+				else:
+					print(e.lex,end=', ')
+			if type(elem[-1])==str:
+				print(elem[-1],end='\n')
+			else:
+				print(elem[-1].lex,end='\n')
+
+
 
 	def p_declmarm(self, p):
 		'''
@@ -599,6 +609,8 @@ class Parser(object):
 		p[0] = {}
 
 		if len(p)==2:
+			# self.tunnelTab.printfull(None)
+			# print(p.slice[1].value)
 			entry = self.tunnelTab.queryEnt(p.slice[1].value, None)
 			# if (entry.kind != 'func'):
 			p[0]['place'] = entry

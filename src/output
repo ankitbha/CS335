@@ -1,17 +1,283 @@
-['1', 'param', '1']
-['2', 'param', '1']
-['3', 'call', bigger, _t2]
-['4', '=', test, _t2]
-['5', 'printint', test]
-['6', 'return']
-['7', 'label', 'bigger']
-['8', 'gparam', b]
-['9', 'gparam', a]
-['10', '>', _t0, a, b]
-['11', 'ifgoto', '=', _t0, 'false', '13']
-['12', 'return', a]
-['13', '=', _t1, a, b]
-['14', 'ifgoto', '=', _t1, 'false', '16']
-['15', 'return', '0']
-['16', 'return', b]
-{test: 'MEM', b: 'MEM', _t0: 'MEM', _t1: 'MEM', a: 'MEM', _t2: 'MEM', _temp: 'MEM'}
+1, readint, a
+2, readint, bh
+3, readint, c
+4, *, _t0, a, a
+5, *, _t1, bh, c
+6, *, _t2, 1, _t1
+7, *, _t3, c, a
+8, *, _t4, _t2, _t3
+9, *, _t5, _t0, _t4
+10, declarray, arr, _t5
+11, readint, d
+12, readint, e
+13, readint, f
+14, +, _t6, d, e
+15, -, _t7, e, d
+16, +, _t8, f, a
+17, *, _t9, _t6, _t1
+18, *, _t10, _t9, _t3
+19, +, _t11, 0, _t10
+20, *, _t12, _t7, _t3
+21, +, _t13, _t11, _t12
+22, +, _t14, _t13, _t8
+23, writearray, arr, _t14, 10
+24, +, _t15, d, e
+25, -, _t16, e, d
+26, +, _t17, f, a
+27, *, _t18, _t15, _t1
+28, *, _t19, _t18, _t3
+29, +, _t20, 0, _t19
+30, *, _t21, _t16, _t3
+31, +, _t22, _t20, _t21
+32, +, _t23, _t22, _t17
+33, readarray, arr, _t23, _t24
+34, =, doo, _t24
+35, *, _t25, e, f
+36, -, _t26, a, _t25
+37, -, _t27, _t26, d
+38, =, l, _t27
+39, +, _t28, d, e
+40, -, _t29, e, d
+41, +, _t30, f, a
+42, *, _t31, _t28, _t1
+43, *, _t32, _t31, _t3
+44, +, _t33, 0, _t32
+45, *, _t34, _t29, _t3
+46, +, _t35, _t33, _t34
+47, +, _t36, _t35, _t30
+48, readarray, arr, _t36, _t37
+49, printint, _t37
+50, printint, doo
+51, return
+# Generated Code 
+.data
+_temp1:  .space 4
+doo:  .space 4
+c:  .space 4
+a:  .space 4
+bh:  .space 4
+arr:  .space 4
+_temp:  .space 4
+d:  .space 4
+e:  .space 4
+l:  .space 4
+f:  .space 4
+_t28:  .space 4
+_t4:  .space 4
+_t27:  .space 4
+_t0:  .space 4
+_t16:  .space 4
+_t12:  .space 4
+_t13:  .space 4
+_t35:  .space 4
+_t23:  .space 4
+_t32:  .space 4
+_t1:  .space 4
+_t22:  .space 4
+_t31:  .space 4
+_t8:  .space 4
+_t21:  .space 4
+_t9:  .space 4
+_t34:  .space 4
+_t14:  .space 4
+_t29:  .space 4
+_t11:  .space 4
+_t37:  .space 4
+_t36:  .space 4
+_t30:  .space 4
+_t6:  .space 4
+_t7:  .space 4
+_t19:  .space 4
+_t17:  .space 4
+_t15:  .space 4
+_t2:  .space 4
+_t5:  .space 4
+_t20:  .space 4
+_t26:  .space 4
+_t3:  .space 4
+_t24:  .space 4
+_t25:  .space 4
+_t10:  .space 4
+_t18:  .space 4
+_t33:  .space 4
+.text
+.globl main
+
+.ent main
+main:
+	li $v0, 5
+	syscall
+	move, $s6 ,$v0
+	li $v0, 5
+	syscall
+	move, $s3 ,$v0
+	li $v0, 5
+	syscall
+	move, $s7 ,$v0
+	mul $t5, $s6, $s6
+	mul $t7, $s3, $s7
+	li $s5, 1
+	mul $s5, $s5, $t7
+	mul $t9, $s7, $s6
+	mul $s2, $s5, $t9
+	mul $t6, $t5, $s2
+	move $a0, $t6
+	li $v0, 9
+	syscall
+	move $t0, $v0
+	li $v0, 5
+	syscall
+	move, $s1 ,$v0
+	li $v0, 5
+	syscall
+	move, $t8 ,$v0
+	li $v0, 5
+	syscall
+	move, $t4 ,$v0
+	add $t1, $s1, $t8
+	sub $s0, $t8, $s1
+	add $s4, $t4, $s6
+	mul $t3, $t1, $t7
+	mul $t2, $t3, $t9
+	sw $s4, _t8
+	lw $s4, _t11
+	add $s4, $t2, $zero
+	addi $s4, $s4, 0
+	sw $t0, arr
+	lw $t0, _t12
+	mul $t0, $s0, $t9
+	sw $s3, bh
+	lw $s3, _t13
+	add $s3, $s4, $t0
+	sw $t4, f
+	lw $t4, _t14
+	sw $t5, _t0
+	lw $t5, _t8
+	add $t4, $s3, $t5
+	sw $t3, _t9
+	lw $t3, arr
+	la $t3, arr
+	sw $t1, _t6
+	lw $t1, _temp
+	la $t1, arr
+	sw $s5, _t2
+	lw $s5, _temp1
+	mul $t4, $t4, 4
+	add $t1, $t1, $t4
+	li $s5, 10
+	sw $s5, 0($t1)
+	sw $s4, _t11
+	lw $s4, _t15
+	add $s4, $s1, $t8
+	sw $s1, d
+	lw $s1, _t16
+	sw $s5, _temp1
+	lw $s5, d
+	sub $s1, $t8, $s5
+	sw $s5, d
+	lw $s5, _t17
+	sw $t5, _t8
+	lw $t5, f
+	add $s5, $t5, $s6
+	sw $s7, c
+	lw $s7, _t18
+	mul $s7, $s4, $t7
+	sw $s3, _t13
+	lw $s3, _t19
+	mul $s3, $s7, $t9
+	sw $t4, _t14
+	lw $t4, _t20
+	add $t4, $s3, $zero
+	addi $t4, $t4, 0
+	sw $s4, _t15
+	lw $s4, _t21
+	mul $s4, $s1, $t9
+	sw $t5, f
+	lw $t5, _t22
+	add $t5, $t4, $s4
+	sw $t2, _t10
+	lw $t2, _t23
+	add $t2, $t5, $s5
+	la $t3, arr
+	sw $s5, _t17
+	lw $s5, _t24
+	add $t2, $t2, $t2
+	add $t2, $t2, $t2
+	add $t2, $t3,$t2
+	lw $s5, 0($t2)
+	sw $s0, _t7
+	lw $s0, doo
+	move $s0, $s5
+	sw $t1, _temp
+	lw $t1, _t25
+	sw $s0, doo
+	lw $s0, f
+	mul $t1, $t8, $s0
+	sw $t6, _t5
+	lw $t6, _t26
+	sub $t6, $s6, $t1
+	sw $t8, e
+	lw $t8, _t27
+	sw $s4, _t21
+	lw $s4, d
+	sub $t8, $t6, $s4
+	sw $s0, f
+	lw $s0, l
+	move $s0, $t8
+	sw $s2, _t4
+	lw $s2, _t28
+	sw $t2, _t23
+	lw $t2, e
+	add $s2, $s4, $t2
+	sw $t7, _t1
+	lw $t7, _t29
+	sub $t7, $t2, $s4
+	sw $t1, _t25
+	lw $t1, _t30
+	sw $t4, _t20
+	lw $t4, f
+	add $t1, $t4, $s6
+	sw $t3, arr
+	lw $t3, _t31
+	sw $t5, _t22
+	lw $t5, _t1
+	mul $t3, $s2, $t5
+	sw $s3, _t19
+	lw $s3, _t32
+	mul $s3, $t3, $t9
+	sw $s7, _t18
+	lw $s7, _t33
+	add $s7, $s3, $zero
+	addi $s7, $s7, 0
+	sw $t1, _t30
+	lw $t1, _t34
+	mul $t1, $t7, $t9
+	sw $t4, f
+	lw $t4, _t35
+	add $t4, $s7, $t1
+	sw $t7, _t29
+	lw $t7, _t36
+	sw $t6, _t26
+	lw $t6, _t30
+	add $t7, $t4, $t6
+	sw $s2, _t28
+	lw $s2, arr
+	la $s2, arr
+	sw $s3, _t32
+	lw $s3, _t37
+	add $t7, $t7, $t7
+	add $t7, $t7, $t7
+	add $t7, $s2,$t7
+	lw $s3, 0($t7)
+	li $v0, 1
+	move, $a0, $s3
+	syscall
+	sw $t6, _t30
+	lw $t6, doo
+	li $v0, 1
+	move, $a0, $t6
+	syscall
+	j exit
+exit:
+	li $v0, 10
+	syscall
