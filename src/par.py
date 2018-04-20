@@ -16,9 +16,35 @@ sterm = {}
 flag = 0
 flagg = 0
 
-class Typeclass(object):
-	def __init__(self):
-		pass
+
+
+
+ # ---------------------------------------------------------------------------------------
+
+
+
+class Parser(object):
+
+	tokens = tokenizer.tokens
+
+	precedence = (
+		('right', 'ASSIGN'),
+		('left', 'OR'),
+		('left', 'AND'),
+		('left', 'EQUAL', 'NEQUAL'),
+		('left', 'GT', 'GTEQ', 'LT', 'LTEQ'),
+		('left', 'PLUS', 'MINUS'),
+		('left', 'MULTIPLY', 'DIVIDE', 'MODULUS'),
+		('right', 'NOT'),
+		('left', 'DOT')
+	)
+
+	def __init__(self, lexer):
+		self.lexer = lex.lex(module=tokenizer())
+		self.tunnelTab = symtable.tunnelTable()
+		self.xtras = symtable.xtraNeeds()
+		# self.Typeclass = Typeclass()
+		self.locall = False
 
 	def type_cast_implicit(self, type1, type2):
 		if((type1 == 'REAL' and type2 == 'INTEGER') or (type1 == 'INTEGER' and type2 == 'REAL')):
@@ -62,32 +88,8 @@ class Typeclass(object):
 		else:
 			return self.returnTypeCheck(Type, Table.parent)
 
- # ---------------------------------------------------------------------------------------
 
 
-
-class Parser(object):
-
-	tokens = tokenizer.tokens
-
-	precedence = (
-		('right', 'ASSIGN'),
-		('left', 'OR'),
-		('left', 'AND'),
-		('left', 'EQUAL', 'NEQUAL'),
-		('left', 'GT', 'GTEQ', 'LT', 'LTEQ'),
-		('left', 'PLUS', 'MINUS'),
-		('left', 'MULTIPLY', 'DIVIDE', 'MODULUS'),
-		('right', 'NOT'),
-		('left', 'DOT')
-	)
-
-	def __init__(self, lexer):
-		self.lexer = lex.lex(module=tokenizer())
-		self.tunnelTab = symtable.tunnelTable()
-		self.xtras = symtable.xtraNeeds()
-		self.Typeclass = Typeclass()
-		self.locall = False
 
 	def printParseTree(self, p):
 		flag = False
@@ -116,11 +118,11 @@ class Parser(object):
 
 	def p_module(self, p):
 		'''
-			module : KEY_MODULE IDENT SCOLON declmarm declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT
+			module : KEY_MODULE IDENT SCOLON declarationSequence KEY_BEGIN statementSequence KEY_END IDENT DOT
 		'''
 		p[0] = {}
 
-		p[0]['code'] = p[5]['code2'] + p[7]['code'] + [['return']] + p[5]['code']
+		p[0]['code'] = p[4]['code2'] + p[6]['code'] + [['return']] + p[4]['code']
 		# print('\n'.join(map(str, p[0]['code'])))
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
@@ -128,11 +130,11 @@ class Parser(object):
 		for elem in self.tempir:
 			print(elem)
 
-	def p_declmarm(self, p):
-		'''
-			declmarm : empty
-		'''
-		p[0]='global'
+	# def p_declmarm(self, p):
+	# 	'''
+	# 		declmarm : empty
+	# 	'''
+	# 	p[0]='global'
 
 
 	def p_declarationSequence(self, p):
@@ -265,14 +267,24 @@ class Parser(object):
 			# temp_var = temp_var.lex
 			p[0]['place'] = temp_var
 			if(len(p)==3):
-				p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place']]]
+				newobj = self.get_new_object(p[1], p[2], p[1]['operator'])
+				if(newobj['type'] == 'INTEGER'):
+					p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2']]]
+				else:
+					p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2']]]
 			else:
 				if(p.slice[1].value == '+'): # check if this will hold--------------------------------------
-					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
-					p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[3]['operator'] , p[0]['place'] , p[2]['place'] , p[3]['place']]]
+					newobj = self.get_new_object(p[2], p[3], p[2]['operator'])
+					if(newobj['type'] == 'INTEGER'):
+						p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[2]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2']]]
+					else:
+						p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[2]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2']]]
 				else:
-					# newobj = get_new_object(p[2], p[3], p[3]['operator'])
-					p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[3]['operator'] , p[0]['place'] , p[2]['place'] , p[3]['place'] ]]
+					newobj = self.get_new_object(p[2], p[3], p[2]['operator'])
+					if(newobj['type'] == 'INTEGER'):
+						p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[2]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2']]]
+					else:
+						p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[2]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2']]]
 					p[0]['code'] += [["=" , p[0]['place'] , "-" , p[0]['place']]]
 
 
@@ -293,8 +305,15 @@ class Parser(object):
 			else:
 
 				temp_var = self.xtras.getNewTemp(p[2]['type'], 'simplevar')
+				p[0]['place'] = temp_var
+				newobj = self.get_new_object(p[1], p[2], p[1]['operator'])
+				if(newobj['type'] == 'INTEGER'):
+					p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
+				else:
+					p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
 				p[0]['operator'] = p.slice[3].value
 				p[0]['type'] = p[2]['type']
+				# p[1]['arg'] = p[2]['place']
 				if (flagg==1 and p[0]['type'] != 'BOOLEAN'):
 					if p.slice[3].value == "+":
 						p[0]['operator'] = "-"
@@ -307,8 +326,7 @@ class Parser(object):
 				else:
 					flagg = 0
 
-				p[0]['place'] = temp_var
-				p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[0]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place'] ]]
+				
 		else:
 			p[0]['empty'] = True
 
@@ -323,11 +341,14 @@ class Parser(object):
 			p[0]['place'] = p[2]['place']
 		else:
 			p[0]['type'] = p[len(p)-1]['type']
-			# newobj = get_new_object(p[1], p[2], p[2]['operator'])
+			newobj = self.get_new_object(p[1], p[2], p[1]['operator'])
 			temp_var = self.xtras.getNewTemp(p[0]['type'], 'simplevar')
 			#temp_var = temp_var
 			p[0]['place'] = temp_var
-			p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place'] ]]
+			if(newobj['type'] == 'INTEGER'):
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
+			else:
+				p[0]['code'] = p[1]['code'] + p[2]['code'] + [[p[1]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
 
 	def p_termss(self, p):
 		'''
@@ -348,8 +369,13 @@ class Parser(object):
 				temp_var = self.xtras.getNewTemp(p[1]['type'], 'simplevar')
 				p[0]['type'] = p[2]['type']
 				p[0]['place'] = temp_var
+				newobj = self.get_new_object(p[1], p[2], p[1]['operator'])
+				if(newobj['type'] == 'INTEGER'):
+					p[0]['code'] = p[1]['code'] + [[p[1]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
+				else:
+					p[0]['code'] = p[1]['code'] + [[p[1]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2'] ]]
 				p[0]['operator'] = p.slice[3].value
-				p[0]['code'] = p[1]['code'] + [[p[0]['operator'] , p[0]['place'] , p[1]['place'] , p[2]['place'] ]]
+				
 		else:
 			p[0]['empty'] = True
 
@@ -951,16 +977,16 @@ class Parser(object):
 
 	def p_procedureBody(self, p):
 		'''
-			procedureBody : declmarf declarationSequence KEY_BEGIN statementSequence KEY_END
+			procedureBody : declarationSequence KEY_BEGIN statementSequence KEY_END
 		'''
 		p[0]={}
-		p[0]['code']=p[4]['code']
+		p[0]['code']=p[3]['code']
 
-	def p_declmarf(self, p):
-		'''
-			declmarf : empty
-		'''
-		p[0]='local'
+	# def p_declmarf(self, p):
+	# 	'''
+	# 		declmarf : empty
+	# 	'''
+	# 	p[0]='local'
 
 
 	def p_statement(self, p):
@@ -1332,10 +1358,11 @@ if __name__=="__main__":
 	filename = sys.argv[1]
 
 	accepted_types = {
-		  'MULTIPLY': ('INTEGER', 'REAL', None)
-		, 'PLUS': ('INTEGER', 'REAL', None)
-		, 'MINUS': ('INTEGER', 'REAL', None)
-		, 'DIVIDE': ('INTEGER', 'REAL', None)
+		  '*': ('INTEGER', 'REAL', None)
+		, '+': ('INTEGER', 'REAL', None)
+		, '-': ('INTEGER', 'REAL', None)
+		, '/': ('INTEGER', 'REAL', None)
+		, '%': ('INTEGER')
 		, 'LT': ('INTEGER', 'BOOLEAN')
 		, 'LTEQ': ('INTEGER', 'BOOLEAN')
 		, 'GT': ('INTEGER', 'BOOLEAN')

@@ -23,8 +23,8 @@ class SymTabEntry(object):
 		#TODO remove the following two functions
 
 	def __repr__(self):
-		# return "{}".format(self.lex)
-		return "lex: {}, kind: {}, type: {}, placist: {}, offset: {}, addr: {}".format(self.lex, self.kind, self.vtype, self.placist, self.offset, self.addr)
+		return "{}".format(self.lex)
+		# return "lex: {}, kind: {}, type: {}, placist: {}, offset: {}, addr: {}".format(self.lex, self.kind, self.vtype, self.placist, self.offset, self.addr)
 
 	def __str__(self):
 		return self.lex
