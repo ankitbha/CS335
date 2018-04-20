@@ -334,6 +334,245 @@ def translate(line):
 
 				acode = acode + "\tdiv.s " + reg + ", " + addr1 +", "+ addr2 + "\n"
 
+		elif op == '<=':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				if(num1<=num2):
+					result = 1
+				else:
+					result = 0
+				acode = acode + "\taddi " + reg + ", $zero, " + str(result) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli.s " + addr1 + ", " + num1 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.le.s, " + addr1 + ", " + addr2 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr2 + ", " + num2 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tc.le.s, " + addr1 + ", " + addr2 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.le.s, " + addr1 + ", " + addr2 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+
+		elif op == '<':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				if(num1<num2):
+					result = 1
+				else:
+					result = 0
+				acode = acode + "\taddi " + reg + ", $zero, " + str(result) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr1 + ", " + num1 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.lt.s, " + addr1 + ", " + addr2 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr2 + ", " + num2 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tc.lt.s, " + addr1 + ", " + addr2 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.lt.s, " + addr1 + ", " + addr2 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+
+		elif op == '>':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				if(num1>num2):
+					result = 1
+				else:
+					result = 0
+				acode = acode + "\taddi " + reg + ", $zero, " + str(result) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr1 + ", " + num1 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.lt.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr2 + ", " + num2 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tc.lt.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.lt.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+		elif op == '>=':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				if(num1>=num2):
+					result = 1
+				else:
+					result = 0
+				acode = acode + "\taddi " + reg + ", $zero, " + str(result) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr1 + ", " + num1 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.le.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr2 + ", " + num2 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tc.le.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.le.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+		elif op == '!=':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				if(num1!=num2):
+					result = 1
+				else:
+					result = 0
+				acode = acode + "\taddi " + reg + ", $zero, " + str(result) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr1 + ", " + num1 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.eq.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tnor, " + reg + ", $fcc0, $zero \n"
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr2 + ", " + num2 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tc.eq.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tnor, " + reg + ", $fcc0, $zero \n"
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.eq.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tnor, " + reg + ", $fcc0, $zero \n"
+		elif op == '==':
+			if isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				if(num1==num2):
+					result = 1
+				else:
+					result = 0
+				acode = acode + "\taddi " + reg + ", $zero, " + str(result) + "\n"
+
+			elif isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr1 + ", " + num1 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num1 + "\n"
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.eq.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and isInt(num2):
+				reg = getReg(ans,lineno)
+				addr2 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
+				acode = acode + "\tli " + addr2 + ", " + num2 + "\n"
+				# acode = acode + "\tli " + reg + ", " + num2 + "\n"
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				acode = acode + "\tc.eq.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+			elif not isInt(num1) and not isInt(num2):
+				reg = getReg(ans,lineno)
+				addr1 = addrDesc[num1]
+				addr2 = addrDesc[num2]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tc.eq.s, " + addr2 + ", " + addr1 + "\n"
+				acode = acode + "\tmove, " + reg + ", $fcc0 \n"
+
 	if op in mathop:
 		#print(op)
 		ans = line[2]
@@ -1133,7 +1372,7 @@ def translate(line):
 
 
 mathop = ['+', '-', '*', '/', '%', '<=', '>=', '==', '<', '>', '!=']
-floatop = ['+f', '-f', '*f', '/f']
+floatop = ['+f', '-f', '*f', '/f', '<=', '>=', '==', '<', '>', '!=']
 addrDesc = {}
 nextUseTable = {}
 incode = []
