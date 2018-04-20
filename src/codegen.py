@@ -762,109 +762,111 @@ def translate(line):
 		l = line[5]
 		print(line[0], line[1],line[2],line[3],line[4],line[5])
 
-		if isInt(num1) and isInt(num2):
-			if(rel == "<="):
-				if(int(num1) <= int(num2)):
-					acode = acode + "\tj " + labels[int(l)] +"\n"
+		if (num1.vtype=='INTEGER'):
+			if isInt(num1) and isInt(num2):
+				if(rel == "<="):
+					if(int(num1) <= int(num2)):
+						acode = acode + "\tj " + labels[int(l)] +"\n"
 
-			if(rel == ">="):
-				if(int(num1) >= int(num2)):
-					acode = acode + "\tj " + labels[int(l)] +"\n"
+				if(rel == ">="):
+					if(int(num1) >= int(num2)):
+						acode = acode + "\tj " + labels[int(l)] +"\n"
 
-			if(rel == "=="):
-				if(int(num1) == int(num2)):
-					acode = acode + "\tj " + labels[int(l)] +"\n"
+				if(rel == "=="):
+					if(int(num1) == int(num2)):
+						acode = acode + "\tj " + labels[int(l)] +"\n"
 
-			if(rel == ">"):
-				if(int(num1) > int(num2)):
-					acode = acode + "\tj " + labels[int(l)] +"\n"
+				if(rel == ">"):
+					if(int(num1) > int(num2)):
+						acode = acode + "\tj " + labels[int(l)] +"\n"
 
-			if(rel == "<"):
-				if(int(num1) < int(num2)):
-					acode = acode + "\tj " + labels[int(l)] +"\n"
+				if(rel == "<"):
+					if(int(num1) < int(num2)):
+						acode = acode + "\tj " + labels[int(l)] +"\n"
 
-			if(rel == "!="):
-				if(int(num1) != int(num2)):
-					acode = acode + "\tj " + labels[int(l)] +"\n"
+				if(rel == "!="):
+					if(int(num1) != int(num2)):
+						acode = acode + "\tj " + labels[int(l)] +"\n"
 
-		elif isInt(num1) and not isInt(num2):
+			elif isInt(num1) and not isInt(num2):
 
-			addr2 = addrDesc[num2]
-			if(addr2 == "MEM"):
-				addr2 = getReg(num2,lineno)
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
 
-			if(rel == "<="):
-				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				if(rel == "<="):
+					acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-			if(rel == ">="):
-				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				if(rel == ">="):
+					acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
 
-			if(rel == "=="):
-				acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				if(rel == "=="):
+					acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-			if(rel == ">"):
-				acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				if(rel == ">"):
+					acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "<"):
-				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				if(rel == "<"):
+					acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "!="):
-				acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+				if(rel == "!="):
+					acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-		elif not isInt(num1) and isInt(num2):
-			# bge Rsrc1, Src2, label
+			elif not isInt(num1) and isInt(num2):
+				# bge Rsrc1, Src2, label
 
-			addr1 = addrDesc[num1]
-			if(addr1 == "MEM"):
-				addr1 = getReg(num1,lineno)
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
 
-			if(rel == "<="):
-				acode = acode + "\tble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				if(rel == "<="):
+					acode = acode + "\tble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == ">="):
-				acode = acode + "\tbge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				if(rel == ">="):
+					acode = acode + "\tbge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "=="):
-				acode = acode + "\tbeq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				if(rel == "=="):
+					acode = acode + "\tbeq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == ">"):
-				acode = acode + "\tbgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				if(rel == ">"):
+					acode = acode + "\tbgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "<"):
-				acode = acode + "\tblt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				if(rel == "<"):
+					acode = acode + "\tblt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "!="):
-				acode = acode + "\tbne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+				if(rel == "!="):
+					acode = acode + "\tbne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-		elif not isInt(num1) and not isInt(num2):
-			#bge Rsrc1, Src2, label
+			elif not isInt(num1) and not isInt(num2):
+				#bge Rsrc1, Src2, label
 
-			addr1 = addrDesc[num1]
-			if(addr1 == "MEM"):
-				addr1 = getReg(num1,lineno)
+				addr1 = addrDesc[num1]
+				if(addr1 == "MEM"):
+					addr1 = getReg(num1,lineno)
 
-			addr2 = addrDesc[num2]
-			if(addr2 == "MEM"):
-				addr2 = getReg(num2,lineno)
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
 
-			if(rel == "<="):
-				acode = acode + "\tble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				if(rel == "<="):
+					acode = acode + "\tble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == ">="):
-				acode = acode + "\tbge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				if(rel == ">="):
+					acode = acode + "\tbge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "=="):
-				acode = acode + "\tbeq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				if(rel == "=="):
+					acode = acode + "\tbeq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == ">"):
-				acode = acode + "\tbgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				if(rel == ">"):
+					acode = acode + "\tbgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "<"):
-				acode = acode + "\tblt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				if(rel == "<"):
+					acode = acode + "\tblt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-			if(rel == "!="):
-				acode = acode + "\tbne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+				if(rel == "!="):
+					acode = acode + "\tbne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+
 	if op=="=":
 		#move Rdest, Rsrc
 		#=, a, 2
@@ -873,13 +875,31 @@ def translate(line):
 		if(addr1 == "MEM"):
 			addr1 = getReg(num1,lineno)
 		num2=line[3]
-		if isInt(num2):
-			acode=acode+"\tli "+ addr1 + ", " + num2 + "\n"
-		else:
-			addr2 = addrDesc[num2]
-			if(addr2 == "MEM"):
-				addr2 = getReg(num2,lineno)
-			acode = acode + "\tmove " + addr1 + ", " + addr2 + "\n"
+		if (num1.vtype=='INTEGER'):
+			if isInt(num2):
+				acode=acode+"\tli "+ addr1 + ", " + num2 + "\n"
+			else:
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tmove " + addr1 + ", " + addr2 + "\n"
+		elif (num1.vtype=='REAL'):
+			if isInt(num2):
+				acode = acode+"\tli.s "+ addr1 + ", " + num2 + "\n"
+			else:
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tmov.s " + addr1 + ", " + addr2 + "\n"
+		elif (num1.vtype=='CHAR'):
+			if isInt(num2):
+				acode=acode+"\tli "+ addr1 + ", '" + num2 + "'\n"
+			else:
+				addr2 = addrDesc[num2]
+				if(addr2 == "MEM"):
+					addr2 = getReg(num2,lineno)
+				acode = acode + "\tmove " + addr1 + ", " + addr2 + "\n"
+
 	if op=="printint":
 		#8, print, a
 		ans=line[2];
@@ -1052,8 +1072,21 @@ def translate(line):
 				rindex = getReg(index,lineno)
 				acode = acode + "\tmul " + rindex + ", " + rindex + ", 4" + "\n"
 				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
-				acode = acode + "\tli " + tempr + ", " + res + "\n" 
+				acode = acode + "\tli " + tempr + ", " + res + "\n"
 				acode = acode + "\tsw " +  tempr +  ", 0(" + temparr + ")\n"
+
+	if op == "println":
+		# writeln("string")
+		arg = line[2]
+		addr1 = arg.lex
+		acode = acode +"\tli $v0, 4\n"
+		acode = acode +"\tmove, $a0, " + addr1 + "\n"
+		acode = acode +"\tsyscall\n"
+		acode = acode +"\tli $v0, 4\n"
+		acode = acode +"\tmove, $a0, " + "nl" + "\n"
+		acode = acode +"\tsyscall\n"
+
+
 
 mathop = ['+', '-', '*', '/', '%', '<=', '>=', '==', '<', '>', '!=']
 floatop = ['+f', '-f', '*f', '/f']
@@ -1062,6 +1095,7 @@ nextUseTable = {}
 incode = []
 variables = []
 arrayz = []
+stringz = []
 #funcs=[]
 leaders = [1,]
 labels = {1:"main"}
@@ -1158,7 +1192,11 @@ def mipsgen():
 			glvar.remove(s)
 	for s in glvar:
 		addrDesc[s]='MEM'
-	
+
+	for s in tunnelTab.rootTable.temps.values():
+		if(s.vtype == 'STRING'):
+			stringz.append(s)
+
 	# print(addrDesc)
 # set up leaders and basic blocks
 
@@ -1249,17 +1287,19 @@ def mipsgen():
 
 #	acode = ""
 	acode += ".data\n"
+
 	varlist = list(tunnelTab.rootTable.varsHere.values())
 	varlist2 = []
 	for var in varlist:
-		if(var.kind!='func'):
+		if(var.kind!='func' and var.vtype!='STRING' and var.lex!="_temp" and var.lex!="_temp1"):
 			varlist2.append(var)
 	# print(varlist2['bigger'])
 
 	for var in varlist2:
 		acode += var.lex +":  "+".space " + str(var.size) +"\n"
-	# for var in arrayz:
-	# 	acode += var+":  "+".space 400\n"
+	for s in stringz:
+		acode += s.addr + ":   .asciiz  "+ s.kind +'\n'
+	acode += "nl" + ':   .asciiz  "\\n"' + '\n\n'
 
 	acode += ".text\n"
 	acode += ".globl main\n\n"

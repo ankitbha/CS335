@@ -146,16 +146,16 @@ class Parser(object):
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
-		for elem in self.tempir:
-			for e in elem[:-1]:
-				if type(e)==str:
-					print(e,end=', ')
-				else:
-					print(e.lex,end=', ')
-			if type(elem[-1])==str:
-				print(elem[-1],end='\n')
-			else:
-				print(elem[-1].lex,end='\n')
+		# for elem in self.tempir:
+		# 	for e in elem[:-1]:
+		# 		if type(e)==str:
+		# 			print(e,end=', ')
+		# 		else:
+		# 			print(e.lex,end=', ')
+		# 	if type(elem[-1])==str:
+		# 		print(elem[-1],end='\n')
+		# 	else:
+		# 		print(elem[-1].lex,end='\n')
 
 
 
@@ -541,8 +541,9 @@ class Parser(object):
 
 		p[0]['code'] = []
 		p[0]['type'] = 'STRING'
-		p[0]['place'] = p.slice[1].value
-
+		p[0]['value'] = p.slice[1].value
+		temp_var = self.xtras.getNewTemp('STRING', p.slice[1].value, self.tunnelTab)
+		p[0]['place'] = temp_var
 
 # ---------------------------------------------------------------------------
 
@@ -1079,7 +1080,14 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if (p[1]['kind']=='simplevar'):
-			p[0]['code'] = p[3]['code'] + [["=" , p[1]['place'] , p[3]['place'] ]]
+			if(p[3]['type'] != 'STRING'):
+				p[0]['code'] = p[3]['code'] + [["=" , p[1]['place'] , p[3]['place'] ]]
+			else:
+				strObj = p[3]['place']
+				strvarname = p.slice[1].value
+				strObj.lex = p[1]['place'].lex
+				strObj.addr = p[1]['place'].lex
+				p[0]['code'] = p[3]['code']
 		elif (p[1]['kind']=='array'):
 			asscode = [["writearray" , p[1]['place'] , p[1]['offset'] , p[3]['place']]]
 			p[0]['code'] = p[1]['code'] + p[3]['code'] + asscode
@@ -1125,7 +1133,6 @@ class Parser(object):
 		'''
 		p[0]={}
 		# self.tunnelTab.printfull(None)
-		# print((p[1]['place'].lex))
 		proc = self.tunnelTab.queryEnt(p[1]['place'].lex,None)
 		# print(proc)
 		p[0]['type'] = proc.vtype
