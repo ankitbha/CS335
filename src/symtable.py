@@ -184,7 +184,10 @@ class xtraNeeds(object):
 		else:
 			size = None
 		tempObj = SymTabEntry("_t"+str(self.tempCount-1), vtype, kind, None, "_t"+str(self.tempCount-1), size, None)
-		tunnelTab.currTable.temps["_t"+str(self.tempCount-1)] = tempObj
+		if(vtype == 'STRING'):
+			tunnelTab.rootTable.temps["_t"+str(self.tempCount-1)] = tempObj
+		else:
+			tunnelTab.currTable.temps["_t"+str(self.tempCount-1)] = tempObj
 		# print(self.tempCount-1)
 		# print(tunnelTab.currTable.temps)
 		return tempObj

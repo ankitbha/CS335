@@ -531,8 +531,9 @@ class Parser(object):
 
 		p[0]['code'] = []
 		p[0]['type'] = 'STRING'
-		p[0]['place'] = p.slice[1].value
-
+		p[0]['value'] = p.slice[1].value
+		temp_var = self.xtras.getNewTemp('STRING', p.slice[1].value, self.tunnelTab)
+		p[0]['place'] = temp_var
 
 # ---------------------------------------------------------------------------
 
@@ -1067,7 +1068,13 @@ class Parser(object):
 		'''
 		p[0] = {}
 		if (p[1]['kind']=='simplevar'):
-			p[0]['code'] = p[3]['code'] + [["=" , p[1]['place'] , p[3]['place'] ]]
+			if(p[3]['type'] != 'STRING'):
+				p[0]['code'] = p[3]['code'] + [["=" , p[1]['place'] , p[3]['place'] ]]
+			else:
+				strObj = p[3]['place']
+				strvarname = p.slice[1].value
+				strObj.lex = p.slice[1].value
+				strObj.addr = p.slice[1].value
 		elif (p[1]['kind']=='array'):
 			asscode = [["writearray" , p[1]['place'] , p[1]['offset'] , p[3]['place']]]
 			p[0]['code'] = p[1]['code'] + p[3]['code'] + asscode

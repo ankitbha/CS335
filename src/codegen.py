@@ -810,6 +810,16 @@ def translate(line):
 				acode = acode + "\tadd " + temparr + ", " + temparr + ", " + rindex + "\n"
 				acode = acode + "\tsw " +  res +  ", 0(" + temparr + ")\n"
 
+	if op == "println":
+		# writeln("string")
+		arg = line[2]
+		addr1 = arg.lex	
+		acode = acode +"\tli $v0, 4\n"
+		acode = acode +"\tmove, $a0, " + addr1 + "\n"
+		acode = acode +"\tsyscall\n"
+
+
+
 mathop = ['+', '-', '*', '/', '%']
 floatop = ['+f', '-f', '*f', '/f']
 addrDesc = {}
@@ -817,6 +827,7 @@ nextUseTable = {}
 incode = []
 variables = []
 arrayz = []
+stringz = []
 #funcs=[]
 leaders = [1,]
 labels = {1:"main"}
@@ -913,6 +924,10 @@ def mipsgen():
 			glvar.remove(s)
 	for s in glvar:
 		addrDesc[s]='MEM'
+
+	for s in tunnelTab.rootTable.temps.values():
+		if(s.vtype == 'STRING'):
+			stringz.append(s)
 	
 	# print(addrDesc)
 # set up leaders and basic blocks
@@ -1008,6 +1023,8 @@ def mipsgen():
 		acode += var+":  "+".space 4\n"
 	for var in arrayz:
 		acode += var+":  "+".space 400\n"
+	for s in stringz:
+		acode += s.addr+":	.asciiz	"+s.kind+'\n'	
 
 	acode += ".text\n"
 	acode += ".globl main\n\n"
