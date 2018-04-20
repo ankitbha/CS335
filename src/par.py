@@ -147,7 +147,17 @@ class Parser(object):
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
 		for elem in self.tempir:
-			print(elem)
+			for e in elem[:-1]:
+				if type(e)==str:
+					print(e,end=', ')
+				else:
+					print(e.lex,end=', ')
+			if type(elem[-1])==str:
+				print(elem[-1],end='\n')
+			else:
+				print(elem[-1].lex,end='\n')
+
+
 
 	# def p_declmarm(self, p):
 	# 	'''
@@ -646,6 +656,8 @@ class Parser(object):
 		p[0] = {}
 
 		if len(p)==2:
+			# self.tunnelTab.printfull(None)
+			# print(p.slice[1].value)
 			entry = self.tunnelTab.queryEnt(p.slice[1].value, None)
 			# if (entry.kind != 'func'):
 			p[0]['place'] = entry
@@ -1073,8 +1085,9 @@ class Parser(object):
 			else:
 				strObj = p[3]['place']
 				strvarname = p.slice[1].value
-				strObj.lex = p.slice[1].value
-				strObj.addr = p.slice[1].value
+				strObj.lex = p[1]['place'].lex
+				strObj.addr = p[1]['place'].lex
+				p[0]['code'] = p[3]['code']
 		elif (p[1]['kind']=='array'):
 			asscode = [["writearray" , p[1]['place'] , p[1]['offset'] , p[3]['place']]]
 			p[0]['code'] = p[1]['code'] + p[3]['code'] + asscode
