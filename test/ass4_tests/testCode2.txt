@@ -1,21 +1,21 @@
 (*program to print table of 15 *)
 MODULE testCode2;
 
-VAR a, b : INTEGER ;
+VAR a, bh : INTEGER ;
 VAR alla : INTEGER ;
 
-PROCEDURE product(a, b: INTEGER) : INTEGER;
+PROCEDURE product(a, bh: INTEGER) : INTEGER;
 VAR ak, bk : INTEGER ;
 VAR alla : INTEGER ;
 BEGIN
-	RETURN a*b*ak*bk;
+	RETURN a*bh*ak*bk;
 END product;
 
 BEGIN
 	a := 15;
-	b := 1;
-	WHILE b <= 10 BEGIN
-		WRITEINT(product(a,b));
-		b:= b+ 1;
+	bh := 1;
+	WHILE bh <= 10 BEGIN
+		WRITEINT(product(a,bh));
+		bh:= bh+ 1;
 	END;
 END testCode2.

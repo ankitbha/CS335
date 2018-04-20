@@ -1055,7 +1055,7 @@ def mipsgen():
 	varlist = list(tunnelTab.rootTable.varsHere.values())
 	varlist2 = []
 	for var in varlist:
-		if(var.vtype!='func' and var.vtype!='STRING' and var.lex!="_temp" and var.lex!="_temp1"):
+		if(var.vtype!='func' or var.vtype!='STRING' or var.lex!="_temp" or var.lex!="_temp1"):
 			varlist2.append(var)
 
 	for var in varlist2:

@@ -146,16 +146,16 @@ class Parser(object):
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
-		for elem in self.tempir:
-			for e in elem[:-1]:
-				if type(e)==str:
-					print(e,end=', ')
-				else:
-					print(e.lex,end=', ')
-			if type(elem[-1])==str:
-				print(elem[-1],end='\n')
-			else:
-				print(elem[-1].lex,end='\n')
+		# for elem in self.tempir:
+		# 	for e in elem[:-1]:
+		# 		if type(e)==str:
+		# 			print(e,end=', ')
+		# 		else:
+		# 			print(e.lex,end=', ')
+		# 	if type(elem[-1])==str:
+		# 		print(elem[-1],end='\n')
+		# 	else:
+		# 		print(elem[-1].lex,end='\n')
 
 
 
@@ -935,7 +935,7 @@ class Parser(object):
 		self.locall = False
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
-		self.tunnelTab.currTable.printMe()
+		# self.tunnelTab.currTable.printMe()
 		totofftab = self.tunnelTab.currTable.offsTab
 		self.tunnelTab.endScope()
 		tabEnt = self.tunnelTab.queryEnt(p[1]['name'], None)
@@ -1132,7 +1132,7 @@ class Parser(object):
 			procedureCall : designator actualParameters
 		'''
 		p[0]={}
-		self.tunnelTab.printfull(None)
+		# self.tunnelTab.printfull(None)
 		print((p[1]['place'].lex))
 		proc = self.tunnelTab.queryEnt(p[1]['place'].lex,None)
 		print(proc)
