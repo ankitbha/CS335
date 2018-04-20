@@ -3,15 +3,14 @@ MODULE testCode17;
 	
 VAR x : INTEGER;
 
-PROCEDURE func(x : INTEGER);
 
-	VAR y: INTEGER;
-
-	PROCEDURE prod(x, y :INTEGER) : INTEGER ;
+PROCEDURE prod(x, y :INTEGER) : INTEGER ;
 	BEGIN
 			RETURN x*y;
 	END prod;
 
+PROCEDURE func(x : INTEGER);
+	VAR y: INTEGER;
 BEGIN 
 	IF x < 0 THEN
 		x := -1*x;

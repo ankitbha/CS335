@@ -7,14 +7,5 @@ BEGIN
 	x:= 3;
 	y:=2;
 	z:=1.5;
-	WRITEINT(x+y);
-	WRITEINT(x-y);
-	WRITEINT(x*y);
-	WRITEREAL(x/y);
-	WRITEINT(x % y);
-	WRITEINT(x / y);
-	WRITEREAL(x+z);
-	WRITEREAL(x-z);
-	WRITEREAL(x*z);
-	WRITEREAL(x/z);
+	x := x+y-x/y*y%x;
 END testCode14.

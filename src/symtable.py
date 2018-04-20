@@ -37,6 +37,7 @@ class SymTab(object):
 		self.div = div
 		self.varsHere = {}
 		self.children = {}
+		self.temps = {}
 		self.loopLabs = {'pre': None, 'loop': None, 'suf': None}
 		self.offsTab = 0
 
@@ -103,6 +104,15 @@ class tunnelTable(object):
 		else:
 			return queryRes
 
+	def getVariables(self,Table=None):
+		if(Table==None):
+			Table=self.rootTable
+		var = list(Table.varsHere.values())
+		var = var + list(Table.temps.values())
+		for child in list(Table.children.values()):
+			var = var + self.getVariables(child)
+		return var
+
 	def printfull(self, Table):
 		if(Table == None):
 			iterTable = self.currTable
@@ -162,9 +172,22 @@ class xtraNeeds(object):
 		self.labelCount = 1
 		self.idCount = 1
 
-	def getNewTemp(self, vtype, kind):
+	def getNewTemp(self, vtype, kind, tunnelTab):
 		self.tempCount += 1
-		return SymTabEntry("_t"+str(self.tempCount-1), vtype, kind)
+		if kind=='simplevar':
+			if vtype in typeSizeAllocation.keys():
+				size = typeSizeAllocation[vtype]
+			else:
+				size = None
+		elif (kind=='pointer' or kind=='const'):
+			size = 4
+		else:
+			size = None
+		tempObj = SymTabEntry("_t"+str(self.tempCount-1), vtype, kind, None, "_t"+str(self.tempCount-1), size, None)
+		tunnelTab.currTable.temps["_t"+str(self.tempCount-1)] = tempObj
+		# print(self.tempCount-1)
+		# print(tunnelTab.currTable.temps)
+		return tempObj
 
 	def getNewLabel(self):
 		self.labelCount += 1
