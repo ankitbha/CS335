@@ -1,9 +1,9 @@
-4 ifgoto == _t3 0 12
 # Generated Code 
 .data
-a:  .space 4
-alla:  .space 4
 bh:  .space 4
+a:  .space 4
+test:  .space 4
+_t2:  .space 4
 nl:   .asciiz  "\n"
 
 .text
@@ -11,44 +11,60 @@ nl:   .asciiz  "\n"
 
 .ent main
 main:
-	li $s3, 15
-	li $s5, 1
-L3:
-	li $s5, 10
-	sle $s3, $s5, $s5
-	sw $s3, _t3
-L5:
+	li $t7, 6
 	sub $sp, $sp, 4
-	sw $s5, 0($sp)
+	sw $t7, 0($sp)
+	li $t9, 5
 	sub $sp, $sp, 4
-	sw $s3, 0($sp)
+	sw $t9, 0($sp)
+	lw $s6, _t2
 	addi $sp, $sp, -12
 	sw $fp, -8($sp)
 	sw $ra, -4($sp)
 	move $fp, $sp
-	addi $sp, $sp, -20
-	jal product
+	addi $sp, $sp, -8
+	jal bigger
+	lw $s6, 0($fp)
 	move $sp, $fp
 	lw $fp, -8($sp)
 	lw $ra, -4($sp)
+	lw $s3, test
+	move $s3, $s6
 	li $v0, 1
 	move, $a0, $s3
 	syscall
-	add $s5, $s5, $zero
-	addi $s5, $s5, 1
-	move $s5, $s5
-	sw $s3, _t4
-	sw $s5, _t5
-	j L3
-L12:
 	j exit
-product:
-	lw $s3, -16($fp)
-	lw $s5, -12($fp)
-	mul $t2, $s5, $s3
-	mul $t3, $t2, $s2
-	mul $t6, $t3, $t9
-	sw $t6, 0($fp)
+bigger:
+	lw $t7, bh
+	lw $t7, -16($fp)
+	lw $t9, a
+	lw $t9, -12($fp)
+	lw $s6, _t0
+	slt $s6, $t7, $t9
+	sw $t7, 4($fp)
+	sw $t9, 0($fp)
+	sw $s6, 12($fp)
+	lw $s3, _t0
+	beq $s3, 0, L13
+L12:
+	lw $t7, a
+	sw $t7, 0($fp)
+	jr $ra
+L13:
+	lw $t7, _t1
+	lw $t9, bh
+	seq $t7, $t9, $t7
+	sw $t7, 8($fp)
+	sw $t9, 4($fp)
+	lw $s6, _t1
+	beq $s6, 0, L16
+L15:
+	li $t7, 0
+	sw $t7, 0($fp)
+	jr $ra
+L16:
+	lw $t7, bh
+	sw $t7, 0($fp)
 	jr $ra
 exit:
 	li $v0, 10

@@ -146,6 +146,8 @@ class Parser(object):
 		# self.tunnelTab.rootTable.printMe()
 		self.tempir = p[0]['code']
 		self.irrcode = self.magic(self.tempir)
+		self.tunnelTab.updateoffset()
+		# print(self.tunnelTab.printfull())
 		# for elem in self.tempir:
 		# 	for e in elem[:-1]:
 		# 		if type(e)==str:
@@ -314,7 +316,7 @@ class Parser(object):
 						p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[2]['operator'] , p[0]['place'] , newobj['value1'] , newobj['value2']]]
 					else:
 						p[0]['code'] = p[2]['code'] + p[3]['code'] + [[p[2]['operator']+'f' , p[0]['place'] , newobj['value1'] , newobj['value2']]]
-					p[0]['code'] += [["=" , p[0]['place'] , "-" , p[0]['place']]]
+					p[0]['code'] += [["-" , p[0]['place'] , "0" , p[0]['place']]]
 
 
 	def p_simpless(self, p):
@@ -738,7 +740,10 @@ class Parser(object):
 					 | KEY_IN
 					 | KEY_IS
 		'''
-		p[0] = p.slice[1].value
+		if(p.slice[1].value == "="):
+			p[0] = "=="
+		else:
+			p[0] = p.slice[1].value
 		# p[0] = {}
 		# p[0]['code'] = ''
 		# p[0]['place'] = p.slice[1].value
@@ -935,7 +940,7 @@ class Parser(object):
 		self.locall = False
 		p[0] = {}
 		p[0]['code'] = p[1]['code'] + p[3]['code']
-		# self.tunnelTab.currTable.printMe()
+		# self.tunnelTab.printfull()
 		totofftab = self.tunnelTab.currTable.offsTab
 		self.tunnelTab.endScope()
 		tabEnt = self.tunnelTab.queryEnt(p[1]['name'], None)

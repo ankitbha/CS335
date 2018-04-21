@@ -14,10 +14,6 @@ PROCEDURE bigger(a, bh: INTEGER) : INTEGER;
 	END bigger;
 
  BEGIN
- 	READINT(a);
- 	READINT(bh);
- 	WRITEINT(a);
- 	WRITEINT(bh);
-	test := bigger(a,bh);
+ 	test := bigger(5,6);
  	WRITEINT(test);
  END testCode1.

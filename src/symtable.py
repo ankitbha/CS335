@@ -82,6 +82,10 @@ class SymTab(object):
 			print("## Variables ##")
 			for k,v in self.varsHere.items():
 				print(k + " -> " + repr(v))
+		if len(self.temps) > 0:
+			print("## Variables ##")
+			for k,v in self.temps.items():
+				print(k + " -> " + repr(v))
 			# print("########")
 
 class tunnelTable(object):
@@ -113,18 +117,31 @@ class tunnelTable(object):
 			var = var + self.getVariables(child)
 		return var
 
-	def printfull(self, Table):
+	def printfull(self, Table=None):
 		if(Table == None):
 			iterTable = self.currTable
 		else:
 			iterTable = Table
 		queryRes = iterTable.printMe()
-		if (iterTable.parent == None):
-			return
+		for child in list(iterTable.children.values()):
+			self.printfull(child)
+
+	def updateoffset(self,Table=None,offset=None):
+		if(Table==None):
+			Table=self.rootTable
+			offset = 0
+			for child in list(Table.children.values()):
+				if child.div=='func':
+					self.updateoffset(child,child.offsTab)
 		else:
-			parTable = iterTable.parent
-			self.printfull(parTable)
-			return
+			for temp in list(Table.temps.values()):
+				temp.offset = offset
+				temp.addr = str(offset) + "($fp)"
+				offset = offset + 4
+			for child in list(Table.children.values()):
+				offset = offset + self.updateoffset(child,offset)
+		return offset
+
 
 	def queryProc(self,lex):
 		# print("###############")
