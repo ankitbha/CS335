@@ -44,7 +44,7 @@ def getReg(varObj, numLine):
 	if varObj.vtype == "REAL":
 		for i in reg_float.keys():
 			if (reg_float[i]==varObj):
-				return i
+				spillReg = reg_float[i]
 
 		if len(unused_reg_float)!=0:
 			reg = unused_reg_float[0]
@@ -52,7 +52,7 @@ def getReg(varObj, numLine):
 			used_reg_float.append(reg)
 			reg_float[reg] = varObj
 			addrDesc[varObj] = reg
-			return reg
+			spillReg = reg
 
 
 		else:
@@ -74,18 +74,19 @@ def getReg(varObj, numLine):
 			#    assembly = assembly + "movl " + regspill + ", " + var + "\n"
 			# acode = acode + "lw " + spillReg + ", " + addrDesc[reg_norm[spillReg]] + "\n"
 			acode = acode + "\t" + "s.s " + spillReg + ", " + (reg_float[spillReg]).lex + "\n"
-			acode = acode + "\t" + "l.s " + spillReg + ", " + varObj.lex + "\n"
-			addrDesc[reg_float[spillReg]] = "MEM"
-			reg_float[spillReg] = varObj
-			addrDesc[varObj] = spillReg
+		acode = acode + "\t" + "l.s " + spillReg + ", " + varObj.lex + "\n"
+		addrDesc[reg_float[spillReg]] = "MEM"
+		reg_float[spillReg] = varObj
+		addrDesc[varObj] = spillReg
 
 	else:
 		#regExist=False
 		#emptyReg=None
 		for i in reg_norm.keys():
 			if (reg_norm[i]==varObj):
+				spillReg = reg_norm[i]
+				break;
 				#regExist = True
-				return i
 			#if(emptyReg==None and !regExist):
 
 
@@ -95,7 +96,7 @@ def getReg(varObj, numLine):
 			used_reg_norm.append(reg)
 			reg_norm[reg] = varObj
 			addrDesc[varObj] = reg
-			return reg
+			spillReg = reg
 
 
 		else:
@@ -117,10 +118,11 @@ def getReg(varObj, numLine):
 			# 		break
 
 			acode = acode + "\t" + "sw " + spillReg + ", " + (reg_norm[spillReg]).lex + "\n"
+		if(varObj.lex != "_temp" and varObj.lex != "_temp1" ):
 			acode = acode + "\t" + "lw " + spillReg + ", " + varObj.lex + "\n"
-			addrDesc[reg_norm[spillReg]] = "MEM"
-			reg_norm[spillReg] = varObj
-			addrDesc[varObj] = spillReg
+		addrDesc[reg_norm[spillReg]] = "MEM"
+		reg_norm[spillReg] = varObj
+		addrDesc[varObj] = spillReg
 	return spillReg
 
 def flushRegDesc():
@@ -999,112 +1001,111 @@ def translate(line):
 		num1 = line[3]
 		num2 = line[4]
 		l = line[5]
-		print(line[0], line[1],line[2],line[3],line[4],line[5])
+		# print(line[0], line[1],line[2],line[3],line[4],line[5])
 
-		if (num1.vtype=='INTEGER'):
-			if isInt(num1) and isInt(num2):
-				if(rel == "<="):
-					if(int(num1) <= int(num2)):
-						acode = acode + "\tj " + labels[int(l)] +"\n"
+		if isInt(num1) and isInt(num2):
+			if(rel == "<="):
+				if(int(num1) <= int(num2)):
+					acode = acode + "\tj " + labels[int(l)] +"\n"
 
-				if(rel == ">="):
-					if(int(num1) >= int(num2)):
-						acode = acode + "\tj " + labels[int(l)] +"\n"
+			if(rel == ">="):
+				if(int(num1) >= int(num2)):
+					acode = acode + "\tj " + labels[int(l)] +"\n"
 
-				if(rel == "=="):
-					if(int(num1) == int(num2)):
-						acode = acode + "\tj " + labels[int(l)] +"\n"
+			if(rel == "=="):
+				if(int(num1) == int(num2)):
+					acode = acode + "\tj " + labels[int(l)] +"\n"
 
-				if(rel == ">"):
-					if(int(num1) > int(num2)):
-						acode = acode + "\tj " + labels[int(l)] +"\n"
+			if(rel == ">"):
+				if(int(num1) > int(num2)):
+					acode = acode + "\tj " + labels[int(l)] +"\n"
 
-				if(rel == "<"):
-					if(int(num1) < int(num2)):
-						acode = acode + "\tj " + labels[int(l)] +"\n"
+			if(rel == "<"):
+				if(int(num1) < int(num2)):
+					acode = acode + "\tj " + labels[int(l)] +"\n"
 
-				if(rel == "!="):
-					if(int(num1) != int(num2)):
-						acode = acode + "\tj " + labels[int(l)] +"\n"
+			if(rel == "!="):
+				if(int(num1) != int(num2)):
+					acode = acode + "\tj " + labels[int(l)] +"\n"
 
-			elif isInt(num1) and not isInt(num2):
+		elif isInt(num1) and not isInt(num2):
 
-				addr2 = addrDesc[num2]
-				if(addr2 == "MEM"):
-					addr2 = getReg(num2,lineno)
+			addr2 = addrDesc[num2]
+			if(addr2 == "MEM"):
+				addr2 = getReg(num2,lineno)
 
-				if(rel == "<="):
-					acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+			if(rel == "<="):
+				acode = acode + "\tbge " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-				if(rel == ">="):
-					acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+			if(rel == ">="):
+				acode = acode + "\tble " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
 
-				if(rel == "=="):
-					acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+			if(rel == "=="):
+				acode = acode + "\tbeq " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-				if(rel == ">"):
-					acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+			if(rel == ">"):
+				acode = acode + "\tblt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "<"):
-					acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+			if(rel == "<"):
+				acode = acode + "\tbgt " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "!="):
-					acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
+			if(rel == "!="):
+				acode = acode + "\tbne " + addr2 + ", " + num1 + ", " + labels[int(l)] +"\n"
 
-			elif not isInt(num1) and isInt(num2):
-				# bge Rsrc1, Src2, label
+		elif not isInt(num1) and isInt(num2):
+			# bge Rsrc1, Src2, label
 
-				addr1 = addrDesc[num1]
-				if(addr1 == "MEM"):
-					addr1 = getReg(num1,lineno)
+			addr1 = addrDesc[num1]
+			if(addr1 == "MEM"):
+				addr1 = getReg(num1,lineno)
 
-				if(rel == "<="):
-					acode = acode + "\tble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+			if(rel == "<="):
+				acode = acode + "\tble " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == ">="):
-					acode = acode + "\tbge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+			if(rel == ">="):
+				acode = acode + "\tbge " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "=="):
-					acode = acode + "\tbeq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+			if(rel == "=="):
+				acode = acode + "\tbeq " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == ">"):
-					acode = acode + "\tbgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+			if(rel == ">"):
+				acode = acode + "\tbgt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "<"):
-					acode = acode + "\tblt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+			if(rel == "<"):
+				acode = acode + "\tblt " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "!="):
-					acode = acode + "\tbne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
+			if(rel == "!="):
+				acode = acode + "\tbne " + addr1 + ", " + num2 + ", " + labels[int(l)] +"\n"
 
-			elif not isInt(num1) and not isInt(num2):
-				#bge Rsrc1, Src2, label
+		elif not isInt(num1) and not isInt(num2):
+			#bge Rsrc1, Src2, label
 
-				addr1 = addrDesc[num1]
-				if(addr1 == "MEM"):
-					addr1 = getReg(num1,lineno)
+			addr1 = addrDesc[num1]
+			if(addr1 == "MEM"):
+				addr1 = getReg(num1,lineno)
 
-				addr2 = addrDesc[num2]
-				if(addr2 == "MEM"):
-					addr2 = getReg(num2,lineno)
+			addr2 = addrDesc[num2]
+			if(addr2 == "MEM"):
+				addr2 = getReg(num2,lineno)
 
-				if(rel == "<="):
-					acode = acode + "\tble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+			if(rel == "<="):
+				acode = acode + "\tble " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == ">="):
-					acode = acode + "\tbge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+			if(rel == ">="):
+				acode = acode + "\tbge " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "=="):
-					acode = acode + "\tbeq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+			if(rel == "=="):
+				acode = acode + "\tbeq " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == ">"):
-					acode = acode + "\tbgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+			if(rel == ">"):
+				acode = acode + "\tbgt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "<"):
-					acode = acode + "\tblt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+			if(rel == "<"):
+				acode = acode + "\tblt " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
-				if(rel == "!="):
-					acode = acode + "\tbne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
+			if(rel == "!="):
+				acode = acode + "\tbne " + addr1 + ", " + addr2 + ", " + labels[int(l)] +"\n"
 
 	if op=="=":
 		#move Rdest, Rsrc
@@ -1164,7 +1165,10 @@ def translate(line):
 		# acode =
 		l=line[2]
 		if(len(line)==4):
-			ret = line[3].vtype
+			ans = line[3]
+			addr1 = addrDesc[ans]
+			if(addr1 == "MEM"):
+				addr1 = getReg(ans,lineno)
 			acode = acode + "\taddi $sp, $sp, -12\n"
 			acode = acode + "\tsw $fp, -8($sp)\n"
 			acode = acode + "\tsw $ra, -4($sp)\n"
@@ -1172,9 +1176,11 @@ def translate(line):
 			# acode = acode + "\taddi $fp, $fp, -4\n"
 			acode = acode + "\taddi $sp, $sp, " + str(-l.offset) + "\n"
 			acode = acode + "\tjal " + l.lex +"\n"
+			acode = acode + "\tlw " + addr1 + ", 0($fp)\n"
 			acode = acode + "\tmove $sp, $fp\n"
 			acode = acode + "\tlw $fp, -8($sp)\n"
 			acode = acode + "\tlw $ra, -4($sp)\n"
+
 		else:
 			ret = None
 			acode = acode + "\taddi $sp, $sp, -8\n"
@@ -1234,14 +1240,13 @@ def translate(line):
 			if(len(line)==2):
 				acode = acode + "jr $ra\n"
 			if(len(line)==3):
-				if(ret==None):
-					print("Error")
 				ans=line[2]
 				if(isInt(ans)):
 					addr1 = getReg(tunnelTab.rootTable.queryEnt("_temp"),lineno)
 					acode = acode + "\tli " + addr1 + ", " + ans + "\n"
 				else:
 					addr1 = addrDesc[ans]
+					# acode = acode + addr1 + "\n"
 					if(addr1 == "MEM"):
 						addr1 = getReg(ans,lineno)
 				acode = acode + "\tsw " + addr1 + ", 0($fp)\n"
@@ -1572,6 +1577,7 @@ def mipsgen():
 	acode += ".data\n"
 
 	varlist = list(tunnelTab.rootTable.varsHere.values())
+	varlist = varlist + list(tunnelTab.rootTable.temps.values())
 	varlist2 = []
 	for var in varlist:
 		if(var.kind!='func' and var.vtype!='STRING' and var.lex!="_temp" and var.lex!="_temp1"):
