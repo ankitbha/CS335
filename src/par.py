@@ -662,6 +662,9 @@ class Parser(object):
 			# print(p.slice[1].value)
 			entry = self.tunnelTab.queryEnt(p.slice[1].value, None)
 			# if (entry.kind != 'func'):
+			# print("$$$$$$$$")
+			# print(entry)
+			# print("$$$$$$$$$")
 			p[0]['place'] = entry
 			p[0]['code'] = []
 			p[0]['type'] = entry.vtype

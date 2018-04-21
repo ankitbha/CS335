@@ -1091,6 +1091,50 @@ def translate(line):
 		acode = acode +"\tmove, $a0, " + "nl" + "\n"
 		acode = acode +"\tsyscall\n"
 
+	if op == "printchar":
+		# printchar , argument
+		ans = line[2]
+		addr1 = addrDesc[ans]
+		if(addr1 == "MEM"):
+			addr1 = getReg(ans,lineno)
+		acode = acode +"\tli $v0, 11\n"
+		acode = acode +"\tmove, $a0, " + addr1 + "\n"
+		acode = acode +"\tsyscall\n"
+	
+	if op == "readchar":
+		ans=line[2];
+		addr1 = addrDesc[ans]
+		if(addr1 == "MEM"):
+			addr1 = getReg(ans,lineno)
+		acode = acode +"\tli $v0, 12\n"
+		acode = acode +"\tsyscall\n"
+		acode = acode +"\tmove, "+ addr1 + " ,$v0" + "\n"
+
+	if op == "ORD":
+		# ord, a , b -- get a = ascii(b)
+		dest = line[2]
+		src = line[3]
+		addr1 = addrDesc[dest]
+		if(addr1 == "MEM"):
+			addr1 = getReg(dest,lineno)
+		addr2 = addrDesc[src]
+		if(addr2 == "MEM"):
+			addr2 = getReg(src,lineno)
+		
+		acode = acode + "\tmove, " + addr1 + ", " + addr2 + '\n'
+
+	if op == "CHR":
+		dest = line[2]
+		src = line[3]
+		addr1 = addrDesc[dest]
+		if(addr1 == "MEM"):
+			addr1 = getReg(dest,lineno)
+		addr2 = addrDesc[src]
+		if(addr2 == "MEM"):
+			addr2 = getReg(src,lineno)
+		
+		acode = acode + "\tmove, " + addr1 + ", " + addr2 + '\n'
+				
 
 
 mathop = ['+', '-', '*', '/', '%', '<=', '>=', '==', '<', '>', '!=']
